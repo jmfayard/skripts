@@ -76,6 +76,10 @@ dependencies {
     compile 'com.google.dagger:dagger:2.4'
     kapt 'com.google.dagger:dagger-compiler:2.4'
 
+
+    // Konfig
+    compile 'com.natpryce:konfig:1.5.0.0'
+
 }
 
 sourceSets {

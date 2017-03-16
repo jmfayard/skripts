@@ -76,6 +76,8 @@ dependencies {
     compile 'com.google.dagger:dagger:2.4'
     kapt 'com.google.dagger:dagger-compiler:2.4'
 
+    // Stripe
+    compile group: 'com.stripe', name: 'stripe-java', version: '3.5.0'
 }
 
 sourceSets {

@@ -1,6 +1,6 @@
 import IO.response
 import IO.retrofit
-import IO.service
+import IO.httpbinService
 import com.squareup.moshi.Moshi
 import io.kotlintest.matchers.be
 import io.kotlintest.specs.FeatureSpec
@@ -22,19 +22,17 @@ import ru.gildor.coroutines.retrofit.awaitResult
 import rx.Single
 
 
-class RetrofitTests : StringSpec() { init {
-    val args = mapOf("gender" to "MALE", "age" to "42")
-    val json = """{"args":{"gender":"MALE","age":"42"},"method":"GET","origin":"localhost"}""".trim()
+/**
+ ** Trying out: Kotlin Coroutines for Retrofit
+ ** https://github.com/gildor/kotlin-coroutines-retrofit
+ */
 
-    "Testing Moshi" {
-        val response = HttpbinResponse(args = args, origin = "localhost", method = "GET")
-        IO.response.toJson(response).shouldBe(json)
-        IO.response.fromJson(json).shouldBe(response)
-    }
+class KotlinCoroutinesRetrofitTest : StringSpec() { init {
+    val args = mapOf("gender" to "MALE", "age" to "42")
 
     "Call.await()" {
         runBlocking {
-            val response = IO.service.get(args).await().debug("response")
+            val response = IO.httpbinService.get(args).await().debug("response")
             response.args shouldBe args
         }
     }
@@ -42,26 +40,25 @@ class RetrofitTests : StringSpec() { init {
     "Call.await() throw an exception" {
         shouldThrow<HttpException> {
             runBlocking {
-                IO.service.status(401).await()
+                IO.httpbinService.status(401).await()
             }
         }
     }
 
     "Call.awaitResponse()" {
         runBlocking {
-            val response = IO.service.status(304).awaitResponse().debug("response")
+            val response = IO.httpbinService.status(304).awaitResponse().debug("response")
             response.message() shouldBe "NOT MODIFIED"
         }
     }
 
     "Call.awaitResult()" {
         runBlocking {
-            IO.service.get(args).awaitResult() should be an Result.Ok::class
-            IO.service.status(404).awaitResult() should be an Result.Error::class
-            IO.service.invalid().awaitResult() should be an Result.Exception::class
+            IO.httpbinService.get(args).awaitResult() should be an Result.Ok::class
+            IO.httpbinService.status(404).awaitResult() should be an Result.Error::class
+            IO.httpbinService.invalid().awaitResult() should be an Result.Exception::class
         }
     }
-
 }
 }
 
@@ -76,7 +73,7 @@ object IO {
             addNetworkInterceptor(logger)
         }
     }
-    val service = retrofit.create(ApiService::class.java)
+    val httpbinService = retrofit.create(ApiService::class.java)
 
 }
 

@@ -69,6 +69,7 @@ dependencies {
     compile "com.squareup.retrofit2:adapter-rxjava:${version.retrofit}"
     compile "com.squareup.retrofit2:retrofit-mock:${version.retrofit}"
     // compile "com.squareup.retrofit2:adapter-rxjava2:${version.retrofit}"
+    // compile 'com.squareup.wire:wire-runtime:2.2.0'
     // compile "com.squareup.retrofit2:converter-wire:${version.retrofit}"
     // compile "com.squareup.retrofit2:converter-jackson:${version.retrofit}"
     // compile "com.squareup.retrofit2:converter-gson:${version.retrofit}"

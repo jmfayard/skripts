@@ -1,7 +1,12 @@
+import okhttp3.HttpUrl
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import okio.BufferedSink
 import okio.BufferedSource
 import okio.Okio
 import org.zeroturnaround.exec.ProcessExecutor
+import retrofit2.Response
+import retrofit2.Retrofit
 import java.io.File
 
 fun <T> T.debug(name: String): T {
@@ -40,3 +45,28 @@ public fun printAsTable(vararg pairs: Pair<Any, Any>){
     }
 }
 
+
+
+fun buildRetrofit(init: Retrofit.Builder.() -> Unit) : Retrofit {
+    val builder = Retrofit.Builder()
+    builder.init()
+    return builder.build()
+}
+
+fun buildOk(init: OkHttpClient.Builder.() -> Unit) : OkHttpClient {
+    val builder = OkHttpClient.Builder()
+    builder.init()
+    return builder.build()
+}
+
+fun buildRequest(init: Request.Builder.() -> Unit): Request {
+    val builder = Request.Builder()
+    builder.init()
+    return builder.build()
+}
+
+fun Request.Builder.buildUrl(init: HttpUrl.Builder.() -> Unit): Unit {
+    val builder = HttpUrl.Builder()
+    builder.init()
+    url(builder.build())
+}

@@ -56,32 +56,30 @@ data class Store(val todos : ImmutableList<Todo>) {
 
 fun todoReducer(store: Store, event: Event): Store {
     val todos = when (event) {
+        DeleteCompleted -> store.todos.mutate { list->
+            list.removeIf(Todo::completed)
+        }
         is AddTodo -> store.todos + Todo(event.id, event.text, false)
-        is RemoveTodo -> store.todos.filterNot { it.id == event.id }.toImmutableList()
-        DeleteCompleted -> store.todos.filter { !it.completed }.toImmutableList()
+        is RemoveTodo -> {
+            val todo = store.todo(event.id) ?: return store
+            store.todos - todo
+        }
         is ToggleCompletedTodo -> {
-            val todo = store.todo(event.id)
-            if (todo == null) {
-                store.todos
-            } else {
-                store.todos - todo + todo.copy(completed = !todo.completed)
+            val todo = store.todo(event.id) ?: return store
+            store.todos.mutate { list ->
+                list -= todo
+                list += todo.copy(completed = !todo.completed)
             }
         }
         is EditTodo -> {
-            val todo = store.todo(event.id)
-            if (todo == null) {
-                store.todos
-            } else {
-                store.todos - todo + todo.copy(text = event.text)
+            val todo = store.todo(event.id) ?: return store
+            store.todos.mutate { list ->
+                list -= todo
+                list += todo.copy(text = event.text)
             }
         }
     }
-    if (todos == store.todos) {
-        println("Warning: no modification for event $event")
-        return store
-    } else {
-        return Store(todos)
-    }
+    return store.copy(todos = todos)
 }
 
 

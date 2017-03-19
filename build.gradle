@@ -1,7 +1,7 @@
 
 buildscript {
     ext {
-        kotlinVersion = '1.0.4'
+        kotlinVersion = '1.1.0'
     }
     repositories {
         mavenCentral()
@@ -19,7 +19,9 @@ compileKotlin {
 }
 
 repositories {
-    mavenCentral()
+    jcenter()
+    maven { url = "https://dl.bintray.com/kotlin/exposed/" }
+    maven { url = "https://kotlin.bintray.com/kotlinx" }
 }
 
 dependencies {
@@ -76,6 +78,22 @@ dependencies {
     compile 'com.google.dagger:dagger:2.4'
     kapt 'com.google.dagger:dagger-compiler:2.4'
 
+
+    // Coroutines
+    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.13'
+
+    // https://github.com/jetbrains/Exposed
+    compile group: 'org.jetbrains.exposed', name: 'exposed', version: '0.7.6'
+
+    // https://github.com/Kotlin/kotlinx.collections.immutable
+    compile 'org.jetbrains.kotlinx:kotlinx-collections-immutable:0.1'
+
+}
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
 }
 
 sourceSets {

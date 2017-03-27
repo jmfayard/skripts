@@ -94,10 +94,10 @@ dependencies {
     // https://google.github.io/dagger/
     compile "com.google.dagger:dagger:${version.dagger}"
     kapt "com.google.dagger:dagger-compiler:${version.dagger}"
-    
 
 
-
+    // https://github.com/arturmkrtchyan/iban4j
+    compile "org.iban4j:iban4j:3.2.1"
 
 }
 

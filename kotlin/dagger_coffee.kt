@@ -1,3 +1,4 @@
+#!/usr/bin/env kotlin-script.sh
 
 package dagger_coffee
 

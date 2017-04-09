@@ -68,16 +68,12 @@ dependencies {
     compile "com.squareup.retrofit2:converter-moshi:${version.retrofit}"
     compile "com.squareup.retrofit2:adapter-rxjava:${version.retrofit}"
     compile "com.squareup.retrofit2:retrofit-mock:${version.retrofit}"
-
-//    compile "com.squareup.retrofit2:adapter-rxjava2:${version.retrofit}"
     compile "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0"
-
-    // compile 'com.squareup.wire:wire-runtime:2.2.0'
-    // compile "com.squareup.retrofit2:converter-wire:${version.retrofit}"
-    // compile "com.squareup.retrofit2:converter-jackson:${version.retrofit}"
-    // compile "com.squareup.retrofit2:converter-gson:${version.retrofit}"
-    // compile "com.squareup.retrofit2:converter-simplexml:${version.retrofit}"
-    // compile "com.squareup.retrofit2:converter-protobuf:${version.retrofit}"
+     compile "com.squareup.retrofit2:converter-wire:${version.retrofit}"
+     compile "com.squareup.retrofit2:converter-jackson:${version.retrofit}"
+     compile "com.squareup.retrofit2:converter-gson:${version.retrofit}"
+     compile "com.squareup.retrofit2:converter-simplexml:${version.retrofit}"
+     compile "com.squareup.retrofit2:converter-protobuf:${version.retrofit}"
 
     // https://github.com/gildor/kotlin-coroutines-retrofit
     compile 'ru.gildor.coroutines:kotlin-coroutines-retrofit:0.5.0'
@@ -97,6 +93,12 @@ dependencies {
     // https://google.github.io/dagger/
     compile "com.google.dagger:dagger:${version.dagger}"
     kapt "com.google.dagger:dagger-compiler:${version.dagger}"
+
+
+    // http://jtwig.org/documentation/reference
+    compile "org.jtwig:jtwig-core:5.85.3.RELEASE"
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.21'
 
 
 }

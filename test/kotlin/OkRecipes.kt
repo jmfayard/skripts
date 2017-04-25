@@ -1,13 +1,9 @@
 import io.kotlintest.specs.StringSpec
-import okhttp3.MediaType
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody
+import okhttp3.*
 import java.io.IOException
 
 
 class OkRecipes : StringSpec() { init {
-
 
     "Synchronous get" {
         val client = OkHttpClient()

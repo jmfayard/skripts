@@ -36,6 +36,7 @@ fun generateSql(okSource: BufferedSource) {
     while (!okSource.exhausted()) {
         val line = okSource.readUtf8Line()
         val data = line.split(";").toTypedArray()
+        if (data.size == 1) { continue }
         if (data.size < 12) {
             TODO("Unexpected line \n$line\n")
         }

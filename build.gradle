@@ -8,11 +8,12 @@ def version = [
         "rxkotlin": "1.0.0",
         "kotlintest" : "1.3.7",
         "dagger" : "2.9",
-        "konfig" : "1.5.0.0"
+        "konfig" : "1.5.0.0",
+        "kotlinxhtml" : "0.6.3"
 ]
 buildscript {
     ext {
-        kotlinVersion = '1.1.1'
+        kotlinVersion = '1.1.2-2'
     }
     repositories {
         jcenter()
@@ -81,9 +82,9 @@ dependencies {
 
     // https://github.com/square/okhttp/wiki/Recipes
     compile "com.squareup.okhttp3:okhttp:${version.okhttp}"
-    compile "com.squareup.okhttp3:logging-interceptor:${version.okhttp}"
     testCompile "com.squareup.okhttp3:mockwebserver:${version.okhttp}"
-    
+    compile "com.squareup.okhttp3:logging-interceptor:${version.okhttp}"
+
     // https://github.com/square/moshi
     compile "com.squareup.moshi:moshi:${version.moshi}"
 
@@ -99,6 +100,10 @@ dependencies {
     compile "org.jtwig:jtwig-core:5.85.3.RELEASE"
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.21'
+
+
+    // https://github.com/Kotlin/kotlinx.html/wiki/Getting-started
+    compile "org.jetbrains.kotlinx:kotlinx-html-jvm:${version.kotlinxhtml}"
 
 
 }

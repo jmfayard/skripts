@@ -1,0 +1,132 @@
+#!/usr/bin/env kotlin-script.sh
+
+package kotlin_coffee
+
+import dagger_coffee.*
+import java.util.*
+import kotlin.test.assertEquals
+
+// Inspired by dagger2 components
+interface Component {
+    val coffee : Coffee
+    val heater: Heater
+    val pump: Pump
+    val maker: CoffeeMaker
+}
+
+
+var FANCY : Boolean = true
+
+fun component()  : Component =
+    if (FANCY) FancyComponent
+    else BoringComponent
+
+
+
+fun main(args: Array<String>) {
+
+    FANCY=false
+    val boringCoffee = component().coffee
+    boringCoffee.maker.brew()
+    assertEquals(Logger.messages, listOf(
+        "[_]P coffee! [_]P"
+    ))
+
+    Logger.messages.clear()
+
+    FANCY=true
+    val kotlinCoffee = component().coffee
+    kotlinCoffee.maker.brew()
+    assertEquals(Logger.messages, listOf(
+        "~ ~ ~ heating ~ ~ ~",
+        "=> => pumping => =>",
+        "[_]P coffee! [_]P"
+    ))
+
+    Logger.messages.clear()
+
+    val daggerCoffee = DaggerCoffee.builder().build()
+    daggerCoffee.maker().brew()
+    assertEquals(Logger.messages, listOf(
+        "~ ~ ~ heating ~ ~ ~",
+        "=> => pumping => =>",
+        "[_]P coffee! [_]P"
+    ))
+}
+
+
+
+// Equivalents of dagger2 modules
+data class Coffee(val maker: CoffeeMaker = component().maker)
+
+data class CoffeeMaker(
+    val heater: Heater = component().heater,
+    val pump: Pump = component().pump) {
+    fun brew() {
+        heater.on()
+        pump.pump()
+        Logger.say("[_]P coffee! [_]P")
+        heater.off()
+    }
+}
+
+object FancyComponent : Component {
+    override val heater: Heater = FancyHeater
+    override val pump: Pump = Thermosiphon(heater)
+    override val maker: CoffeeMaker by lazy {
+        CoffeeMaker(heater, pump)
+    }
+    override val coffee: Coffee by lazy {
+        Coffee(maker)
+    }
+}
+
+data class Thermosiphon(
+    val heater: Heater = component().heater
+) : Pump {
+
+    override fun pump() {
+        if (heater.isHot) {
+            Logger.say("=> => pumping => =>")
+        }
+    }
+}
+
+
+
+
+
+
+
+object FancyHeater : Heater {
+    override var isHot: Boolean = false
+
+    override fun on() {
+        Logger.say("~ ~ ~ heating ~ ~ ~")
+        isHot = true
+    }
+
+    override fun off() {
+        isHot = false
+    }
+}
+
+object BoringPump : Pump {
+    override fun pump() = Unit
+}
+object BoringHeater : Heater {
+    override fun on() = Unit
+    override fun off() = Unit
+    override val isHot: Boolean = false
+}
+
+object BoringComponent : Component {
+    override val heater: Heater = BoringHeater
+    override val pump: Pump = BoringPump
+    override val maker: CoffeeMaker by lazy { CoffeeMaker(heater, pump) }
+    override val coffee: Coffee by lazy { Coffee(maker) }
+}
+
+
+
+

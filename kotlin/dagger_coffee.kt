@@ -8,16 +8,6 @@ import javax.inject.Singleton
 import kotlin.test.assertEquals
 
 
-fun main(args: Array<String>) {
-    val coffee = DaggerCoffee.builder().build()
-    coffee.maker().brew()
-    assertEquals(Logger.messages, listOf(
-            "~ ~ ~ heating ~ ~ ~",
-            "=> => pumping => =>",
-            "[_]P coffee! [_]P"
-    ))
-}
-
 /** Our fancy coffee maker, built with dependancy injection*/
 class CoffeeMaker
 @Inject constructor(val heater: Lazy<Heater>, val pump: Pump) {
@@ -39,6 +29,7 @@ interface Heater {
     fun off()
     val isHot: Boolean
 }
+
 
 /** Dagger setup that provides our injected objects **/
 @Component(modules = arrayOf(DripCoffeeModule::class))
@@ -71,6 +62,7 @@ abstract class PumpModule {
     /** Second concret object is also built by dependancy injection **/
     abstract @Binds fun providePump(pump: Thermosiphon): Pump
 }
+
 
 
 class Thermosiphon

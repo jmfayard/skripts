@@ -70,3 +70,5 @@ fun Request.Builder.buildUrl(init: HttpUrl.Builder.() -> Unit): Unit {
     builder.init()
     url(builder.build())
 }
+
+fun fail(message: String) : Nothing = throw AssertionError(message)

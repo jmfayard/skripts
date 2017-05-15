@@ -112,6 +112,12 @@ dependencies {
     compile "org.jetbrains.kotlinx:kotlinx-html-jvm:${version.kotlinxhtml}"
 
 
+    // Result for Railway Oriented Programming
+    // https://github.com/kittinunf/Result
+    // https://www.slideshare.net/ScottWlaschin/railway-oriented-programming
+    compile 'com.github.kittinunf.result:result:1.1.0'
+
+
 }
 
 compileKotlin {

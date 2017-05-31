@@ -41,6 +41,11 @@ dependencies {
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
     testCompile 'junit:junit:4.11'
 
+    //Mockito
+    testCompile "org.mockito:mockito-core:2.7.21"
+    testCompile "com.nhaarman:mockito-kotlin:1.4.0"
+
+
     // https://github.com/npryce/konfig
     compile "com.natpryce:konfig:${version.konfig}"
 

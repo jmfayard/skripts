@@ -30,7 +30,6 @@ interface Heater {
     val isHot: Boolean
 }
 
-
 /** Dagger setup that provides our injected objects **/
 @Component(modules = arrayOf(DripCoffeeModule::class))
 @Singleton interface Coffee {

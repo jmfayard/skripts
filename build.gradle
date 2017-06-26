@@ -1,3 +1,26 @@
+buildscript {
+    ext {
+        kotlinVersion = '1.1.3'
+    }
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+plugins {
+    id 'com.gradle.build-scan' version '1.8'
+}
+apply plugin: "kotlin"
+apply plugin: 'kotlin-kapt'
+
+repositories {
+    jcenter()
+    maven { url 'https://jitpack.io' }
+}
+
+
 def version = [
         "retrofit" : "2.2.0",
         "okhttp" : "3.5.0",
@@ -11,24 +34,7 @@ def version = [
         "konfig" : "1.5.0.0",
         "kotlinxhtml" : "0.6.3"
 ]
-buildscript {
-    ext {
-        kotlinVersion = '1.1.2-2'
-    }
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-    }
-}
-repositories {
-    jcenter()
-    maven { url 'https://jitpack.io' }
-}
 
-apply plugin: "kotlin"
-apply plugin: 'kotlin-kapt'
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
@@ -162,4 +168,12 @@ task wrapper(type: Wrapper) {
 task copyToLib(type: Copy) {
     into "lib"
     from configurations.runtime
+}
+
+buildScan {
+// Uncomment the lines below to agree to the Terms of Service.
+    licenseAgreementUrl = 'https://gradle.com/terms-of-service'
+    licenseAgree = 'yes'
+    tag 'SAMPLE'
+    link 'GitHub', 'https://github.com/gradle/gradle-build-scan-quickstart'
 }

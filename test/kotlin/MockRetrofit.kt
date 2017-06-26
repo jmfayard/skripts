@@ -12,6 +12,8 @@ import java.util.concurrent.TimeUnit
 
 class MockRetrofitTest : StringSpec() { init {
 
+    val WITH_ERRORS : Boolean = false
+
     val retrofit = Retrofit.Builder()
             .baseUrl("http://httpbin.org")
             .build()
@@ -20,9 +22,9 @@ class MockRetrofitTest : StringSpec() { init {
             .networkBehavior(
                     NetworkBehavior.create().apply {
                         setDelay(300, TimeUnit.MILLISECONDS)
-                        setErrorPercent(30)
+                        setErrorPercent(if (WITH_ERRORS) 15 else 0)
                         setVariancePercent(60)
-                        setFailurePercent(10)
+                        setFailurePercent(if (WITH_ERRORS) 20 else 0)
                     }
             ).build()
 
@@ -34,7 +36,7 @@ class MockRetrofitTest : StringSpec() { init {
         "Ping ${i}" {
             val service = httpbin.returningResponse(true)
             service.ping().execute().isSuccessful shouldBe true
-        }.config(timeout = Duration(400, TimeUnit.MILLISECONDS))
+        }.config(timeout = Duration(if (WITH_ERRORS) 400 else 900, TimeUnit.MILLISECONDS))
     }
 
 

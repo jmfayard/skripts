@@ -6,3 +6,4 @@ build/
 lib/
 config.properties
 README.html
+out/

@@ -108,10 +108,10 @@ dependencies {
     compile group: 'com.squareup.okio', name: 'okio', version: version.okio
 
     // https://google.github.io/dagger/
-    compile "com.google.dagger:dagger:${version.dagger}"
+    compile("com.google.dagger:dagger:${version.dagger}")
     kapt "com.google.dagger:dagger-compiler:${version.dagger}"
 
-    compile 'com.github.jmfayard:restinparse:master-SNAPSHOT'
+    compile "com.github.jmfayard:restinparse:master-SNAPSHOT"
 
     // http://jtwig.org/documentation/reference
     compile "org.jtwig:jtwig-core:5.85.3.RELEASE"

@@ -3,8 +3,6 @@
 package kotlin_coffee
 
 import dagger_coffee.*
-import java.util.*
-import kotlin.test.assertEquals
 
 // Inspired by dagger2 components
 interface Component {
@@ -45,8 +43,8 @@ fun main(args: Array<String>) {
 
     Logger.messages.clear()
 
-    val daggerCoffee = DaggerCoffee.builder().build()
-    daggerCoffee.maker().brew()
+    val daggerCoffee = Coffee()
+    daggerCoffee.maker.brew()
     assertEquals(Logger.messages, listOf(
         "~ ~ ~ heating ~ ~ ~",
         "=> => pumping => =>",
@@ -55,6 +53,11 @@ fun main(args: Array<String>) {
 }
 
 
+fun assertEquals(actual : Any?, expected: Any?) {
+    if (actual != expected) {
+        error("Expected: $expected\nGot: $actual")
+    }
+}
 
 // Equivalents of dagger2 modules
 data class Coffee(val maker: CoffeeMaker = component().maker)

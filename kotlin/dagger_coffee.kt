@@ -5,7 +5,6 @@ package dagger_coffee
 import dagger.*
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.test.assertEquals
 
 
 /** Our fancy coffee maker, built with dependancy injection*/

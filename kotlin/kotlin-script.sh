@@ -7,7 +7,7 @@ DEBUG=0
 RUNNER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 SCRIPT=$1
 HOME=`cd $RUNNER/../; pwd -P`
-CLASSES="$HOME/build/kotlin-classes/main"
+CLASSES="$HOME/build/classes/kotlin/main"
 PACKAGE=`grep '^package ' "$1" | awk -F'[\t ;]' '{print $2}'`
 MAIN=`echo "$PACKAGE" | awk -F'.' '{print $NF}'`
 MAIN="$(tr '[:lower:]' '[:upper:]' <<< ${MAIN:0:1})${MAIN:1}"
@@ -26,7 +26,7 @@ if [ $DEBUG -gt 0 ]; then
 fi
 
 if [[ (! -f "$COMPILED") || ("$SCRIPT" -nt "$COMPILED") ]]; then
-    OUTPUT=`"$HOME/gradlew" --build-file "$HOME/build.gradle" --project-dir "$HOME" clean classes copyToLib`
+    OUTPUT=`"$HOME/gradlew" --project-dir "$HOME" clean classes copyToLib`
     STATUS=$?
     if [ $STATUS -gt 0 ]; then
         echo "$OUTPUT" 1>&2
@@ -41,9 +41,9 @@ if [ -z "$JAVACMD" -a -n "$JAVA_HOME" -a -x "$JAVA_HOME/bin/java" ]; then
 fi
 
 if [ $DEBUG -gt 0 ]; then
-    echo "${JAVACMD:=java}" $JAVA_OPTS "-Dkotlin.script.file=$SCRIPT" -cp "$HOME/build/kotlin-classes/main:$HOME/lib/*" $MAIN "$@"
+    echo "${JAVACMD:=java}" $JAVA_OPTS "-Dkotlin.script.file=$SCRIPT" -cp "$HOME/build/classes/kotlin/main:$HOME/lib/*" $MAIN "$@"
 fi
 
 shift
-"${JAVACMD:=java}" $JAVA_OPTS "-Dkotlin.script.file=$SCRIPT" -cp "$HOME/build/kotlin-classes/main:$HOME/lib/*" $MAIN "$@"
+"${JAVACMD:=java}" $JAVA_OPTS "-Dkotlin.script.file=$SCRIPT" -cp "$HOME/build/classes/kotlin/main:$HOME/lib/*" $MAIN "$@"
 exit $?

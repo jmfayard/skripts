@@ -71,6 +71,8 @@ object libs {
    val dagger = "2.9"
    val konfig = "1.5.0.0"
    val kotlinxhtml = "0.6.3"
+   private val coroutineVersion = "0.18"
+   val coroutineModules = listOf("core", "rx1", "rx2", "reactive", "reactor", "android", "javafx", "swing", "jdk8", "nio", "guava", "quasar")
 
     /** [Retrofit](http://square.github.io/retrofit) dependency
      *
@@ -87,6 +89,12 @@ object libs {
      * See [Github](https://github.com/square/okhttp) [Recipes](https://github.com/square/okhttp/wiki/Recipes) **/
     fun okhttp(module: String) : Any =
             "com.squareup.okhttp3:$module:$okhttp"
+
+    /** Kotlinx.coroutines dependancy where [module] one of [coroutineModules] **/
+    fun coroutine(module: String) : String {
+        check(module in coroutineModules)
+        return "org.jetbrains.kotlinx:kotlinx-coroutines-$module:$coroutineVersion"
+    }
 }
 
 dependencies {
@@ -108,6 +116,10 @@ dependencies {
     for (module in listOf("okhttp", "logging-interceptor", "mockwebserver")) {
         compile(libs.okhttp(module))
     }
+
+    // coroutines
+    compile(libs.coroutine("core"))
+    compile(libs.coroutine("rx2"))
 
     // https://github.com/gildor/kotlin-coroutines-retrofit
     compile("ru.gildor.coroutines:kotlin-coroutines-retrofit:0.5.0")

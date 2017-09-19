@@ -32,6 +32,30 @@ tasks {
     val klean by creating(Delete::class) {
         delete = setOf("build/source/kapt", "build/source/kaptKotlin")
     }
+
+
+    // https://kotlinlang.slack.com/files/U1BASJRMW/F750V7R5G/task_for_setting_up_a_script_for_kshell.kt
+    // Usage: gw kshell && bash build/kshell.sh
+    val kshell by tasks.creating {
+        dependsOn("assemble")
+        doFirst {
+            val buildscriptClasspath = rootProject.buildscript.configurations["classpath"]
+
+            val embeddedableCompiler = buildscriptClasspath
+                    .resolvedConfiguration
+                    .resolvedArtifacts
+                    .first { it.name == "kotlin-compiler-embeddable" }
+
+            val jarLocation = embeddedableCompiler.file
+            val mainClasspath = java.sourceSets["main"].runtimeClasspath.joinToString(separator = ":")
+            val scriptContent = """#!/usr/bin/env bash
+java -cp ${jarLocation.absolutePath} org.jetbrains.kotlin.cli.jvm.K2JVMCompiler -cp $mainClasspath
+"""
+            val output = file("$buildDir/kshell.sh")
+            output.writeText(scriptContent)
+            output.setExecutable(true)
+        }
+    }
 }
 
 object libs {

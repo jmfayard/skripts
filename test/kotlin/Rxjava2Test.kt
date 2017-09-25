@@ -1,6 +1,6 @@
 import io.reactivex.Observable
 import org.junit.Test
-import rx.lang.kotlin.toObservable
+
 import java.lang.RuntimeException
 
 /**

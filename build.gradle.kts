@@ -168,6 +168,17 @@ dependencies {
     compile("org.jetbrains.kotlinx:kotlinx-html-jvm:${libs.kotlinxhtml}")
 
 
+    // Result for Railway Oriented Programming
+    // https://github.com/kittinunf/Result
+    // https://www.slideshare.net/ScottWlaschin/railway-oriented-programming
+    compile("com.github.kittinunf.result:result:1.1.0")
+
+
+    compile("com.google.code.findbugs:jsr305:3.0.2")
+
+
+    //https://github.com/MiloszKrajewski/stateful4k
+    compile("com.github.MiloszKrajewski:stateful4k:master")
 }
 
 buildScan {

@@ -19,7 +19,7 @@ class TestMoshi : StringSpec() { init {
         val reader = JsonReader.of(buffer)
 
         val map = reader.readJsonValue() as Map<String, List<Int>>
-        map.keys.sorted() shouldBe  listOf("a", "b", "c")
+        map.keys.sorted() shouldBe listOf("a", "b", "c")
         map["a"] shouldBe listOf(1.0, 2.0)
     }
 

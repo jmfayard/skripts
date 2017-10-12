@@ -193,6 +193,15 @@ buildScan {
 }
 
 
+/**
+ * JSR305 nullability annotations
+ *
+ * See https://medium.com/square-corner-blog/non-null-is-the-default-58ffc0bb9111
+ * See https://github.com/Kotlin/KEEP/blob/jsr-305/proposals/jsr-305-custom-nullability-qualifiers.md
+ * See https://github.com/square/tape/commit/8d87c7de3c799261f387019b793ee08bcce43545
+ * See https://stackoverflow.com/a/11807961/936870
+ * Many thanks to Eric Cochran /  Gabriel Ittner / Benoît Quenaudon
+ * **/
 tasks.withType(KotlinCompile::class.java).all {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")

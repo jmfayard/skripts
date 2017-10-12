@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 plugins {
     val kotlinVerion = "1.1.51"
@@ -153,7 +154,7 @@ dependencies {
     compile("com.github.kittinunf.result:result:1.1.0")
 
 
-    compile("org.jetbrains:annotations:15.0")
+//    compile("org.jetbrains:annotations:15.0")
 
     // https://github.com/npryce/konfig
     compile("com.natpryce:konfig:${libs.konfig}")
@@ -180,11 +181,22 @@ dependencies {
     compile("com.github.MiloszKrajewski:stateful4k:master")
 
 
+    // JSR305
+    compileOnly("com.google.code.findbugs:jsr305:3.0.2")
+    testCompileOnly("com.google.code.findbugs:jsr305:3.0.2")
+
 }
 
 buildScan {
     setLicenseAgreementUrl("https://gradle.com/terms-of-service")
     setLicenseAgree("yes")
+}
+
+
+tasks.withType(KotlinCompile::class.java).all {
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+    }
 }
 
 

@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 
 plugins {
-    val kotlinVerion = "1.1.4-3"
+    val kotlinVerion = "1.1.51"
     `build-scan`
     application
     kotlin("jvm", kotlinVerion)
@@ -29,9 +29,9 @@ tasks {
         into("lib")
     }
 
-    val klean by creating(Delete::class) {
-        delete = setOf("build/source/kapt", "build/source/kaptKotlin")
-    }
+//    val klean by creating(Delete::class) {
+//        delete = setOf("build/source/kapt", "build/source/kaptKotlin")
+//    }
 
 
     // https://kotlinlang.slack.com/files/U1BASJRMW/F750V7R5G/task_for_setting_up_a_script_for_kshell.kt
@@ -131,8 +131,8 @@ dependencies {
     compile("com.squareup.okio:okio:${libs.okio}")
 
     // https://google.github.io/dagger/
-    compile("com.google.dagger:dagger:${libs.dagger}")
-    kapt("com.google.dagger:dagger-compiler:${libs.dagger}")
+//    compile("com.google.dagger:dagger:${libs.dagger}")
+//    kapt("com.google.dagger:dagger-compiler:${libs.dagger}")
 
     compile("com.github.jmfayard:restinparse:master-SNAPSHOT")
 
@@ -176,9 +176,10 @@ dependencies {
 
     compile("com.google.code.findbugs:jsr305:3.0.2")
 
-
-    //https://github.com/MiloszKrajewski/stateful4k
+    // https://github.com/MiloszKrajewski/stateful4k
     compile("com.github.MiloszKrajewski:stateful4k:master")
+
+
 }
 
 buildScan {
@@ -191,7 +192,7 @@ java {
     sourceSets {
         val main: SourceSet by getting
         val test: SourceSet by getting
-        main.java.setSrcDirs(listOf("kotlin", "build/generated/source/kapt/main"))
+        main.java.setSrcDirs(listOf("kotlin"))
         test.java.srcDir("test/kotlin")
         test.resources.srcDir("test/resources")
     }

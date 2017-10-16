@@ -188,6 +188,8 @@ buildScan {
 
 
 java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
     sourceSets {
         val main: SourceSet by getting
         val test: SourceSet by getting

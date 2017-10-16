@@ -1,4 +1,6 @@
 import io.reactivex.Observable
+import io.reactivex.Single
+import io.reactivex.exceptions.CompositeException
 import org.junit.Test
 
 import java.lang.RuntimeException
@@ -42,6 +44,19 @@ class Rxjava2Test {
         assert(counter == 1)
     }
 
+    @Test fun errors() {
+        val niceError = RuntimeException("Nice Error")
+        val flow : Single<Int> = Single.error(CompositeException(RuntimeException("foo"), RuntimeException("bar")))
+
+        flow.onErrorReturnItem(1)
+                .test().await().assertValue(1).assertComplete()
+
+        flow.onErrorReturn( { e -> 1})
+                .test().await().assertValue(1).assertComplete()
+
+        flow.onErrorResumeNext { e -> Single.error(niceError) }
+                .test().await().assertError(niceError)
+    }
 
 
 }

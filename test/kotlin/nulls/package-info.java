@@ -1,2 +1,3 @@
-@NonNullApi
+@javax.annotation.ParametersAreNonnullByDefault
+@ReturnTypesAreNonNullByDefault
 package nulls;

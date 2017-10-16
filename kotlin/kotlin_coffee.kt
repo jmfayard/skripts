@@ -2,7 +2,17 @@
 
 package kotlin_coffee
 
-import dagger_coffee.*
+
+
+interface Pump {
+    fun pump()
+}
+
+interface Heater {
+    fun on()
+    fun off()
+    val isHot: Boolean
+}
 
 // Inspired by dagger2 components
 interface Component {
@@ -131,5 +141,12 @@ object BoringComponent : Component {
 }
 
 
+/** Allows us to test the output inside main() **/
+object Logger {
+    val messages = mutableListOf<String>()
 
-
+    fun say(message: String) {
+        messages += message
+        println(message)
+    }
+}

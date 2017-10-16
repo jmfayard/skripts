@@ -1,7 +1,8 @@
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 plugins {
-    val kotlinVerion = "1.1.4-3"
+    val kotlinVerion = "1.1.51"
     `build-scan`
     application
     kotlin("jvm", kotlinVerion)
@@ -29,9 +30,9 @@ tasks {
         into("lib")
     }
 
-    val klean by creating(Delete::class) {
-        delete = setOf("build/source/kapt", "build/source/kaptKotlin")
-    }
+//    val klean by creating(Delete::class) {
+//        delete = setOf("build/source/kapt", "build/source/kaptKotlin")
+//    }
 
 
     // https://kotlinlang.slack.com/files/U1BASJRMW/F750V7R5G/task_for_setting_up_a_script_for_kshell.kt
@@ -131,8 +132,8 @@ dependencies {
     compile("com.squareup.okio:okio:${libs.okio}")
 
     // https://google.github.io/dagger/
-    compile("com.google.dagger:dagger:${libs.dagger}")
-    kapt("com.google.dagger:dagger-compiler:${libs.dagger}")
+//    compile("com.google.dagger:dagger:${libs.dagger}")
+//    kapt("com.google.dagger:dagger-compiler:${libs.dagger}")
 
     compile("com.github.jmfayard:restinparse:master-SNAPSHOT")
 
@@ -153,7 +154,7 @@ dependencies {
     compile("com.github.kittinunf.result:result:1.1.0")
 
 
-    compile("org.jetbrains:annotations:15.0")
+//    compile("org.jetbrains:annotations:15.0")
 
     // https://github.com/npryce/konfig
     compile("com.natpryce:konfig:${libs.konfig}")
@@ -176,14 +177,35 @@ dependencies {
 
     compile("com.google.code.findbugs:jsr305:3.0.2")
 
-
-    //https://github.com/MiloszKrajewski/stateful4k
+    // https://github.com/MiloszKrajewski/stateful4k
     compile("com.github.MiloszKrajewski:stateful4k:master")
+
+
+    // JSR305
+    compileOnly("com.google.code.findbugs:jsr305:3.0.2")
+    testCompileOnly("com.google.code.findbugs:jsr305:3.0.2")
+
 }
 
 buildScan {
     setLicenseAgreementUrl("https://gradle.com/terms-of-service")
     setLicenseAgree("yes")
+}
+
+
+/**
+ * JSR305 nullability annotations
+ *
+ * See https://medium.com/square-corner-blog/non-null-is-the-default-58ffc0bb9111
+ * See https://github.com/Kotlin/KEEP/blob/jsr-305/proposals/jsr-305-custom-nullability-qualifiers.md
+ * See https://github.com/square/tape/commit/8d87c7de3c799261f387019b793ee08bcce43545
+ * See https://stackoverflow.com/a/11807961/936870
+ * Many thanks to Eric Cochran /  Gabriel Ittner / Benoît Quenaudon
+ * **/
+tasks.withType(KotlinCompile::class.java).all {
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+    }
 }
 
 
@@ -193,7 +215,7 @@ java {
     sourceSets {
         val main: SourceSet by getting
         val test: SourceSet by getting
-        main.java.setSrcDirs(listOf("kotlin", "build/generated/source/kapt/main"))
+        main.java.setSrcDirs(listOf("kotlin"))
         test.java.srcDir("test/kotlin")
         test.resources.srcDir("test/resources")
     }

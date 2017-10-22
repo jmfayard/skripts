@@ -1,6 +1,4 @@
-import okhttp3.HttpUrl
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import okhttp3.*
 import okio.BufferedSink
 import okio.BufferedSource
 import okio.Okio
@@ -45,6 +43,19 @@ public fun printAsTable(vararg pairs: Pair<Any, Any>){
     }
 }
 
+
+fun baiscAuthenticator(username: String, password: String, predicate: (HttpUrl) -> Boolean) = Interceptor { chain ->
+    val url = chain.request().url()
+    val request = if (predicate(url)) {
+        val credential = Credentials.basic(username, password)
+        chain.request().newBuilder()
+                .header("Authorization", credential)
+                .build()
+    } else {
+        chain.request()
+    }
+    chain.proceed(request)
+}
 
 
 fun buildRetrofit(init: Retrofit.Builder.() -> Unit) : Retrofit {

@@ -6,7 +6,7 @@ plugins {
     `build-scan`
     application
     kotlin("jvm", kotlinVerion)
-    kotlin("kapt", kotlinVerion)
+//    kotlin("kapt", kotlinVerion)
 }
 
 application {
@@ -70,7 +70,6 @@ object libs {
    val rxkotlin = "1.0.0"
    val kotlintest = "1.3.7"
    val dagger = "2.9"
-   val konfig = "1.5.0.0"
    val kotlinxhtml = "0.6.3"
    private val coroutineVersion = "0.18"
    val coroutineModules = listOf("core", "rx1", "rx2", "reactive", "reactor", "android", "javafx", "swing", "jdk8", "nio", "guava", "quasar")
@@ -123,7 +122,7 @@ dependencies {
     compile(libs.coroutine("rx2"))
 
     // https://github.com/gildor/kotlin-coroutines-retrofit
-    compile("ru.gildor.coroutines:kotlin-coroutines-retrofit:0.5.0")
+    compile("ru.gildor.coroutines:kotlin-coroutines-retrofit:0.8.2")
 
     // https://github.com/square/moshi
     compile("com.squareup.moshi:moshi:${libs.moshi}")
@@ -135,7 +134,7 @@ dependencies {
 //    compile("com.google.dagger:dagger:${libs.dagger}")
 //    kapt("com.google.dagger:dagger-compiler:${libs.dagger}")
 
-    compile("com.github.jmfayard:restinparse:master-SNAPSHOT")
+//    compile("com.github.jmfayard:restinparse:master-SNAPSHOT")
 
     // http://jtwig.org/documentation/reference
     compile("org.jtwig:jtwig-core:5.85.3.RELEASE")
@@ -156,8 +155,9 @@ dependencies {
 
 //    compile("org.jetbrains:annotations:15.0")
 
-    // https://github.com/npryce/konfig
-    compile("com.natpryce:konfig:${libs.konfig}")
+
+    // https://github.com/uchuhimo/konf
+    compile("com.uchuhimo:konf:0.5")
 
     // http://www.joda.org/joda-time/userguide.html
     compile("joda-time:joda-time:2.9.3")

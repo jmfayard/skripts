@@ -31,7 +31,7 @@ fun postMarkdown(file: File, dest: File) {
     require (response.isSuccessful) { "Unexpected code $response " }
 
     val sink = dest.okSink()
-    sink.writeAll(response.body().source())
+    sink.writeAll(response.body()!!.source())
     sink.close()
 
 }

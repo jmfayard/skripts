@@ -34,7 +34,7 @@ fun generateSql(okSource: BufferedSource) {
     println(start)
     okSource.readUtf8Line()
     while (!okSource.exhausted()) {
-        val line = okSource.readUtf8Line()
+        val line = okSource.readUtf8Line() ?: break
         val data = line.split(";").toTypedArray()
         if (data.size == 1) { continue }
         if (data.size < 12) {

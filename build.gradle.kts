@@ -185,6 +185,9 @@ dependencies {
     compileOnly("com.google.code.findbugs:jsr305:3.0.2")
     testCompileOnly("com.google.code.findbugs:jsr305:3.0.2")
 
+    // https://github.com/fusesource/jansi use ANSI escape codes to format your console output
+    compile("org.fusesource.jansi:jansi:1.16")
+
 }
 
 buildScan {

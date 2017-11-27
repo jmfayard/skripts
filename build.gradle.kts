@@ -139,8 +139,8 @@ dependencies {
 
     // http://jtwig.org/documentation/reference
     compile("org.jtwig:jtwig-core:5.85.3.RELEASE")
-    compile(group = "org.slf4j", name = "slf4j-api", version= "1.7.21")
-    compile(group = "org.slf4j", name = "slf4j-log4j12", version = "1.7.21")
+    compile(group = "org.slf4j", name = "slf4j-simple", version= "1.7.25")
+//    compile(group = "org.slf4j", name = "slf4j-log4j12", version = "1.7.21")
 
 
 

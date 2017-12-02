@@ -185,6 +185,12 @@ dependencies {
     compileOnly("com.google.code.findbugs:jsr305:3.0.2")
     testCompileOnly("com.google.code.findbugs:jsr305:3.0.2")
 
+    // data wrangling https://github.com/holgerbrandl/krangl
+    compile("de.mpicbg.scicomp:krangl:0.6")
+
+    // https://square.github.io/kotlinpoet/0.x/kotlinpoet/com.squareup.kotlinpoet/
+    compile("com.squareup:kotlinpoet:0.6.0")
+
 }
 
 buildScan {

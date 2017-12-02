@@ -4,6 +4,7 @@ import okhttp3.Request
 import okio.BufferedSink
 import okio.BufferedSource
 import okio.Okio
+import org.intellij.lang.annotations.Language
 import org.zeroturnaround.exec.ProcessExecutor
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -46,7 +47,12 @@ public fun printAsTable(vararg pairs: Pair<Any, Any>){
     }
 }
 
-
+fun resourceFile(@Language("File") path: String, write: Boolean = false) : File {
+    return File("test/resources/$path").apply {
+        val condition = if (write) canWrite() else canRead()
+        check(condition) { "Cannot open resourceFile at $absolutePath" }
+    }
+}
 
 fun buildRetrofit(init: Retrofit.Builder.() -> Unit) : Retrofit {
     val builder = Retrofit.Builder()

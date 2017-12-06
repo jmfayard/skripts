@@ -1,7 +1,5 @@
-import com.squareup.moshi.Moshi
 import io.kotlintest.properties.Gen
 import io.kotlintest.specs.FreeSpec
-import io.kotlintest.specs.StringSpec
 import java.math.BigInteger
 import java.util.*
 
@@ -46,7 +44,7 @@ class PropertiesTesting : FreeSpec() { init {
         }
 
         "Adding one to all elements" {
-            fun List<Int>.increment() = this.map { it+1 }
+            fun List<Int>.increment() = this.map { it + 1 }
             forAll(gen) { list ->
                 list.mysort().increment() == list.increment().mysort()
             }
@@ -94,7 +92,7 @@ class PropertiesTesting : FreeSpec() { init {
 
     "Property: if s is a  palindrome, s.inverse() is one too" {
         var found = 0
-        forAll { t : String ->
+        forAll { t: String ->
             val s = t.take(7) // very few palindroms for large strings
             if (s.isPalindrome()) {
                 found++
@@ -127,7 +125,7 @@ class PropertiesTesting : FreeSpec() { init {
         val gen = Gen.choose(0, 10000)
         "inverses" {
             forAll(gen) { times ->
-                (3*times).dollar == 3.dollar * times
+                (3 * times).dollar == 3.dollar * times
             }
         }
 
@@ -139,13 +137,13 @@ class PropertiesTesting : FreeSpec() { init {
     }
 
 
-}}
+}
+}
 
 
-
-fun String.isPalindrome() : Boolean {
+fun String.isPalindrome(): Boolean {
     for (i in 0 until length) {
-        if (get(i) != get(length-i-1)) return false
+        if (get(i) != get(length - i - 1)) return false
     }
     return true
 }
@@ -158,15 +156,17 @@ fun Gen.Companion.char() = object : Gen<Char> {
         val high = 127
         return (nextInt(high - low) + low).toChar()
     }
+
     override fun generate(): Char = random.nextPrintableChar()
 }
 
-val Int.bigint : BigInteger
+val Int.bigint: BigInteger
     get() = BigInteger.valueOf(this.toLong())
 
 data class Dollar(val amount: Int) {
-    operator fun plus(amount: Int) = Dollar(this.amount +amount)
+    operator fun plus(amount: Int) = Dollar(this.amount + amount)
     operator fun times(times: Int) = Dollar(this.amount * times)
 }
+
 val Int.dollar
     get() = Dollar(this)

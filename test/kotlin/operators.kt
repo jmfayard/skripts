@@ -10,7 +10,7 @@ operator fun Point.minus(n: Int) = Point(x - n, y - n)
 
 operator fun Point.times(n: Int) = Point(n * x, n * y)
 
-operator fun  Point.div(n: Int): Point = Point(x / n, y / n)
+operator fun Point.div(n: Int): Point = Point(x / n, y / n)
 
 operator fun Point.compareTo(b: Point): Int = when {
     this.x > b.x && this.y > b.x -> -1
@@ -19,8 +19,8 @@ operator fun Point.compareTo(b: Point): Int = when {
 }
 
 
-private operator fun  String.minus(regex: Regex) : String
-    = replace(regex, "")
+private operator fun String.minus(regex: Regex): String
+        = replace(regex, "")
 
 
 class OperatorTest : StringSpec() {init {
@@ -47,7 +47,8 @@ class OperatorTest : StringSpec() {init {
     ".compareTo()" {
         (a <= b) shouldBe true
     }
-}}
+}
+}
 
 
 

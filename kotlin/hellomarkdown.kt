@@ -1,7 +1,6 @@
 #!/usr/bin/env kotlin-script.sh
 package hellomarkdown
 
-import debug
 import okSink
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
@@ -24,14 +23,14 @@ fun postMarkdown(file: File, dest: File) {
     val client = OkHttpClient()
 
     val request = Request.Builder().url("https://api.github.com/markdown/raw")
-        .post(RequestBody.create(MEDIA_TYPE_MARKDOWN, file))
-        .build()
+            .post(RequestBody.create(MEDIA_TYPE_MARKDOWN, file))
+            .build()
 
     val response = client.newCall(request).execute()
-    require (response.isSuccessful) { "Unexpected code $response " }
+    val body = requireNotNull(response.body()) { "Unexpected code $response " }
 
-    val sink = dest.okSink()
-    sink.writeAll(response.body().source())
-    sink.close()
+    dest.okSink().use { sink ->
+        sink.writeAll(body.source())
+    }
 
 }

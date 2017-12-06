@@ -1,25 +1,18 @@
-import IO.response
-import IO.retrofit
-import IO.httpbinService
 import com.squareup.moshi.Moshi
 import io.kotlintest.matchers.be
-import io.kotlintest.specs.FeatureSpec
 import io.kotlintest.specs.StringSpec
-import jdk.nashorn.internal.ir.ObjectNode
-import json2data.moshiAdapter
 import kotlinx.coroutines.experimental.runBlocking
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.HttpException
-import retrofit2.Response
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.*
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.QueryMap
 import ru.gildor.coroutines.retrofit.Result
 import ru.gildor.coroutines.retrofit.await
 import ru.gildor.coroutines.retrofit.awaitResponse
 import ru.gildor.coroutines.retrofit.awaitResult
-import rx.Single
 
 
 /**

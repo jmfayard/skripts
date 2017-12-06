@@ -2,7 +2,6 @@
 package khtml
 
 import kotlinx.html.*
-import kotlinx.html.dom.*
 import kotlinx.html.stream.appendHTML
 
 

@@ -53,14 +53,14 @@ fun printDate(instant: Instant) {
     val default = instant.toDateTime(DateTimeZone.getDefault())
 
     printAsTable(
-        instant.millis / 1000 to "seconds since EPOCH",
-        instant.millis to "milliseconds since EPOCH",
-        utc.toString(simpleDate) to "UTC time (simple format)",
-        utc to "UTC time",
-        utc.toString(mySql) to "UTC time (MySql format)",
-        berlin to "Berlin Time",
-        default to "Time in the JDK default time zone",
-        DateTimeFormat.fullDateTime().withLocale(Locale.FRANCE).print(utc) to "fullDateTime() France"
+            instant.millis / 1000 to "seconds since EPOCH",
+            instant.millis to "milliseconds since EPOCH",
+            utc.toString(simpleDate) to "UTC time (simple format)",
+            utc to "UTC time",
+            utc.toString(mySql) to "UTC time (MySql format)",
+            berlin to "Berlin Time",
+            default to "Time in the JDK default time zone",
+            DateTimeFormat.fullDateTime().withLocale(Locale.FRANCE).print(utc) to "fullDateTime() France"
     )
 
 
@@ -95,23 +95,23 @@ fun parseDate(input: String): Instant {
 
 
 val mySql = DateTimeFormatterBuilder()
-    .appendYear(4, 4)
-    .appendLiteral('-')
-    .appendMonthOfYear(2)
-    .appendLiteral('-')
-    .appendDayOfMonth(2)
-    .appendLiteral(' ')
-    .appendHourOfDay(2)
-    .appendLiteral(':')
-    .appendMinuteOfHour(2)
-    .appendLiteral(':')
-    .appendSecondOfMinute(2)
-    .toFormatter()
+        .appendYear(4, 4)
+        .appendLiteral('-')
+        .appendMonthOfYear(2)
+        .appendLiteral('-')
+        .appendDayOfMonth(2)
+        .appendLiteral(' ')
+        .appendHourOfDay(2)
+        .appendLiteral(':')
+        .appendMinuteOfHour(2)
+        .appendLiteral(':')
+        .appendSecondOfMinute(2)
+        .toFormatter()
 
 val simpleDate = DateTimeFormatterBuilder()
-    .appendYear(4, 4)
-    .appendLiteral('-')
-    .appendMonthOfYear(2)
-    .appendLiteral('-')
-    .appendDayOfMonth(2)
-    .toFormatter()
+        .appendYear(4, 4)
+        .appendLiteral('-')
+        .appendMonthOfYear(2)
+        .appendLiteral('-')
+        .appendDayOfMonth(2)
+        .toFormatter()

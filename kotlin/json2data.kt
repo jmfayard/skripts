@@ -2,7 +2,6 @@
 package json2data
 
 import com.squareup.moshi.Moshi
-import okio.Buffer
 import okio.Okio
 import java.util.*
 
@@ -116,15 +115,15 @@ data class KotlinPoet(val schema: Schema) {
 
 
     fun defaultValue(schema: Schema): String? =
-        when (schema) {
-            is Schema.O -> null
-            is Schema.L<*> -> "emptyList()"
-            is Schema.I -> "0"
-            is Schema.D -> "0.0"
-            is Schema.B -> "false"
-            is Schema.S -> "\"\""
-            is Schema.N -> "null"
-        }
+            when (schema) {
+                is Schema.O -> null
+                is Schema.L<*> -> "emptyList()"
+                is Schema.I -> "0"
+                is Schema.D -> "0.0"
+                is Schema.B -> "false"
+                is Schema.S -> "\"\""
+                is Schema.N -> "null"
+            }
 
     fun objectClass(schema: Schema.O): DataClass {
         val properties = schema.properties.entries.map {

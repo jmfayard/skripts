@@ -2,11 +2,12 @@ import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 plugins {
-    val kotlinVerion = "1.1.51"
+    val kotlinVerion = "1.2.0" // sync with libs.kotlin
     `build-scan`
     application
     kotlin("jvm", kotlinVerion)
     kotlin("kapt", kotlinVerion)
+    id("com.github.ben-manes.versions").version("0.17.0")
 }
 
 application {
@@ -60,19 +61,27 @@ java -cp ${jarLocation.absolutePath} org.jetbrains.kotlin.cli.jvm.K2JVMCompiler 
 }
 
 object libs {
-   val kotlin = "1.1.4-3"
-   val retrofit = "2.2.0"
-   val okhttp = "3.5.0"
+   val kotlin = "1.2.0"
+   val retrofit = "2.3.0"
+   val okhttp = "3.9.1"
    val moshi = "1.4.0"
-   val okio = "1.11.0"
+   val okio = "1.13.0"
    val rxjava = "1.2.7"
    val rxjava2 = "2.0.7"
    val rxkotlin = "1.0.0"
-   val kotlintest = "1.3.7"
+   val kotlintest = "1.3.7" // 2.0.7
    val dagger = "2.9"
-   val konfig = "1.5.0.0"
+   val konfig = "1.6.1.0"
    val kotlinxhtml = "0.6.3"
-   private val coroutineVersion = "0.18"
+    val jodatime = "2.9.9"
+    val junit = "4.12"
+    val retrofitCoroutines = "0.8.2"
+    val mockito = "2.12.0"
+    val mockitoKotlin = "1.5.0"
+    val krangl = "0.6"
+    val kotlinPoet = "0.6.0"
+
+   private val coroutineVersion = "0.20"
    val coroutineModules = listOf("core", "rx1", "rx2", "reactive", "reactor", "android", "javafx", "swing", "jdk8", "nio", "guava", "quasar")
 
     /** [Retrofit](http://square.github.io/retrofit) dependency
@@ -104,9 +113,9 @@ dependencies {
     testCompile("io.kotlintest:kotlintest:${libs.kotlintest}")
     testCompile(kotlin("test", libs.kotlin))
     testCompile(kotlin("test-junit", libs.kotlin))
-    testCompile("junit:junit:4.11")
-    testCompile("org.mockito:mockito-core:2.7.21")
-    testCompile("com.nhaarman:mockito-kotlin:1.4.0")
+    testCompile("junit:junit:${libs.junit}")
+    testCompile("org.mockito:mockito-core:${libs.mockito}")
+    testCompile("com.nhaarman:mockito-kotlin:${libs.mockitoKotlin}")
 
     compile(kotlin("stdlib", libs.kotlin))
     compile(kotlin("reflect", libs.kotlin))
@@ -123,7 +132,7 @@ dependencies {
     compile(libs.coroutine("rx2"))
 
     // https://github.com/gildor/kotlin-coroutines-retrofit
-    compile("ru.gildor.coroutines:kotlin-coroutines-retrofit:0.5.0")
+    compile("ru.gildor.coroutines:kotlin-coroutines-retrofit:${libs.retrofitCoroutines}")
 
     // https://github.com/square/moshi
     compile("com.squareup.moshi:moshi:${libs.moshi}")
@@ -135,7 +144,6 @@ dependencies {
 //    compile("com.google.dagger:dagger:${libs.dagger}")
 //    kapt("com.google.dagger:dagger-compiler:${libs.dagger}")
 
-    compile("com.github.jmfayard:restinparse:master-SNAPSHOT")
 
     // http://jtwig.org/documentation/reference
     compile("org.jtwig:jtwig-core:5.85.3.RELEASE")
@@ -148,19 +156,11 @@ dependencies {
     compile("org.jetbrains.kotlinx:kotlinx-html-jvm:${libs.kotlinxhtml}")
 
 
-    // Result for Railway Oriented Programming
-    // https://github.com/kittinunf/Result
-    // https://www.slideshare.net/ScottWlaschin/railway-oriented-programming
-    compile("com.github.kittinunf.result:result:1.1.0")
-
-
-//    compile("org.jetbrains:annotations:15.0")
-
     // https://github.com/npryce/konfig
     compile("com.natpryce:konfig:${libs.konfig}")
 
     // http://www.joda.org/joda-time/userguide.html
-    compile("joda-time:joda-time:2.9.3")
+    compile("joda-time:joda-time:${libs.jodatime}")
 
     // https://github.com/zeroturnaround/zt-exec
     compile(group= "org.zeroturnaround", name= "zt-exec", version= "1.9")
@@ -169,27 +169,20 @@ dependencies {
     compile("org.jetbrains.kotlinx:kotlinx-html-jvm:${libs.kotlinxhtml}")
 
 
-    // Result for Railway Oriented Programming
-    // https://github.com/kittinunf/Result
-    // https://www.slideshare.net/ScottWlaschin/railway-oriented-programming
-    compile("com.github.kittinunf.result:result:1.1.0")
 
-
-    compile("com.google.code.findbugs:jsr305:3.0.2")
-
-    // https://github.com/MiloszKrajewski/stateful4k
-    compile("com.github.MiloszKrajewski:stateful4k:master")
 
 
     // JSR305
+//    compile("com.google.code.findbugs:jsr305:3.0.2")
     compileOnly("com.google.code.findbugs:jsr305:3.0.2")
     testCompileOnly("com.google.code.findbugs:jsr305:3.0.2")
 
+
     // data wrangling https://github.com/holgerbrandl/krangl
-    compile("de.mpicbg.scicomp:krangl:0.6")
+    compile("de.mpicbg.scicomp:krangl:${libs.krangl}")
 
     // https://square.github.io/kotlinpoet/0.x/kotlinpoet/com.squareup.kotlinpoet/
-    compile("com.squareup:kotlinpoet:0.6.0")
+    compile("com.squareup:kotlinpoet:${libs.kotlinPoet}")
 
 }
 

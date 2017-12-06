@@ -1,6 +1,5 @@
 import io.kotlintest.matchers.be
 import io.kotlintest.specs.FreeSpec
-import io.kotlintest.specs.StringSpec
 import org.joda.time.Instant
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
@@ -25,8 +24,7 @@ A DateTime is a good class to use as a general purpose replacement for the JDK C
 See http://www.joda.org/joda-time/quickstart.html
 
  */
-class JodaTimeTests: FreeSpec() { init {
-
+class JodaTimeTests : FreeSpec() { init {
 
 
     "Instant - Immutable class representing an instantaneous point on the time-line" - {
@@ -77,4 +75,5 @@ class JodaTimeTests: FreeSpec() { init {
         LocalDateTime.parse("2017-09-27T20:00") shouldBe concertStart
     }
 
-}}
+}
+}

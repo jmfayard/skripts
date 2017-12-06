@@ -1,7 +1,5 @@
 import com.nhaarman.mockito_kotlin.*
-import io.kotlintest.mock.`when`
 import io.kotlintest.specs.FreeSpec
-import org.mockito.invocation.InvocationOnMock
 
 private interface Logger {
     fun log(message: String)
@@ -12,20 +10,23 @@ private class DummyList(val list: List<Int>, val logger: Logger) : List<Int> by 
     init {
         logger.log("Initialized")
     }
-    fun second() : Int {
+
+    fun second(): Int {
         val second = list[1]
         logger.log("second: ${second}")
         return second
     }
-    fun third() : Int {
+
+    fun third(): Int {
         logger.log("third: ${list[2]}")
         return list[2]
     }
-    fun fifth() : Int = TODO()
+
+    fun fifth(): Int = TODO()
 }
 
 interface Foo {
-    var bar : String
+    var bar: String
 }
 
 class MockitoTests : FreeSpec() { init {
@@ -34,7 +35,7 @@ class MockitoTests : FreeSpec() { init {
     "Given a mocked logger" - {
         /* Given */
         val logger = mock<Logger>()
-        val ints = List(10) { it*it }
+        val ints = List(10) { it * it }
         val list = DummyList(ints, logger)
 
         "On initialized" {
@@ -50,7 +51,7 @@ class MockitoTests : FreeSpec() { init {
     "Given a mocked list" - {
         val list = mock<List<Int>>(verboseLogging = true, name = "list")
 
-        whenever(list.get(any())).then { mock -> mock.getArgument<Int>(0) +1 }
+        whenever(list.get(any())).then { mock -> mock.getArgument<Int>(0) + 1 }
         whenever(list.size) doReturn 4
 
         val dummy = DummyList(list, mock())
@@ -76,4 +77,5 @@ class MockitoTests : FreeSpec() { init {
         verify(foo).bar = "set"
     }
 
-}}
+}
+}

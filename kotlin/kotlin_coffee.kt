@@ -3,7 +3,6 @@
 package kotlin_coffee
 
 
-
 interface Pump {
     fun pump()
 }
@@ -16,39 +15,38 @@ interface Heater {
 
 // Inspired by dagger2 components
 interface Component {
-    val coffee : Coffee
+    val coffee: Coffee
     val heater: Heater
     val pump: Pump
     val maker: CoffeeMaker
 }
 
 
-var FANCY : Boolean = true
+var FANCY: Boolean = true
 
-fun component()  : Component =
-    if (FANCY) FancyComponent
-    else BoringComponent
-
+fun component(): Component =
+        if (FANCY) FancyComponent
+        else BoringComponent
 
 
 fun main(args: Array<String>) {
 
-    FANCY=false
+    FANCY = false
     val boringCoffee = component().coffee
     boringCoffee.maker.brew()
     assertEquals(Logger.messages, listOf(
-        "[_]P coffee! [_]P"
+            "[_]P coffee! [_]P"
     ))
 
     Logger.messages.clear()
 
-    FANCY=true
+    FANCY = true
     val kotlinCoffee = component().coffee
     kotlinCoffee.maker.brew()
     assertEquals(Logger.messages, listOf(
-        "~ ~ ~ heating ~ ~ ~",
-        "=> => pumping => =>",
-        "[_]P coffee! [_]P"
+            "~ ~ ~ heating ~ ~ ~",
+            "=> => pumping => =>",
+            "[_]P coffee! [_]P"
     ))
 
     Logger.messages.clear()
@@ -56,14 +54,14 @@ fun main(args: Array<String>) {
     val daggerCoffee = Coffee()
     daggerCoffee.maker.brew()
     assertEquals(Logger.messages, listOf(
-        "~ ~ ~ heating ~ ~ ~",
-        "=> => pumping => =>",
-        "[_]P coffee! [_]P"
+            "~ ~ ~ heating ~ ~ ~",
+            "=> => pumping => =>",
+            "[_]P coffee! [_]P"
     ))
 }
 
 
-fun assertEquals(actual : Any?, expected: Any?) {
+fun assertEquals(actual: Any?, expected: Any?) {
     if (actual != expected) {
         error("Expected: $expected\nGot: $actual")
     }
@@ -73,8 +71,8 @@ fun assertEquals(actual : Any?, expected: Any?) {
 data class Coffee(val maker: CoffeeMaker = component().maker)
 
 data class CoffeeMaker(
-    val heater: Heater = component().heater,
-    val pump: Pump = component().pump) {
+        val heater: Heater = component().heater,
+        val pump: Pump = component().pump) {
     fun brew() {
         heater.on()
         pump.pump()
@@ -95,7 +93,7 @@ object FancyComponent : Component {
 }
 
 data class Thermosiphon(
-    val heater: Heater = component().heater
+        val heater: Heater = component().heater
 ) : Pump {
 
     override fun pump() {
@@ -104,11 +102,6 @@ data class Thermosiphon(
         }
     }
 }
-
-
-
-
-
 
 
 object FancyHeater : Heater {
@@ -127,6 +120,7 @@ object FancyHeater : Heater {
 object BoringPump : Pump {
     override fun pump() = Unit
 }
+
 object BoringHeater : Heater {
     override fun on() = Unit
     override fun off() = Unit

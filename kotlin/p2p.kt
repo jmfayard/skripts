@@ -2,9 +2,7 @@ package p2p
 
 import kotlinx.coroutines.experimental.*
 import kotlinx.coroutines.experimental.channels.Channel
-import kotlinx.coroutines.experimental.selects.SelectBuilder
 import kotlinx.coroutines.experimental.selects.whileSelect
-import java.util.*
 
 fun main(args: Array<String>) {
     simulation()
@@ -46,6 +44,7 @@ class App(val name: String) {
             delay(100)
         }
     }
+
     suspend fun receiveFromNearby(nearby: Nearby) {
         for (i in 1..10) {
             delay(100)
@@ -62,7 +61,8 @@ class Nearby(val name: String, val peer: Channel<Int>) {
     suspend fun sendMessageAsync(data: Int) {
         appToNearby.send(data)
     }
-    suspend fun waitForMessage() : Int {
+
+    suspend fun waitForMessage(): Int {
         return nearbyToApp.receive()
     }
 
@@ -71,11 +71,10 @@ class Nearby(val name: String, val peer: Channel<Int>) {
 
     suspend fun start(sleep: Long, work: Long) {
         val nearby = this
-        val random = Random()
         println("Starting Nearby, will sleep $sleep miliseconds")
         delay(sleep)
         println("Will be receiving during $work seconds")
-        var sendNext : Int? = null
+        var sendNext: Int? = null
         withTimeout(work) {
             whileSelect {
                 peer.onReceiveOrNull { data ->

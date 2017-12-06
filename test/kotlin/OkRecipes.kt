@@ -1,6 +1,8 @@
 import io.kotlintest.specs.StringSpec
-import okhttp3.*
-import java.io.IOException
+import okhttp3.MediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
 
 
 class OkRecipes : StringSpec() { init {
@@ -14,11 +16,11 @@ class OkRecipes : StringSpec() { init {
         require(response.isSuccessful) { "Unexpected code $response" }
 
         val responseHeaders = response.headers()
-        for (i in 0..responseHeaders.size() - 1) {
+        for (i in 0 until responseHeaders.size()) {
             println(responseHeaders.name(i) + ": " + responseHeaders.value(i))
         }
-
-        System.out.println(response.body().string())
+        val body = requireNotNull(response.body()) { "Response failed: $response" }
+        println(body.string())
     }
 
     "Post Markdown" {
@@ -36,15 +38,17 @@ class OkRecipes : StringSpec() { init {
             """.trimIndent()
 
         val request = Request.Builder().url("https://api.github.com/markdown/raw")
-            .post(RequestBody.create(MEDIA_TYPE_MARKDOWN, postBody))
-            .build()
+                .post(RequestBody.create(MEDIA_TYPE_MARKDOWN, postBody))
+                .build()
 
         val response = client.newCall(request).execute()
-        require (response.isSuccessful) { "Unexpected code $response " }
+        require(response.isSuccessful) { "Unexpected code $response " }
 
-        System.out.println(response.body().string())
+        val body = requireNotNull(response.body()) { "Response failed: $response" }
+        println(body)
+
     }
-    }
+}
 }
 
 

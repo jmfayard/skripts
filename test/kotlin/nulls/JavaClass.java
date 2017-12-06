@@ -11,7 +11,8 @@ public class JavaClass {
         return "Hello " + name;
     }
 
-    public @Nullable String nullableSearch(@Nullable String param1, String param2) {
+    public @Nullable
+    String nullableSearch(@Nullable String param1, String param2) {
         checkNotNull(param2, "param2");
         if (random.nextBoolean()) {
             return null;

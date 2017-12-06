@@ -1,12 +1,6 @@
 import com.squareup.kotlinpoet.*
-import json2data.DataClass
 
 val STRING = String::class.asClassName()
-
-
-fun TypeSpec.Builder.Val(name: String, clazz: ClassName) {
-    PropertySpec.builder("name", STRING).initializer("name").build()
-}
 
 
 fun Val(name: String, type: TypeName, vararg modifers: KModifier) =

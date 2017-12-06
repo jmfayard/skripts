@@ -1,25 +1,23 @@
-import kotlinx.coroutines.experimental.*
-import kotlinx.coroutines.experimental.channels.*
+import kotlinx.coroutines.experimental.channels.ReceiveChannel
+import kotlinx.coroutines.experimental.channels.produce
+import kotlinx.coroutines.experimental.runBlocking
 import kotlinx.coroutines.experimental.selects.select
-import kotlinx.coroutines.experimental.sync.Mutex
-import kotlin.coroutines.experimental.CoroutineContext
-import kotlin.system.measureTimeMillis
 
 suspend fun selectAorB(a: ReceiveChannel<String>, b: ReceiveChannel<String>): String =
-    select<String> {
-        a.onReceiveOrNull { value ->
-            if (value == null)
-                "Channel 'a' is closed"
-            else
-                "a -> '$value'"
+        select<String> {
+            a.onReceiveOrNull { value ->
+                if (value == null)
+                    "Channel 'a' is closed"
+                else
+                    "a -> '$value'"
+            }
+            b.onReceiveOrNull { value ->
+                if (value == null)
+                    "Channel 'b' is closed"
+                else
+                    "b -> '$value'"
+            }
         }
-        b.onReceiveOrNull { value ->
-            if (value == null)
-                "Channel 'b' is closed"
-            else
-                "b -> '$value'"
-        }
-    }
 
 fun main(args: Array<String>) = runBlocking<Unit> {
     // we are using the context of the main thread in this example for predictability ...
@@ -29,7 +27,8 @@ fun main(args: Array<String>) = runBlocking<Unit> {
     val b = produce<String>(coroutineContext) {
         repeat(4) { send("World $it") }
     }
-    repeat(10) { // print first eight results
+    repeat(10) {
+        // print first eight results
         println(selectAorB(a, b))
     }
 }

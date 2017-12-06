@@ -1,4 +1,3 @@
-import com.squareup.moshi.JsonReader
 import com.squareup.moshi.Moshi
 import io.kotlintest.properties.Gen
 import io.kotlintest.specs.StringSpec

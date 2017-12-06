@@ -1,7 +1,6 @@
 import io.kotlintest.matchers.HaveWrapper
 import io.kotlintest.matchers.have
 import io.kotlintest.specs.StringSpec
-import okio.Buffer
 import org.jtwig.JtwigModel
 import org.jtwig.JtwigTemplate
 
@@ -25,12 +24,12 @@ class TwigTest : StringSpec() {
 
         "Presentations" {
             val presentations = listOf(
-                TwigPresentation("rxjava", "jake"),
-                TwigPresentation("kotlin", "orangy")
+                    TwigPresentation("rxjava", "jake"),
+                    TwigPresentation("kotlin", "orangy")
             )
 
             val expected =
-"""
+                    """
     rxjava - jake
     kotlin - orangy
 """
@@ -38,7 +37,7 @@ class TwigTest : StringSpec() {
             val template = JtwigTemplate.classpathTemplate("twig/index-jtwig.twig")
             val model = JtwigModel.newModel().with("presentations", presentations)
 
-            template.render(model) should have text(expected)
+            template.render(model) should have text (expected)
 
         }
 
@@ -54,5 +53,7 @@ private infix fun HaveWrapper<String>.text(text: String) {
     }
 
 }
+
 private val spaces = Regex("[ \\t]+")
+
 data class TwigPresentation(val title: String, val speakerName: String)

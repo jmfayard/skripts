@@ -1,6 +1,4 @@
 import io.kotlintest.specs.FreeSpec
-import io.kotlintest.specs.StringSpec
-
 
 
 fun evilFizzBuzz(number: Int): String = when {
@@ -43,7 +41,7 @@ class FizzBuzzTesting : FreeSpec() { init {
 
         "Multiples of 15" {
             forAll<Int> { i ->
-                if (Math.abs(i)  >= Integer.MAX_VALUE / 15 -1) return@forAll true
+                if (Math.abs(i) >= Integer.MAX_VALUE / 15 - 1) return@forAll true
                 val nb = 15 * Math.abs(i)
                 fizzbuzz(nb) == "FizzBuzz"
             }
@@ -51,7 +49,7 @@ class FizzBuzzTesting : FreeSpec() { init {
 
         "Multiples of 3" {
             forAll<Int> { i ->
-                if (Math.abs(i)  >= Integer.MAX_VALUE / 3 -1) return@forAll true
+                if (Math.abs(i) >= Integer.MAX_VALUE / 3 - 1) return@forAll true
                 val nb = 3 * Math.abs(i)
                 nb % 5 == 0 || fizzbuzz(nb) == "Fizz"
             }
@@ -59,7 +57,7 @@ class FizzBuzzTesting : FreeSpec() { init {
 
         "Multiples of 5" {
             forAll<Int> { i ->
-                if (Math.abs(i) >= Integer.MAX_VALUE / 5 -1) return@forAll true
+                if (Math.abs(i) >= Integer.MAX_VALUE / 5 - 1) return@forAll true
 
                 val nb = 5 * Math.abs(i)
                 nb % 5 == 0 || fizzbuzz(nb) == "Fizz"
@@ -76,4 +74,5 @@ class FizzBuzzTesting : FreeSpec() { init {
     }
 
 
-} }
+}
+}

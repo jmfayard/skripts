@@ -10,7 +10,8 @@ import java.lang.RuntimeException
  */
 
 class Rxjava2Test {
-    @Test fun values() {
+    @Test
+    fun values() {
         val t = Observable.just(1, 2, 3)
                 .test()
                 .assertValues(1, 2, 3)
@@ -22,13 +23,15 @@ class Rxjava2Test {
 
     }
 
-    @Test fun error() {
+    @Test
+    fun error() {
         Observable.error<Int>(RuntimeException("Failed"))
                 .test()
                 .assertErrorMessage("Failed")
     }
 
-    @Test fun cache() {
+    @Test
+    fun cache() {
         var counter = 0
         val observable = Observable.create<Int> { emitter ->
             counter++
@@ -44,17 +47,18 @@ class Rxjava2Test {
         assert(counter == 1)
     }
 
-    @Test fun errors() {
+    @Test
+    fun errors() {
         val niceError = RuntimeException("Nice Error")
-        val flow : Single<Int> = Single.error(CompositeException(RuntimeException("foo"), RuntimeException("bar")))
+        val flow: Single<Int> = Single.error(CompositeException(RuntimeException("foo"), RuntimeException("bar")))
 
         flow.onErrorReturnItem(1)
                 .test().await().assertValue(1).assertComplete()
 
-        flow.onErrorReturn( { e -> 1})
+        flow.onErrorReturn({ _ -> 1 })
                 .test().await().assertValue(1).assertComplete()
 
-        flow.onErrorResumeNext { e -> Single.error(niceError) }
+        flow.onErrorResumeNext { _ -> Single.error(niceError) }
                 .test().await().assertError(niceError)
     }
 

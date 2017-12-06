@@ -14,9 +14,9 @@ fun main(args: Array<String>) {
 }
 
 fun copyFiles(vararg paths: String) {
-    val paths = paths.map { File(it) }
-    paths.filterNot { it.exists() }.map { it.absolutePath }.printList("invalid")
-    val exists = paths.filter { it.exists() }.map { it.absolutePath }.printList("copy")
+    val files = paths.map { File(it) }
+    files.filterNot { it.exists() }.map { it.absolutePath }.printList("invalid")
+    val exists = files.filter { it.exists() }.map { it.absolutePath }.printList("copy")
     clipboardFile().writer().use { writer ->
         writer.appendln(File(".").absolutePath)
         for (line in exists) {
@@ -25,9 +25,8 @@ fun copyFiles(vararg paths: String) {
     }
 }
 
-fun clipboardFile(create : Boolean = false) : File {
+fun clipboardFile(create: Boolean = false): File {
     val user = System.getenv("USER")
-    val homeDir =
     return File("/users/$user").resolve(".clipboard").also { file ->
         println(file.absolutePath)
         if (!file.exists() || create) {

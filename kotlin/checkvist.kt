@@ -7,26 +7,71 @@ import checkOk
 import com.squareup.moshi.Json
 import com.squareup.moshi.Moshi
 import debug
+import debugList
 import environmentVariable
+import joinLines
+import kotlinx.coroutines.experimental.channels.ReceiveChannel
+import kotlinx.coroutines.experimental.channels.produce
+import kotlinx.coroutines.experimental.channels.toList
 import kotlinx.coroutines.experimental.runBlocking
 import okhttp3.Credentials
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import debugList
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 import ru.gildor.coroutines.retrofit.Result
 import ru.gildor.coroutines.retrofit.awaitResult
+import java.io.File
 
 /**
  * Playing with coroutines, retrofit and the checkvist api
  * https://checkvist.com/auth/api
  ***/
 
+val USAGE = """
+checkvist.kt --help
+checkvist.kt list
+checkvist.kt create <<EOF
+- Ingrédients
+- Carottes
+- Oignons
+
+Super note ici
+EOF
+"""
+
 fun main(args: Array<String>) = runBlocking {
-    doStuff(app().coroutineApi, app().credentials)
+    when (args.firstOrNull()) {
+        "list" -> doStuff(app().coroutineApi, app().credentials)
+        "create" -> addTask(app().coroutineApi, app().credentials)
+        else -> println(USAGE)
+    }
+}
+
+suspend fun addTask(api: CheckvistCoroutineApi, credentials: CheckvistCredentials) {
+    val stdin = checkvist.stdin()
+    val title = stdin.receiveOrNull() ?: run { println(USAGE) ; return }
+    val parentTask = api.createTask(CNewTask(content = title), credentials.defaultList).checkOk()
+    var position = 0
+    var noteFound = false
+    var noteContent = ""
+    for (i in stdin) {
+        val line = i.trim().trimMargin("- ")
+        noteFound = noteFound or line.isBlank()
+
+        if (noteFound) {
+            noteContent += line
+        } else {
+            position++
+            val childrenTask = CNewTask(content = line, parent_id = parentTask.id, position = position)
+            api.createTask(childrenTask, credentials.defaultList).checkOk()
+        }
+    }
+    if (noteContent.trim().isNotBlank()) {
+        api.createNote(noteContent, parentTask)
+    }
 
 }
 
@@ -109,6 +154,9 @@ interface CheckvistApi {
     @GET("checklists/{list}/tasks/{task}/comments.json")
     fun getNotes(@Path("task") task: Int, @Path("list") list: Int, @Header("Authorization") auth: String): Call<List<CNote>>
 
+    @POST("checklists/{list}/tasks/{task}/comments.json")
+    fun createNote(@Body note: CNote, @Path("task") task: Int, @Path("list") list: Int, @Header("Authorization") auth: String): Call<CNote>
+
 }
 
 class CheckvistCoroutineApi(val api: CheckvistApi, val credentials: CheckvistCredentials) {
@@ -120,9 +168,11 @@ class CheckvistCoroutineApi(val api: CheckvistApi, val credentials: CheckvistCre
     suspend fun createTask(task: CNewTask, list: Int): Result<CTask> = api.createTask(task, list, credentials.auth()).awaitResult()
     suspend fun deleteTask(task: Int, list: Int): Result<CTask> = api.deleteTask(task, list, credentials.auth()).awaitResult()
     suspend fun getNotes(task: CTask) = api.getNotes(task.id, task.checklist_id, credentials.auth()).awaitResult()
+    suspend fun createNote(comment: String, task: CTask) = api.createNote(CNote(comment), task.id, task.checklist_id, credentials.auth()).awaitResult()
 }
 
 interface CheckvistCredentials {
+    val defaultList: Int get() = 608643
     val CHECKVIST_KEY: String
     val USER: String
     fun auth() = Credentials.basic(USER, CHECKVIST_KEY)
@@ -176,12 +226,14 @@ data class CTask(
         val tags_as_text: String = "",
         val color: Unknown
 )
-data class CNewTask (
+
+data class CNewTask(
         val parent_id: Int = 0,
-        val position: Int = 0,
+        val position: Int = 1,
         val content: String = ""
 )
-data class CNote (
+
+data class CNote(
         val comment: String = "",
         val created_at: String = "",
         val id: Int = 0,
@@ -191,3 +243,30 @@ data class CNote (
         val username: String = ""
 )
 
+
+suspend fun linesFrom(stdin: Boolean = false, files: Array<String>) = FilesReader(stdin, files.toList()).lines()
+
+class FilesReader(val stdin: Boolean = false, val files: List<String>) {
+    val existingFiles = files.map { File(it) }.filter { it.canRead() }
+    val invalidFiles = files.filterNot { File(it).canRead() }
+
+    suspend fun lines(): ReceiveChannel<String> = produce {
+        if (stdin && System.`in`.available() > 0) {
+            for (line in stdin()) channel.send(line)
+        }
+        for (file in existingFiles) {
+            file.bufferedReader().useLines { seq ->
+                for (line in seq) {
+                    channel.send(line)
+                }
+            }
+        }
+    }
+
+}
+
+suspend fun stdin(): ReceiveChannel<String> = produce {
+    while (System.`in`.available() != 0) {
+        channel.send(readLine() ?: return@produce)
+    }
+}

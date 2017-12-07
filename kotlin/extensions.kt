@@ -1,3 +1,5 @@
+import kotlinx.coroutines.experimental.channels.ReceiveChannel
+import kotlinx.coroutines.experimental.channels.produce
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -8,34 +10,42 @@ import org.intellij.lang.annotations.Language
 import org.zeroturnaround.exec.ProcessExecutor
 import retrofit2.Retrofit
 import ru.gildor.coroutines.retrofit.Result
+import java.io.BufferedReader
 import java.io.File
+import java.io.FileInputStream
+import java.io.InputStreamReader
+import java.nio.charset.Charset
+import java.nio.file.Files
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 
 fun <T : Any> Result<T>.checkOk(): T {
-    if(this is Result.Ok) {
+    if (this is Result.Ok) {
         return value
     } else {
         error("Http call failed: ${this}")
     }
 }
 
+fun <T> List<T>.joinLines() = joinToString(separator = "\n")
+fun <T> List<T>.joinLines(operation: (T) -> String) = joinToString(transform = operation, separator = "\n")
 
-fun <T> environmentVariable(notfoundMesssage: String) : ReadOnlyProperty<T, String> = LazyEnvironmentVariable(notfoundMesssage, null)
 
-fun <T> optionalEnvironmentVariable(default: String) : ReadOnlyProperty<T, String> = LazyEnvironmentVariable("", default)
+fun <T> environmentVariable(notfoundMesssage: String): ReadOnlyProperty<T, String> = LazyEnvironmentVariable(notfoundMesssage, null)
+
+fun <T> optionalEnvironmentVariable(default: String): ReadOnlyProperty<T, String> = LazyEnvironmentVariable("", default)
 
 
 class LazyEnvironmentVariable<in T>(val notfoundMesssage: String, val default: String?) : ReadOnlyProperty<T, String> {
     override fun getValue(thisRef: T, property: KProperty<*>): String {
         val name: String = property.name
         val value = System.getenv(name) ?: default
-        if (value != null) return  value
+        if (value != null) return value
         else {
             val missingKey = "ERROR: Missing environment variable\n $ export $name='xxxxx'\n\n$notfoundMesssage"
             System.err.println(missingKey)
-            System.exit(1) ; error("missingKey")
+            System.exit(1); error("missingKey")
         }
     }
 }

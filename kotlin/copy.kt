@@ -1,7 +1,7 @@
 #!/usr/bin/env kotlin-script.sh
 package copy
 
-import printList
+import debugList
 import java.io.File
 
 
@@ -15,8 +15,8 @@ fun main(args: Array<String>) {
 
 fun copyFiles(vararg paths: String) {
     val files = paths.map { File(it) }
-    files.filterNot { it.exists() }.map { it.absolutePath }.printList("invalid")
-    val exists = files.filter { it.exists() }.map { it.absolutePath }.printList("copy")
+    files.filterNot { it.exists() }.map { it.absolutePath }.debugList("invalid")
+    val exists = files.filter { it.exists() }.map { it.absolutePath }.debugList("copy")
     clipboardFile().writer().use { writer ->
         writer.appendln(File(".").absolutePath)
         for (line in exists) {

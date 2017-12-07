@@ -7,14 +7,45 @@ import okio.Okio
 import org.intellij.lang.annotations.Language
 import org.zeroturnaround.exec.ProcessExecutor
 import retrofit2.Retrofit
+import ru.gildor.coroutines.retrofit.Result
 import java.io.File
+import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
+
+
+fun <T : Any> Result<T>.checkOk(): T {
+    if(this is Result.Ok) {
+        return value
+    } else {
+        error("Http call failed: ${this}")
+    }
+}
+
+
+fun <T> environmentVariable(notfoundMesssage: String) : ReadOnlyProperty<T, String> = LazyEnvironmentVariable(notfoundMesssage, null)
+
+fun <T> optionalEnvironmentVariable(default: String) : ReadOnlyProperty<T, String> = LazyEnvironmentVariable("", default)
+
+
+class LazyEnvironmentVariable<in T>(val notfoundMesssage: String, val default: String?) : ReadOnlyProperty<T, String> {
+    override fun getValue(thisRef: T, property: KProperty<*>): String {
+        val name: String = property.name
+        val value = System.getenv(name) ?: default
+        if (value != null) return  value
+        else {
+            val missingKey = "ERROR: Missing environment variable\n $ export $name='xxxxx'\n\n$notfoundMesssage"
+            System.err.println(missingKey)
+            System.exit(1) ; error("missingKey")
+        }
+    }
+}
 
 fun <T> T.debug(name: String): T {
     println("DEBUG: ${name} = ${toString()}")
     return this
 }
 
-fun <T> List<T>.printList(name: String): List<T> {
+fun <T> List<T>.debugList(name: String): List<T> {
     forEachIndexed { i, t ->
         println("$name[$i] : $t")
     }

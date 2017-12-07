@@ -2,7 +2,7 @@
 package paste
 
 import copy.clipboardFile
-import printList
+import debugList
 import java.io.File
 
 
@@ -20,7 +20,7 @@ fun pasteFiles() {
     files = files.takeLast(files.size - 1)
 
     val doesNotExist = files.filterNot { it.exists() }
-    doesNotExist.map { it.absolutePath }.printList("invalid")
+    doesNotExist.map { it.absolutePath }.debugList("invalid")
     val ok = (files - doesNotExist)
     for (file in ok) {
         val path = file.relativeTo(previousDir).canonicalPath

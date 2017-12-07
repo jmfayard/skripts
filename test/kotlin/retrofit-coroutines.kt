@@ -2,6 +2,7 @@ import com.squareup.moshi.Moshi
 import io.kotlintest.matchers.be
 import io.kotlintest.specs.StringSpec
 import kotlinx.coroutines.experimental.runBlocking
+import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.HttpException
@@ -56,15 +57,18 @@ class KotlinCoroutinesRetrofitTest : StringSpec() { init {
 }
 
 object IO {
+    val LEVEL = okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
+
+    val logger: HttpLoggingInterceptor = HttpLoggingInterceptor(::println).setLevel(LEVEL)
+
+    val okHttpClient: OkHttpClient = OkHttpClient.Builder().addNetworkInterceptor(logger).build()
+
     val moshi = Moshi.Builder().build()
     val response = moshi.adapter(HttpbinResponse::class.java)
     val retrofit = buildRetrofit {
         baseUrl("http://httpbin.org/")
+        client(okHttpClient)
         addConverterFactory(MoshiConverterFactory.create())
-        buildOk {
-            val logger = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS)
-            addNetworkInterceptor(logger)
-        }
     }
     val httpbinService = retrofit.create(ApiService::class.java)
 

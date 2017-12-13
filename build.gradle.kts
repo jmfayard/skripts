@@ -23,6 +23,7 @@ repositories {
     jcenter()
     google()
     maven { setUrl("https://jitpack.io") }
+    maven { setUrl("https://dl.bintray.com/jerady/maven") }
 }
 
 tasks {
@@ -61,18 +62,18 @@ java -cp ${jarLocation.absolutePath} org.jetbrains.kotlin.cli.jvm.K2JVMCompiler 
 }
 
 object libs {
-   val kotlin = "1.2.0"
-   val retrofit = "2.3.0"
-   val okhttp = "3.9.1"
-   val moshi = "1.4.0"
-   val okio = "1.13.0"
-   val rxjava = "1.2.7"
-   val rxjava2 = "2.0.7"
-   val rxkotlin = "1.0.0"
-   val kotlintest = "1.3.7" // 2.0.7
-   val dagger = "2.9"
-   val konfig = "1.6.1.0"
-   val kotlinxhtml = "0.6.3"
+    val kotlin = "1.2.0"
+    val retrofit = "2.3.0"
+    val okhttp = "3.9.1"
+    val moshi = "1.4.0"
+    val okio = "1.13.0"
+    val rxjava = "1.2.7"
+    val rxjava2 = "2.0.7"
+    val rxkotlin = "1.0.0"
+    val kotlintest = "1.3.7" // 2.0.7
+    val dagger = "2.9"
+    val konfig = "1.6.1.0"
+    val kotlinxhtml = "0.6.3"
     val jodatime = "2.9.9"
     val junit = "4.12"
     val retrofitCoroutines = "0.8.2"
@@ -80,9 +81,10 @@ object libs {
     val mockitoKotlin = "1.5.0"
     val krangl = "0.6"
     val kotlinPoet = "0.6.0"
+    val tornadofx = "1.7.13"
 
-   private val coroutineVersion = "0.20"
-   val coroutineModules = listOf("core", "rx1", "rx2", "reactive", "reactor", "android", "javafx", "swing", "jdk8", "nio", "guava", "quasar")
+    private val coroutineVersion = "0.20"
+    val coroutineModules = listOf("core", "rx1", "rx2", "reactive", "reactor", "android", "javafx", "swing", "jdk8", "nio", "guava", "quasar")
 
     /** [Retrofit](http://square.github.io/retrofit) dependency
      *
@@ -97,11 +99,11 @@ object libs {
     /** OkHttp where [module] can be okhttp, logging-interceptor, mockwebserver
      *
      * See [Github](https://github.com/square/okhttp) [Recipes](https://github.com/square/okhttp/wiki/Recipes) **/
-    fun okhttp(module: String) : Any =
+    fun okhttp(module: String): Any =
             "com.squareup.okhttp3:$module:$okhttp"
 
     /** Kotlinx.coroutines dependancy where [module] one of [coroutineModules] **/
-    fun coroutine(module: String) : String {
+    fun coroutine(module: String): String {
         check(module in coroutineModules)
         return "org.jetbrains.kotlinx:kotlinx-coroutines-$module:$coroutineVersion"
     }
@@ -184,6 +186,13 @@ dependencies {
     // https://square.github.io/kotlinpoet/0.x/kotlinpoet/com.squareup.kotlinpoet/
     compile("com.squareup:kotlinpoet:${libs.kotlinPoet}")
 
+
+    // https://github.com/edvin/tornadofx
+    // https://www.gitbook.com/download/pdf/book/edvin/tornadofx-guide
+    compile("no.tornado:tornadofx:${libs.tornadofx}")
+    compile("de.jensd:fontawesomefx:8.9")
+    compile("org.controlsfx:controlsfx:8.40.10")
+
 }
 
 buildScan {
@@ -206,6 +215,11 @@ tasks.withType(KotlinCompile::class.java).all {
         freeCompilerArgs = listOf("-Xjsr305=strict")
     }
 }
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
 
 
 java {

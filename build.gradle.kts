@@ -2,11 +2,10 @@ import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 plugins {
-    val kotlinVerion = "1.2.0" // sync with libs.kotlin
     `build-scan`
     application
-    kotlin("jvm", kotlinVerion)
-    kotlin("kapt", kotlinVerion)
+    kotlin("jvm") version "1.2.10"
+    kotlin("kapt") version "1.2.10"
     id("com.github.ben-manes.versions").version("0.17.0")
 }
 
@@ -62,7 +61,7 @@ java -cp ${jarLocation.absolutePath} org.jetbrains.kotlin.cli.jvm.K2JVMCompiler 
 }
 
 object libs {
-    val kotlin = "1.2.0"
+    val kotlin = "1.2.10"
     val retrofit = "2.3.0"
     val okhttp = "3.9.1"
     val moshi = "1.4.0"
@@ -111,16 +110,9 @@ object libs {
 
 dependencies {
 
-    // https://github.com/kotlintest/kotlintest
-    testCompile("io.kotlintest:kotlintest:${libs.kotlintest}")
-    testCompile(kotlin("test", libs.kotlin))
-    testCompile(kotlin("test-junit", libs.kotlin))
-    testCompile("junit:junit:${libs.junit}")
-    testCompile("org.mockito:mockito-core:${libs.mockito}")
-    testCompile("com.nhaarman:mockito-kotlin:${libs.mockitoKotlin}")
 
-    compile(kotlin("stdlib", libs.kotlin))
-    compile(kotlin("reflect", libs.kotlin))
+    compile(kotlin("stdlib-jre8"))
+    compile(kotlin("reflect"))
 
     for (module in listOf("retrofit", "converter-moshi", "adapter-rxjava", "retrofit-mock", "adapter-rxjava2")) {
         compile(libs.retrofit2(module))
@@ -184,7 +176,9 @@ dependencies {
     compile("de.mpicbg.scicomp:krangl:${libs.krangl}")
 
     // https://square.github.io/kotlinpoet/0.x/kotlinpoet/com.squareup.kotlinpoet/
-    compile("com.squareup:kotlinpoet:${libs.kotlinPoet}")
+    compile("com.squareup:kotlinpoet:${libs.kotlinPoet}") {
+        this.exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib-jre7")
+    }
 
 
     // https://github.com/edvin/tornadofx
@@ -192,6 +186,15 @@ dependencies {
     compile("no.tornado:tornadofx:${libs.tornadofx}")
     compile("de.jensd:fontawesomefx:8.9")
     compile("org.controlsfx:controlsfx:8.40.10")
+
+    // https://github.com/kotlintest/kotlintest
+    testCompile("io.kotlintest:kotlintest:${libs.kotlintest}")
+    testCompile(kotlin("test"))
+    testCompile(kotlin("test-junit"))
+    testCompile("junit:junit:${libs.junit}")
+    testCompile("org.mockito:mockito-core:${libs.mockito}")
+    testCompile("com.nhaarman:mockito-kotlin:${libs.mockitoKotlin}")
+
 
 }
 

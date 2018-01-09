@@ -163,6 +163,7 @@ dependencies {
     compile("org.jetbrains.kotlinx:kotlinx-html-jvm:${libs.kotlinxhtml}")
 
 
+    compile("org.jdom:jdom:2.0.2")
 
 
 

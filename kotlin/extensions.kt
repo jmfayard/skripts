@@ -1,5 +1,3 @@
-import kotlinx.coroutines.experimental.channels.ReceiveChannel
-import kotlinx.coroutines.experimental.channels.produce
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -10,12 +8,7 @@ import org.intellij.lang.annotations.Language
 import org.zeroturnaround.exec.ProcessExecutor
 import retrofit2.Retrofit
 import ru.gildor.coroutines.retrofit.Result
-import java.io.BufferedReader
 import java.io.File
-import java.io.FileInputStream
-import java.io.InputStreamReader
-import java.nio.charset.Charset
-import java.nio.file.Files
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -120,3 +113,31 @@ fun Request.Builder.buildUrl(init: HttpUrl.Builder.() -> Unit) {
 }
 
 fun fail(message: String): Nothing = throw AssertionError(message)
+
+fun readableFile(path: String, directory: Boolean = false): File = File(path).also {
+    require(it.canRead()) { "Cannot read file ${it.absolutePath }"}
+    require(it.isDirectory xor directory.not()) { "Not a directory: ${it.absolutePath}" }
+}
+fun writableFile(path: String) : File = File(path).also {
+    require(it.canWrite()) { "Cannot read file ${it.absolutePath }"}
+}
+
+
+
+inline fun <T> List<T>.printList(name: String): List<T> {
+    println("<List name=$name size=$size>")
+    forEachIndexed { i, t ->
+        println("$name[$i] : $t")
+    }
+    println("</List name=$name size=$size>")
+    return this
+}
+
+inline fun <K,V> Map<K, V>.printMap(name: String): Map<K, V> {
+    println("<Map name=$name size=$size>")
+    for ((k, v) in this) {
+        println("$name[$k] : $v")
+    }
+    println("</Map name=$name size=$size>")
+    return this
+}

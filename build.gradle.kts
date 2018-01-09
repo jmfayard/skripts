@@ -131,6 +131,9 @@ dependencies {
     // https://github.com/square/moshi
     compile("com.squareup.moshi:moshi:${libs.moshi}")
 
+    // https://github.com/serj-lotutovici/moshi-lazy-adapters
+    compile("com.serjltt.moshi:moshi-lazy-adapters:2.1")
+
     // https://github.com/square/okio
     compile("com.squareup.okio:okio:${libs.okio}")
 

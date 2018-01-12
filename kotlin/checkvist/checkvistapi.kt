@@ -16,7 +16,7 @@ import ru.gildor.coroutines.retrofit.awaitResult
 
 suspend fun addTask(api: CheckvistCoroutineApi, credentials: CheckvistCredentials) {
     val stdin = checkvist.stdin()
-    val title = stdin.receiveOrNull() ?: run { println(USAGE) ; return }
+    val title = stdin.receiveOrNull() ?: run { println(CHECKVIST_USAGE) ; return }
     val parentTask = api.createTask(CNewTask(content = title), credentials.defaultList).checkOk()
     var position = 0
     var noteFound = false

@@ -1,6 +1,6 @@
 package checkvist
 
-import checkOk
+import jmfayard.checkOk
 import com.squareup.moshi.Moshi
 import debug
 import debugList

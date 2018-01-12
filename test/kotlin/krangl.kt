@@ -1,4 +1,5 @@
 import com.squareup.kotlinpoet.*
+import jmfayard.resourceFile
 import krangl.*
 
 // todo convert to script

@@ -9,7 +9,7 @@ import org.joda.time.Instant
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatterBuilder
 import org.joda.time.format.ISODateTimeFormat
-import printAsTable
+import jmfayard.printAsTable
 import java.util.*
 
 

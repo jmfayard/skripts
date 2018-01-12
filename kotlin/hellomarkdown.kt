@@ -6,7 +6,7 @@ import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
-import osxOpenFile
+import jmfayard.osxOpenFile
 import java.io.File
 
 fun main(args: Array<String>) {

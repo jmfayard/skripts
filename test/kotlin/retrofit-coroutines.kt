@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.HttpException
+import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -65,10 +66,15 @@ object IO {
 
     val moshi = Moshi.Builder().build()
     val response = moshi.adapter(HttpbinResponse::class.java)
-    val retrofit = buildRetrofit {
-        baseUrl("http://httpbin.org/")
-        client(okHttpClient)
-        addConverterFactory(MoshiConverterFactory.create())
+    val retrofit = run {
+        {
+    baseUrl("http://httpbin.org/")
+    client(okHttpClient)
+    addConverterFactory(MoshiConverterFactory.create())
+}
+        val builder = Retrofit.Builder()
+        builder.init()
+        builder.build()
     }
     val httpbinService = retrofit.create(ApiService::class.java)
 

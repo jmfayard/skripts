@@ -2,13 +2,11 @@
 package androidstrings
 
 import debug
+import jmfayard.*
 import krangl.*
 import org.apache.commons.csv.CSVFormat
+import org.jdom2.Document
 import org.jdom2.Element
-import org.jdom2.input.SAXBuilder
-import printList
-import printMap
-import readableFile
 import java.io.File
 
 private val DEFAULT = "csv2xml"
@@ -34,41 +32,55 @@ fun main(args: Array<String>) {
     when (args.firstOrNull() ?: DEFAULT) {
         "files" -> findFiles(APP).printList("files")
         "xml2csv" -> {
-            val file = args.getOrNull(1) ?: androidstrings.usage()
+            val file = args.getOrNull(1) ?: usage()
             val map = parseAndroidStringFile(file).printMap("strings")
             krangleStrings(map, APP)
         }
         "csv2xml" -> {
-            val file = args.getOrNull(1) ?: androidstrings.usage()
-            val columns = arrayOf("name", "PT", "TT")
-            val df = krangleParse(readableFile(file), columns)
-            writeAndroidXml(df, columns, APP + "/app/src/main/res/")
+            if (args.size < 2) usage()
+            i18nCsv2xml(args[1],   "$APP/app/src/main/res", listOf("pt", "tdt"))
         }
         else -> usage()
     }
 
 }
 
+fun i18nCsv2xml(srcPath: String, destPath: String, langs: List<String>) {
+    val destDir = readableFile(destPath, directory = true)
+    val df = krangleParse(readableFile(srcPath), langs)
+    for (lang in langs) {
+        val i18nMap : Map<String, String> = i18nStrings(df, lang)
+        val destination = destDir.resolve("values-$lang/strings.xml")
+        val document = generateAndroidXml(i18nMap)
+        document.printXml()
+//        document.writeXmlToFile(destination)
+    }
+}
 
-fun krangleParse(file: File, columns: Array<String>): DataFrame {
+
+
+fun krangleParse(file: File, langs: List<String>): DataFrame {
+    val lang = langs.first()
+    val columns = arrayOf("name") + langs
     val df = DataFrame.fromCSV(file, CSVFormat.DEFAULT.withHeader().withDelimiter(';'))
             .select(*columns)
-            .filter { it["PT"].asStrings().map { it?.startsWith("XXX") == false }.toBooleanArray() }
+            .filter { it[lang].asStrings().map { it?.startsWith("XXX") == false }.toBooleanArray() }
     df.glimpse()
     return df
 }
 
-fun writeAndroidXml(df: DataFrame, columns: Array<String>, res: String) {
-    val resDir = readableFile(res, directory = true)
-    val langs = columns.sliceArray(1 until columns.size).map { it.toLowerCase() }
-    for (l in langs) {
-        val output = resDir.resolve("values-$l/strings.xml").also { it.mkdirs() ; it.debug("file $l") }
-
-    }
-    TODO("do conversion here") //To change body of created functions use File | Settings | File Templates.
-}
+fun i18nStrings(df: DataFrame, lang: String): Map<String, String> =
+        df.rows.associate { it["name"] as String to it[lang] as String }
 
 
+fun generateAndroidXml(i18nMap: Map<String, String>): Document =
+        xmlDocument("resources") {
+            for ((key, value) in i18nMap) {
+                addElement("string", mapOf("name" to key)) {
+                    text = value
+                }
+            }
+        }
 
 
 fun findFiles(path: String): List<File> {
@@ -78,7 +90,7 @@ fun findFiles(path: String): List<File> {
 }
 
 fun parseAndroidStringFile(path: String): Map<String, String> {
-    val document = SAXBuilder().build(readableFile(path))
+    val document = parseXmlFile(path)
     val children = document.rootElement.children
     return children.associate { e: Element -> e.asAndroidString() }
 }

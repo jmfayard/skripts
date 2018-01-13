@@ -82,7 +82,7 @@ object libs {
     val kotlinPoet = "0.6.0"
     val tornadofx = "1.7.13"
 
-    private val coroutineVersion = "0.20"
+    private val coroutineVersion = "0.21.1"
     val coroutineModules = listOf("core", "rx1", "rx2", "reactive", "reactor", "android", "javafx", "swing", "jdk8", "nio", "guava", "quasar")
 
     /** [Retrofit](http://square.github.io/retrofit) dependency

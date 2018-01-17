@@ -9,7 +9,11 @@ import org.jdom2.output.XMLOutputter
 import java.io.File
 
 fun parseXmlFile(path: String): Document =
-    SAXBuilder().build(readableFile(path)).document
+    parseXmlFile(readableFile(path))
+
+fun parseXmlFile(file: File): Document =
+    SAXBuilder().build(file).document
+
 
 fun Document.writeXmlToFile(destination: File) {
     destination.parentFile.mkdirs()
@@ -21,6 +25,35 @@ fun Document.writeXmlToFile(destination: File) {
 fun Document.printXml() {
     val outputer = XMLOutputter(Format.getPrettyFormat())
     outputer.output(this, System.out)
+}
+
+fun Document.walk(depthFirst: Boolean = false, level: Int = Int.MAX_VALUE, skipRoot: Boolean = true): List<Element> =
+    DocumentWalker(this, level, depthFirst, skipRoot).stack
+
+class DocumentWalker(document: Document, maxLevel: Int, val depthFirst: Boolean, val skipRoot: Boolean) {
+    val stack = mutableListOf<Element>()
+
+    init {
+        if (!skipRoot) stack.add(document.rootElement)
+        findChildren(document.rootElement, maxLevel - 1)
+    }
+
+    fun findChildren(element: Element, level: Int) {
+        if (level < 0) return
+        if (depthFirst) {
+            for (e in element.children) {
+                stack.add(e)
+                findChildren(e, level - 1)
+            }
+
+        } else {
+            stack.addAll(element.children)
+            for (e in element.children) {
+                findChildren(e, level - 1)
+            }
+        }
+    }
+
 }
 
 fun xmlDocument(

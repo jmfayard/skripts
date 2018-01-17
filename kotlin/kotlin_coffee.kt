@@ -25,8 +25,8 @@ interface Component {
 var FANCY: Boolean = true
 
 fun component(): Component =
-        if (FANCY) FancyComponent
-        else BoringComponent
+    if (FANCY) FancyComponent
+    else BoringComponent
 
 
 fun main(args: Array<String>) {
@@ -34,30 +34,36 @@ fun main(args: Array<String>) {
     FANCY = false
     val boringCoffee = component().coffee
     boringCoffee.maker.brew()
-    assertEquals(Logger.messages, listOf(
+    assertEquals(
+        Logger.messages, listOf(
             "[_]P coffee! [_]P"
-    ))
+        )
+    )
 
     Logger.messages.clear()
 
     FANCY = true
     val kotlinCoffee = component().coffee
     kotlinCoffee.maker.brew()
-    assertEquals(Logger.messages, listOf(
+    assertEquals(
+        Logger.messages, listOf(
             "~ ~ ~ heating ~ ~ ~",
             "=> => pumping => =>",
             "[_]P coffee! [_]P"
-    ))
+        )
+    )
 
     Logger.messages.clear()
 
     val daggerCoffee = Coffee()
     daggerCoffee.maker.brew()
-    assertEquals(Logger.messages, listOf(
+    assertEquals(
+        Logger.messages, listOf(
             "~ ~ ~ heating ~ ~ ~",
             "=> => pumping => =>",
             "[_]P coffee! [_]P"
-    ))
+        )
+    )
 }
 
 
@@ -71,8 +77,9 @@ fun assertEquals(actual: Any?, expected: Any?) {
 data class Coffee(val maker: CoffeeMaker = component().maker)
 
 data class CoffeeMaker(
-        val heater: Heater = component().heater,
-        val pump: Pump = component().pump) {
+    val heater: Heater = component().heater,
+    val pump: Pump = component().pump
+) {
     fun brew() {
         heater.on()
         pump.pump()
@@ -93,7 +100,7 @@ object FancyComponent : Component {
 }
 
 data class Thermosiphon(
-        val heater: Heater = component().heater
+    val heater: Heater = component().heater
 ) : Pump {
 
     override fun pump() {

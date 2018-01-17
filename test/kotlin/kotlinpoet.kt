@@ -4,7 +4,7 @@ val STRING = String::class.asClassName()
 
 
 fun Val(name: String, type: TypeName, vararg modifers: KModifier) =
-        ParameterSpec.builder(name, type, *modifers)
+    ParameterSpec.builder(name, type, *modifers)
 
 fun ParameterSpec.Builder.withDefault(): ParameterSpec.Builder {
     val code = when (this.build().type) {
@@ -21,15 +21,15 @@ fun DataClass(name: String, vararg params: ParameterSpec.Builder, mutable: Boole
     val builtParams = params.map { it.build() }
     val properties = builtParams.map { param ->
         PropertySpec.builder(param.name, param.type)
-                .initializer(param.name)
-                .mutable(mutable)
-                .build()
+            .initializer(param.name)
+            .mutable(mutable)
+            .build()
     }
 
     return TypeSpec.classBuilder(name)
-            .primaryConstructor(
-                    FunSpec.constructorBuilder().addParameters(builtParams).build()
-            ).addProperties(properties)
-            .build()
+        .primaryConstructor(
+            FunSpec.constructorBuilder().addParameters(builtParams).build()
+        ).addProperties(properties)
+        .build()
 
 }

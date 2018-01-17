@@ -7,7 +7,9 @@ import kotlin.reflect.KProperty
 
 fun <T> List<T>.joinLines() = joinToString(separator = "\n")
 fun <T> List<T>.joinLines(operation: (T) -> String) = joinToString(transform = operation, separator = "\n")
-fun <T> environmentVariable(notfoundMesssage: String): ReadOnlyProperty<T, String> = LazyEnvironmentVariable(notfoundMesssage, null)
+fun <T> environmentVariable(notfoundMesssage: String): ReadOnlyProperty<T, String> =
+    LazyEnvironmentVariable(notfoundMesssage, null)
+
 fun <T> optionalEnvironmentVariable(default: String): ReadOnlyProperty<T, String> = LazyEnvironmentVariable("", default)
 class LazyEnvironmentVariable<in T>(val notfoundMesssage: String, val default: String?) : ReadOnlyProperty<T, String> {
     override fun getValue(thisRef: T, property: KProperty<*>): String {

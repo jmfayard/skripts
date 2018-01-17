@@ -65,17 +65,15 @@ object IO {
     val okHttpClient: OkHttpClient = OkHttpClient.Builder().addNetworkInterceptor(logger).build()
 
     val moshi = Moshi.Builder().build()
+
     val response = moshi.adapter(HttpbinResponse::class.java)
-    val retrofit = run {
-        {
-    baseUrl("http://httpbin.org/")
-    client(okHttpClient)
-    addConverterFactory(MoshiConverterFactory.create())
-}
-        val builder = Retrofit.Builder()
-        builder.init()
-        builder.build()
-    }
+
+    val retrofit = Retrofit.Builder()
+        .baseUrl("http://httpbin.org/")
+        .client(okHttpClient)
+        .addConverterFactory(MoshiConverterFactory.create())
+        .build()
+
     val httpbinService = retrofit.create(ApiService::class.java)
 
 }
@@ -95,18 +93,19 @@ interface ApiService {
 }
 
 typealias ValuesMap = Map<String, Any>?
+
 data class HttpbinResponse(
-        val args: ValuesMap = null,
-        val headers: ValuesMap = null,
-        val origin: String? = null,
-        val url: String? = null,
-        val `user-agent`: String? = null,
-        val data: String? = null,
-        val files: ValuesMap = null,
-        val form: ValuesMap = null,
-        val json: ValuesMap = null,
-        val gzipped: Boolean? = null,
-        val deflated: Boolean? = null,
-        val method: String? = null,
-        val cookies: ValuesMap = null
+    val args: ValuesMap = null,
+    val headers: ValuesMap = null,
+    val origin: String? = null,
+    val url: String? = null,
+    val `user-agent`: String? = null,
+    val data: String? = null,
+    val files: ValuesMap = null,
+    val form: ValuesMap = null,
+    val json: ValuesMap = null,
+    val gzipped: Boolean? = null,
+    val deflated: Boolean? = null,
+    val method: String? = null,
+    val cookies: ValuesMap = null
 )

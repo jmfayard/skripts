@@ -24,12 +24,12 @@ class TwigTest : StringSpec() {
 
         "Presentations" {
             val presentations = listOf(
-                    TwigPresentation("rxjava", "jake"),
-                    TwigPresentation("kotlin", "orangy")
+                TwigPresentation("rxjava", "jake"),
+                TwigPresentation("kotlin", "orangy")
             )
 
             val expected =
-                    """
+                """
     rxjava - jake
     kotlin - orangy
 """

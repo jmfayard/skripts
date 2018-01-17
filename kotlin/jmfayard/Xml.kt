@@ -8,8 +8,8 @@ import org.jdom2.output.Format
 import org.jdom2.output.XMLOutputter
 import java.io.File
 
-fun parseXmlFile(path: String) : Document =
-        SAXBuilder().build(readableFile(path)).document
+fun parseXmlFile(path: String): Document =
+    SAXBuilder().build(readableFile(path)).document
 
 fun Document.writeXmlToFile(destination: File) {
     destination.parentFile.mkdirs()
@@ -24,9 +24,9 @@ fun Document.printXml() {
 }
 
 fun xmlDocument(
-        rootElement: String,
-        attributes: Map<String, String> = emptyMap(),
-        configure: Element.() -> Unit
+    rootElement: String,
+    attributes: Map<String, String> = emptyMap(),
+    configure: Element.() -> Unit
 ): Document {
     val elem = Element(rootElement)
     elem.attributes.addAll(attributes.map { Attribute(it.key, it.value) })
@@ -34,10 +34,10 @@ fun xmlDocument(
 }
 
 fun Element.addElement(
-        name: String,
-        attributes: Map<String, String> = emptyMap(),
-        configure: Element.() -> Unit
-) : Element {
+    name: String,
+    attributes: Map<String, String> = emptyMap(),
+    configure: Element.() -> Unit
+): Element {
     val child = Element(name)
     child.attributes.addAll(attributes.map { Attribute(it.key, it.value) })
     child.apply(configure)

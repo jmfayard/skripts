@@ -4,13 +4,13 @@ import kotlinx.coroutines.experimental.channels.Channel
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.runBlocking
-import statemachine.BrokenEvent.*
-import statemachine.TurnStyle.Command.*
-import statemachine.UnlockedEvent.*
+import statemachine.BrokenEvent.MachineRepairDidComplete
 import statemachine.LockedEvent.*
 import statemachine.StateMachineStrategy.*
+import statemachine.TurnStyle.Command.*
 import statemachine.TurnStyle.Companion.FARE_PRICE
-import kotlin.coroutines.experimental.CoroutineContext
+import statemachine.UnlockedEvent.AdmitPerson
+import statemachine.UnlockedEvent.MachineDidFail
 
 /***
  * Context: I highly recommend andymatuschak's  gist
@@ -36,9 +36,9 @@ abstract class NamedEvent(val name: String?) : Event {
 interface StateCommand
 
 data class Transition<State : StateType, Command : StateCommand>(
-        val state: State,
-        val command: Command?,
-        val event: Event
+    val state: State,
+    val command: Command?,
+    val event: Event
 ) {
     fun emit(command: Command?) = this.copy(command = command)
     fun moveTo(state: State) = this.copy(state = state)
@@ -62,7 +62,7 @@ interface StateMachine<State : StateType, Command : StateCommand> {
     fun enqueueEvent(event: Event): StateMachineStrategy
 
     /*** Utility Functions **/
-    fun beginTransition(event: Event) : Transition<State, Command> = Transition(currentState(), null, event)
+    fun beginTransition(event: Event): Transition<State, Command> = Transition(currentState(), null, event)
 
     fun printHistory() {
         val history = history()
@@ -70,30 +70,29 @@ interface StateMachine<State : StateType, Command : StateCommand> {
         val events = printList(history.map { it.event })
         val commands = printList(history.map { it.command })
 
-        println("""
+        println(
+            """
 Events:   $events
 States:   $states
 Commands: $commands
-    """)
+    """
+        )
     }
-    
+
 
 }
-
-
-
-
 
 
 fun main(args: Array<String>) {
 
     /*** The functional core of the state machine is suepr trivial to test **/
     val events: List<Event> = listOf(
-            InsertCoin(20), InsertCoin(20), InsertCoin(10),
-            AdmitPerson,
-            InsertCoin(1),
-            MachineDidFailWhileLocked,
-            MachineRepairDidComplete)
+        InsertCoin(20), InsertCoin(20), InsertCoin(10),
+        AdmitPerson,
+        InsertCoin(1),
+        MachineDidFailWhileLocked,
+        MachineRepairDidComplete
+    )
 
     val stateMachine = TurnStyle()
     events.forEach { event ->
@@ -110,15 +109,15 @@ fun main(args: Array<String>) {
 
 
     val expectedStates = listOf(
-            Locked(credit=0), Locked(credit=20), Locked(credit=40),
-            Unlocked,
-            Locked(credit=0), Locked(credit=1),
-            Broken(oldState=Locked(credit=1)),
-            Locked(credit=1)
+        Locked(credit = 0), Locked(credit = 20), Locked(credit = 40),
+        Unlocked,
+        Locked(credit = 0), Locked(credit = 1),
+        Broken(oldState = Locked(credit = 1)),
+        Locked(credit = 1)
     )
 
     val expectedCommands: List<TurnStyle.Command?> =
-            listOf(null, null, null, OpenDoors, CloseDoors, null, CallSomeone, null)
+        listOf(null, null, null, OpenDoors, CloseDoors, null, CallSomeone, null)
 
     history.map { it.state } shouldBe expectedStates
     history.map { it.command } shouldBe expectedCommands
@@ -134,7 +133,8 @@ fun main(args: Array<String>) {
         controller.shitHappens()
         delay(5000)
         controller.stateMachine.printHistory()
-        val expectedSideEffects = listOf("sendControlSignalToOpenDoors", "sendControlSignalToCloseDoors", "askSomeoneToRepair")
+        val expectedSideEffects =
+            listOf("sendControlSignalToOpenDoors", "sendControlSignalToCloseDoors", "askSomeoneToRepair")
         controller.doorHardwareController.msgs shouldBe expectedSideEffects
 
     }
@@ -143,17 +143,16 @@ fun main(args: Array<String>) {
 }
 
 
-
-
 /***
  * Functional Core of our state machine.
  */
 
 
 interface StateType
+
 sealed class TurnStyleState(val name: String? = null) : StateType {
 
-    abstract fun handleTransition(transition: TurnStyleTransition) : TurnStyleTransition
+    abstract fun handleTransition(transition: TurnStyleTransition): TurnStyleTransition
 
     override fun toString(): String = name ?: super.toString()
 }
@@ -166,6 +165,7 @@ sealed class LockedEvent(name: String? = null) : NamedEvent(name) {
     object AdmitPersonWhileLocked : LockedEvent("AdmitPersonWhileLocked")
     object MachineDidFailWhileLocked : LockedEvent("MachineDidFailWhileLocked")
 }
+
 data class Locked(val credit: Int) : TurnStyleState() {
 
     override fun handleTransition(transition: TurnStyleTransition): TurnStyleTransition {
@@ -217,12 +217,12 @@ class TurnStyle : StateMachine<TurnStyleState, TurnStyle.Command> {
         SoundAlarm, CloseDoors, OpenDoors, CallSomeone
     }
 
-    private val history : MutableList<TurnStyleTransition> = mutableListOf(
-            Transition(initialState(), doNothing, StartEvent)
+    private val history: MutableList<TurnStyleTransition> = mutableListOf(
+        Transition(initialState(), doNothing, StartEvent)
     )
 
     override fun initialState(): TurnStyleState =
-            Locked(credit = 0)
+        Locked(credit = 0)
 
     override fun history(): List<TurnStyleTransition> = history.toList()
 
@@ -255,7 +255,6 @@ class TurnStyle : StateMachine<TurnStyleState, TurnStyle.Command> {
     }
 
 
-
     companion object {
         private val doNothing: TurnStyle.Command? = null
         const val FARE_PRICE = 50
@@ -280,9 +279,9 @@ suspend fun runStateMachineWithSideEffects(): TurnStyleController {
 }
 
 class TurnStyleController(
-        val doorHardwareController: DoorHardwareController,
-        val speakerController: SpeakerController,
-        val stateMachine: TurnStyle
+    val doorHardwareController: DoorHardwareController,
+    val speakerController: SpeakerController,
+    val stateMachine: TurnStyle
 ) {
 
     val droppedEvents = mutableListOf<Event>()
@@ -293,11 +292,13 @@ class TurnStyleController(
 
     suspend fun enqueue(event: Event?) {
         if (event == null) return
-        when(stateMachine.enqueueEvent(event)) {
+        when (stateMachine.enqueueEvent(event)) {
             FIRE_NOW -> handleCommand(event)
             STORE -> storedEvents.add(event)
             DROP -> droppedEvents.add(event)
-            CRASH -> { stateMachine.printHistory() ; error("Unexpected event $event") }
+            CRASH -> {
+                stateMachine.printHistory(); error("Unexpected event $event")
+            }
         }
     }
 
@@ -314,7 +315,7 @@ class TurnStyleController(
         stateMachine.printHistory()
     }
 
-    suspend fun handleCommand(event: Event){
+    suspend fun handleCommand(event: Event) {
         val command = stateMachine.handleEvent(event)
         val nextEvent: Event? = when (command) {
             OpenDoors -> doorHardwareController.sendControlSignalToOpenDoors()
@@ -328,7 +329,7 @@ class TurnStyleController(
         }
     }
 
-    private fun searchSuitableStoreEvent() : Event? {
+    private fun searchSuitableStoreEvent(): Event? {
         val event = storedEvents.firstOrNull {
             stateMachine.enqueueEvent(it) == FIRE_NOW
         }
@@ -345,16 +346,14 @@ class TurnStyleController(
     }
 
 
-
     suspend fun customerDidInsertCoin(value: Int) {
         enqueue(InsertCoin(value))
     }
 
 
-
 }
 
-class DoorHardwareController() {
+class DoorHardwareController {
     val msgs = mutableListOf<String>()
 
     suspend fun sendControlSignalToOpenDoors(): Event? {

@@ -39,21 +39,21 @@ suspend fun searchForOption(option: String, producer: ReceiveChannel<String>) {
     }
 }
 
-suspend fun executeBashCommand(context: CoroutineContext, command: String, vararg args: String)
-        = produce<String>(context, Channel.UNLIMITED) {
+suspend fun executeBashCommand(context: CoroutineContext, command: String, vararg args: String) =
+    produce<String>(context, Channel.UNLIMITED) {
 
-    val allArgs = arrayOf(command, *args)
-    Buffer().use { buffer ->
-        ProcessExecutor().command(*allArgs)
+        val allArgs = arrayOf(command, *args)
+        Buffer().use { buffer ->
+            ProcessExecutor().command(*allArgs)
                 .redirectOutput(buffer.outputStream())
                 .setMessageLogger { _, _, _ -> }
                 .execute()
-        while (!buffer.exhausted()) {
-            val line = buffer.readUtf8Line() ?: break
-            channel.send(line)
+            while (!buffer.exhausted()) {
+                val line = buffer.readUtf8Line() ?: break
+                channel.send(line)
+            }
         }
     }
-}
 
 
 private fun String.splitToWords(): List<String> {

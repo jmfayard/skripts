@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package jmfayard
 
 import org.intellij.lang.annotations.Language
@@ -28,12 +30,12 @@ fun resourceFile(@Language("File") path: String, write: Boolean = false): File {
 }
 
 fun readableFile(path: String, directory: Boolean = false): File = File(path).also {
-    require(it.canRead()) { "Cannot read file ${it.absolutePath }"}
+    require(it.canRead()) { "Cannot read file ${it.absolutePath}" }
     require(it.isDirectory xor directory.not()) { "Not a directory: ${it.absolutePath}" }
 }
 
-fun writableFile(path: String) : File = File(path).also {
-    require(it.canWrite()) { "Cannot read file ${it.absolutePath }"}
+fun writableFile(path: String): File = File(path).also {
+    require(it.canWrite()) { "Cannot read file ${it.absolutePath}" }
 }
 
 inline fun <T> List<T>.printList(name: String): List<T> {
@@ -45,7 +47,7 @@ inline fun <T> List<T>.printList(name: String): List<T> {
     return this
 }
 
-inline fun <K,V> Map<K, V>.printMap(name: String): Map<K, V> {
+inline fun <K, V> Map<K, V>.printMap(name: String): Map<K, V> {
     println("<Map name=$name size=$size>")
     for ((k, v) in this) {
         println("$name[$k] : $v")

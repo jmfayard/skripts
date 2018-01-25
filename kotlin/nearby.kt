@@ -52,19 +52,20 @@ fun main(args: Array<String>) = runBlocking {
 
     // wait for all jobs to complete
     listOf(launchNearbyJob, sendMessagesJob, replayErrorsJob, msgsOkJob)
-            .forEach { job -> job.join() }
+        .forEach { job -> job.join() }
 
 
 }
 
 
 class FakeNearby(
-        val transaction: String,
-        val isSender: Boolean,
-        var peer: String,
-        val inputChannel: ReceiveChannel<Msg>,
-        val outputOkChannel: SendChannel<Msg>,
-        val outputErrorChannel: SendChannel<Msg>) {
+    val transaction: String,
+    val isSender: Boolean,
+    var peer: String,
+    val inputChannel: ReceiveChannel<Msg>,
+    val outputOkChannel: SendChannel<Msg>,
+    val outputErrorChannel: SendChannel<Msg>
+) {
 
     val canSendChannel = Channel<Boolean>()
 
@@ -125,7 +126,7 @@ class FakeNearby(
             for (id in connectionRequests) {
                 println("Advertise: $id")
                 if (id != peer) continue
-                val success = tryConnect(peer)
+                val success = tryConnect()
                 if (success) {
                     println("Connect success")
 //                    canSendChannel.send(true)
@@ -138,7 +139,7 @@ class FakeNearby(
             for (id in endpointsFound) {
                 println("Discover: $id")
                 if (id != peer) continue
-                val success = tryConnect(peer)
+                val success = tryConnect()
                 if (success) {
                     println("Connect success")
 //                    canSendChannel.send(true)
@@ -221,7 +222,7 @@ class FakeNearby(
     }
 
 
-    suspend fun tryConnect(peer: String): Boolean {
+    suspend fun tryConnect(): Boolean {
         delay(100)
         return badLuck(40)
     }

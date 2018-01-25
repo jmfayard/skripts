@@ -1,11 +1,13 @@
+@file:Suppress("UNUSED_VARIABLE")
+
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 plugins {
     `build-scan`
     application
-    kotlin("jvm") version "1.2.10"
-    kotlin("kapt") version "1.2.10"
+    kotlin("jvm") version "1.2.20"
+    kotlin("kapt") version "1.2.20"
     id("com.github.ben-manes.versions").version("0.17.0")
 }
 
@@ -44,9 +46,9 @@ tasks {
             val buildscriptClasspath = rootProject.buildscript.configurations["classpath"]
 
             val embeddedableCompiler = buildscriptClasspath
-                    .resolvedConfiguration
-                    .resolvedArtifacts
-                    .first { it.name == "kotlin-compiler-embeddable" }
+                .resolvedConfiguration
+                .resolvedArtifacts
+                .first { it.name == "kotlin-compiler-embeddable" }
 
             val jarLocation = embeddedableCompiler.file
             val mainClasspath = java.sourceSets["main"].runtimeClasspath.joinToString(separator = ":")
@@ -61,7 +63,7 @@ java -cp ${jarLocation.absolutePath} org.jetbrains.kotlin.cli.jvm.K2JVMCompiler 
 }
 
 object libs {
-    val kotlin = "1.2.10"
+    val kotlin = "1.2.20"
     val retrofit = "2.3.0"
     val okhttp = "3.9.1"
     val moshi = "1.4.0"
@@ -75,7 +77,7 @@ object libs {
     val kotlinxhtml = "0.6.3"
     val jodatime = "2.9.9"
     val junit = "4.12"
-    val retrofitCoroutines = "0.8.2"
+    val retrofitCoroutines = "0.9.0"
     val mockito = "2.12.0"
     val mockitoKotlin = "1.5.0"
     val krangl = "0.6"
@@ -93,13 +95,13 @@ object libs {
      * See [Future Studio](https://futurestud.io/tutorials/retrofit-getting-started-and-android-client)
      * */
     fun retrofit2(module: String): Any =
-            "com.squareup.retrofit2:$module:$retrofit"
+        "com.squareup.retrofit2:$module:$retrofit"
 
     /** OkHttp where [module] can be okhttp, logging-interceptor, mockwebserver
      *
      * See [Github](https://github.com/square/okhttp) [Recipes](https://github.com/square/okhttp/wiki/Recipes) **/
     fun okhttp(module: String): Any =
-            "com.squareup.okhttp3:$module:$okhttp"
+        "com.squareup.okhttp3:$module:$okhttp"
 
     /** Kotlinx.coroutines dependancy where [module] one of [coroutineModules] **/
     fun coroutine(module: String): String {
@@ -148,7 +150,6 @@ dependencies {
 //    compile(group = "org.slf4j", name = "slf4j-log4j12", version = "1.7.21")
 
 
-
     // https://github.com/Kotlin/kotlinx.html/wiki/Getting-started
     compile("org.jetbrains.kotlinx:kotlinx-html-jvm:${libs.kotlinxhtml}")
 
@@ -167,7 +168,6 @@ dependencies {
 
 
     compile("org.jdom:jdom:2.0.2")
-
 
 
     // JSR305

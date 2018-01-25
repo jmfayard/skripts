@@ -3,13 +3,13 @@
 
 package date_me
 
+import jmfayard.printAsTable
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import org.joda.time.Instant
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatterBuilder
 import org.joda.time.format.ISODateTimeFormat
-import printAsTable
 import java.util.*
 
 
@@ -53,14 +53,14 @@ fun printDate(instant: Instant) {
     val default = instant.toDateTime(DateTimeZone.getDefault())
 
     printAsTable(
-            instant.millis / 1000 to "seconds since EPOCH",
-            instant.millis to "milliseconds since EPOCH",
-            utc.toString(simpleDate) to "UTC time (simple format)",
-            utc to "UTC time",
-            utc.toString(mySql) to "UTC time (MySql format)",
-            berlin to "Berlin Time",
-            default to "Time in the JDK default time zone",
-            DateTimeFormat.fullDateTime().withLocale(Locale.FRANCE).print(utc) to "fullDateTime() France"
+        instant.millis / 1000 to "seconds since EPOCH",
+        instant.millis to "milliseconds since EPOCH",
+        utc.toString(simpleDate) to "UTC time (simple format)",
+        utc to "UTC time",
+        utc.toString(mySql) to "UTC time (MySql format)",
+        berlin to "Berlin Time",
+        default to "Time in the JDK default time zone",
+        DateTimeFormat.fullDateTime().withLocale(Locale.FRANCE).print(utc) to "fullDateTime() France"
     )
 
 
@@ -68,7 +68,7 @@ fun printDate(instant: Instant) {
 
 
 fun parseDate(input: String): Instant {
-    if (input.isNullOrBlank()) {
+    if (input.isBlank()) {
         println("No argument given, using current printDate")
         return Instant.now()
     }
@@ -95,23 +95,23 @@ fun parseDate(input: String): Instant {
 
 
 val mySql = DateTimeFormatterBuilder()
-        .appendYear(4, 4)
-        .appendLiteral('-')
-        .appendMonthOfYear(2)
-        .appendLiteral('-')
-        .appendDayOfMonth(2)
-        .appendLiteral(' ')
-        .appendHourOfDay(2)
-        .appendLiteral(':')
-        .appendMinuteOfHour(2)
-        .appendLiteral(':')
-        .appendSecondOfMinute(2)
-        .toFormatter()
+    .appendYear(4, 4)
+    .appendLiteral('-')
+    .appendMonthOfYear(2)
+    .appendLiteral('-')
+    .appendDayOfMonth(2)
+    .appendLiteral(' ')
+    .appendHourOfDay(2)
+    .appendLiteral(':')
+    .appendMinuteOfHour(2)
+    .appendLiteral(':')
+    .appendSecondOfMinute(2)
+    .toFormatter()
 
 val simpleDate = DateTimeFormatterBuilder()
-        .appendYear(4, 4)
-        .appendLiteral('-')
-        .appendMonthOfYear(2)
-        .appendLiteral('-')
-        .appendDayOfMonth(2)
-        .toFormatter()
+    .appendYear(4, 4)
+    .appendLiteral('-')
+    .appendMonthOfYear(2)
+    .appendLiteral('-')
+    .appendDayOfMonth(2)
+    .toFormatter()

@@ -2,13 +2,10 @@
 
 package checkvist
 
-import checkOk
 import com.squareup.moshi.Moshi
 import debug
 import debugList
 import environmentVariable
-import kotlinx.coroutines.experimental.channels.ReceiveChannel
-import kotlinx.coroutines.experimental.channels.produce
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -20,7 +17,7 @@ import ru.gildor.coroutines.retrofit.awaitResult
 
 suspend fun addTask(api: CheckvistCoroutineApi, credentials: CheckvistCredentials, param: String?) {
     val stdin = if (param == null) checkvist.stdin() else textFrom(param)
-    val title = stdin.receiveOrNull() ?: run { println(CHECKVIST_USAGE) ; return }
+    val title = stdin.receiveOrNull() ?: run { println(CHECKVIST_USAGE); return }
     val parentTask = api.createTask(CNewTask(content = title), credentials.defaultList).checkOk()
     var position = 0
     var noteFound = false
@@ -57,12 +54,15 @@ Super note ici""".trim()
     }
 }
 
+@Suppress("UNUSED_VARIABLE")
 suspend fun doStuff(api: CheckvistCoroutineApi, credentials: CheckvistCredentials) {
-    println(""""
+    println(
+        """"
         |USER=${credentials.USER}
         |CHECKVIST_KEY=${credentials.CHECKVIST_KEY}
         |AUTH=${credentials.auth()}
-    """.trimMargin())
+    """.trimMargin()
+    )
     val login: String = api.login().checkOk().debug("login")
     val currentUser: CUser = api.currentUser().checkOk().debug("currentUser")
     val lists: List<CList> = api.lists().checkOk().debugList("lists")
@@ -92,11 +92,11 @@ object CheckvistComponent {
     val moshi: Moshi = Moshi.Builder().build()
 
     val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("https://checkvist.com/")
-            .client(okHttpClient)
-            .validateEagerly(true)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .build()
+        .baseUrl("https://checkvist.com/")
+        .client(okHttpClient)
+        .validateEagerly(true)
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .build()
 
     val api: CheckvistApi by lazy { retrofit.create(CheckvistApi::class.java) }
 
@@ -153,13 +153,16 @@ class CheckvistCoroutineApi(val api: CheckvistApi, val credentials: CheckvistCre
     suspend fun lists(): Result<List<CList>> = api.checklists(credentials.auth()).awaitResult()
     suspend fun list(list: Int): Result<CList> = api.checklist(list, credentials.auth()).awaitResult()
     suspend fun tasks(list: Int): Result<List<CTask>> = api.checkTasks(list, credentials.auth()).awaitResult()
-    suspend fun createTask(task: CNewTask, list: Int): Result<CTask> = api.createTask(task, list, credentials.auth()).awaitResult()
-    suspend fun deleteTask(task: Int, list: Int): Result<CTask> = api.deleteTask(task, list, credentials.auth()).awaitResult()
+    suspend fun createTask(task: CNewTask, list: Int): Result<CTask> =
+        api.createTask(task, list, credentials.auth()).awaitResult()
+
+    suspend fun deleteTask(task: Int, list: Int): Result<CTask> =
+        api.deleteTask(task, list, credentials.auth()).awaitResult()
+
     suspend fun getNotes(task: CTask) = api.getNotes(task.id, task.checklist_id, credentials.auth()).awaitResult()
-    suspend fun createNote(comment: String, task: CTask) = api.createNote(comment, task.id, task.checklist_id, credentials.auth()).awaitResult()
+    suspend fun createNote(comment: String, task: CTask) =
+        api.createNote(comment, task.id, task.checklist_id, credentials.auth()).awaitResult()
 }
-
-
 
 
 suspend fun linesFrom(stdin: Boolean = false, files: Array<String>) = FilesReader(stdin, files.toList()).lines()

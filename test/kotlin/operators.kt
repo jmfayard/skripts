@@ -19,8 +19,7 @@ operator fun Point.compareTo(b: Point): Int = when {
 }
 
 
-private operator fun String.minus(regex: Regex): String
-        = replace(regex, "")
+private operator fun String.minus(regex: Regex): String = replace(regex, "")
 
 
 class OperatorTest : StringSpec() {init {

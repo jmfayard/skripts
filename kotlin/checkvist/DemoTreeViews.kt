@@ -27,8 +27,8 @@ class DemoTreeViews : View() {
             vbox {
                 label("based on a list")
                 val departments: List<Department> = persons
-                        .distinctBy { it.department }
-                        .map { Department(it.department) }
+                    .distinctBy { it.department }
+                    .map { Department(it.department) }
 
                 treeview<PersonTreeItem>(TreeItem(TreeRoot)) {
                     cellFormat { text = it.name }

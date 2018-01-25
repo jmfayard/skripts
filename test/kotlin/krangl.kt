@@ -1,4 +1,5 @@
 import com.squareup.kotlinpoet.*
+import jmfayard.resourceFile
 import krangl.*
 
 // todo convert to script
@@ -43,23 +44,24 @@ fun main(args: Array<String>) {
 
 
     val sheepProperty = PropertySpec.builder("sheeps", ParameterizedTypeName.get(List::class.asClassName(), sheepClass))
-            .addKdoc("All the sheeps")
-            .initializer(kSheeps.joinToCode(prefix = "listOf(\n", suffix = "\n)", separator = ",\n"))
-            .build()
+        .addKdoc("All the sheeps")
+        .initializer(kSheeps.joinToCode(prefix = "listOf(\n", suffix = "\n)", separator = ",\n"))
+        .build()
 
-    val sheepSpec = DataClass("Sheep",
-            Val("name", STRING).withDefault(),
-            Val("genus", STRING).withDefault(),
-            Val("awake", DOUBLE).withDefault(),
-            mutable = false
+    val sheepSpec = DataClass(
+        "Sheep",
+        Val("name", STRING).withDefault(),
+        Val("genus", STRING).withDefault(),
+        Val("awake", DOUBLE).withDefault(),
+        mutable = false
     )
 
 
     val file = FileSpec.builder("krangl", "sheeps.kt")
-            .addComment("Sheeps as code")
-            .addType(sheepSpec)
-            .addProperty(sheepProperty)
-            .build()
+        .addComment("Sheeps as code")
+        .addType(sheepSpec)
+        .addProperty(sheepProperty)
+        .build()
     print(file)
 
 }

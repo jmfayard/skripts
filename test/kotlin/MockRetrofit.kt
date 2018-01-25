@@ -10,24 +10,24 @@ import java.util.concurrent.TimeUnit
 
 class MockRetrofitTest : StringSpec() { init {
 
-    val WITH_ERRORS: Boolean = false
+    val WITH_ERRORS = false
 
     val retrofit = Retrofit.Builder()
-            .baseUrl("http://httpbin.org")
-            .build()
+        .baseUrl("http://httpbin.org")
+        .build()
 
     val mockRetrofit = MockRetrofit.Builder(retrofit)
-            .networkBehavior(
-                    NetworkBehavior.create().apply {
-                        setDelay(300, TimeUnit.MILLISECONDS)
-                        setErrorPercent(if (WITH_ERRORS) 15 else 0)
-                        setVariancePercent(60)
-                        setFailurePercent(if (WITH_ERRORS) 20 else 0)
-                    }
-            ).build()
+        .networkBehavior(
+            NetworkBehavior.create().apply {
+                setDelay(300, TimeUnit.MILLISECONDS)
+                setErrorPercent(if (WITH_ERRORS) 15 else 0)
+                setVariancePercent(60)
+                setFailurePercent(if (WITH_ERRORS) 20 else 0)
+            }
+        ).build()
 
     val httpbin = mockRetrofit
-            .create(PingService::class.java)
+        .create(PingService::class.java)
 
 
     repeat(10) { i ->

@@ -13,11 +13,11 @@ class Rxjava2Test {
     @Test
     fun values() {
         val t = Observable.just(1, 2, 3)
-                .test()
-                .assertValues(1, 2, 3)
-                .await()
-                .assertComplete()
-                .assertNever(4)
+            .test()
+            .assertValues(1, 2, 3)
+            .await()
+            .assertComplete()
+            .assertNever(4)
 
         t.values().debug("values")
 
@@ -26,8 +26,8 @@ class Rxjava2Test {
     @Test
     fun error() {
         Observable.error<Int>(RuntimeException("Failed"))
-                .test()
-                .assertErrorMessage("Failed")
+            .test()
+            .assertErrorMessage("Failed")
     }
 
     @Test
@@ -53,13 +53,13 @@ class Rxjava2Test {
         val flow: Single<Int> = Single.error(CompositeException(RuntimeException("foo"), RuntimeException("bar")))
 
         flow.onErrorReturnItem(1)
-                .test().await().assertValue(1).assertComplete()
+            .test().await().assertValue(1).assertComplete()
 
         flow.onErrorReturn({ _ -> 1 })
-                .test().await().assertValue(1).assertComplete()
+            .test().await().assertValue(1).assertComplete()
 
         flow.onErrorResumeNext { _ -> Single.error(niceError) }
-                .test().await().assertError(niceError)
+            .test().await().assertError(niceError)
     }
 
 

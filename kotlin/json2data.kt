@@ -39,6 +39,7 @@ sealed class Schema(val name: String, var type: String?) {
 }
 
 
+@Suppress("UNCHECKED_CAST")
 fun schemaOf(name: String, value: Any?): Schema = when (value) {
     null -> Schema.N(name)
     is Boolean -> Schema.B(name, value)
@@ -115,15 +116,15 @@ data class KotlinPoet(val schema: Schema) {
 
 
     fun defaultValue(schema: Schema): String? =
-            when (schema) {
-                is Schema.O -> null
-                is Schema.L<*> -> "emptyList()"
-                is Schema.I -> "0"
-                is Schema.D -> "0.0"
-                is Schema.B -> "false"
-                is Schema.S -> "\"\""
-                is Schema.N -> "null"
-            }
+        when (schema) {
+            is Schema.O -> null
+            is Schema.L<*> -> "emptyList()"
+            is Schema.I -> "0"
+            is Schema.D -> "0.0"
+            is Schema.B -> "false"
+            is Schema.S -> "\"\""
+            is Schema.N -> "null"
+        }
 
     fun objectClass(schema: Schema.O): DataClass {
         val properties = schema.properties.entries.map {

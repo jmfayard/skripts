@@ -38,8 +38,8 @@ class OkRecipes : StringSpec() { init {
             """.trimIndent()
 
         val request = Request.Builder().url("https://api.github.com/markdown/raw")
-                .post(RequestBody.create(MEDIA_TYPE_MARKDOWN, postBody))
-                .build()
+            .post(RequestBody.create(MEDIA_TYPE_MARKDOWN, postBody))
+            .build()
 
         val response = client.newCall(request).execute()
         require(response.isSuccessful) { "Unexpected code $response " }

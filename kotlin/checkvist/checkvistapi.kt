@@ -1,3 +1,5 @@
+@file:Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
+
 package checkvist
 
 import checkOk
@@ -5,6 +7,8 @@ import com.squareup.moshi.Moshi
 import debug
 import debugList
 import environmentVariable
+import kotlinx.coroutines.experimental.channels.ReceiveChannel
+import kotlinx.coroutines.experimental.channels.produce
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -14,8 +18,8 @@ import retrofit2.http.*
 import ru.gildor.coroutines.retrofit.Result
 import ru.gildor.coroutines.retrofit.awaitResult
 
-suspend fun addTask(api: CheckvistCoroutineApi, credentials: CheckvistCredentials) {
-    val stdin = checkvist.stdin()
+suspend fun addTask(api: CheckvistCoroutineApi, credentials: CheckvistCredentials, param: String?) {
+    val stdin = if (param == null) checkvist.stdin() else textFrom(param)
     val title = stdin.receiveOrNull() ?: run { println(CHECKVIST_USAGE) ; return }
     val parentTask = api.createTask(CNewTask(content = title), credentials.defaultList).checkOk()
     var position = 0
@@ -29,14 +33,28 @@ suspend fun addTask(api: CheckvistCoroutineApi, credentials: CheckvistCredential
             noteContent += line
         } else {
             position++
-            val childrenTask = CNewTask(content = line, parent_id = parentTask.id, position = position)
+            val childrenTask = CNewTask(content = line, parent_id = parentTask.id, position = -1)
             api.createTask(childrenTask, credentials.defaultList).checkOk()
         }
     }
     if (noteContent.trim().isNotBlank()) {
+        println("ok")
         api.createNote(noteContent, parentTask)
+        println("bye")
     }
+}
 
+suspend fun textFrom(param: String): ReceiveChannel<String> = produce {
+    val input = """
+Ingrédients
+Carottes
+Oignons
+
+Super note ici""".trim()
+
+    for (line in input.splitToSequence('\n')) {
+        send(line)
+    }
 }
 
 suspend fun doStuff(api: CheckvistCoroutineApi, credentials: CheckvistCredentials) {
@@ -119,7 +137,13 @@ interface CheckvistApi {
     fun getNotes(@Path("task") task: Int, @Path("list") list: Int, @Header("Authorization") auth: String): Call<List<CNote>>
 
     @POST("checklists/{list}/tasks/{task}/comments.json")
-    fun createNote(@Body note: CNote, @Path("task") task: Int, @Path("list") list: Int, @Header("Authorization") auth: String): Call<CNote>
+    @FormUrlEncoded
+    fun createNote(
+            @Field("comment[comment]") note: String,
+            @Path("task") task: Int,
+            @Path("list") list: Int,
+            @Header("Authorization") auth: String
+    ): Call<CNote>
 
 }
 
@@ -132,7 +156,7 @@ class CheckvistCoroutineApi(val api: CheckvistApi, val credentials: CheckvistCre
     suspend fun createTask(task: CNewTask, list: Int): Result<CTask> = api.createTask(task, list, credentials.auth()).awaitResult()
     suspend fun deleteTask(task: Int, list: Int): Result<CTask> = api.deleteTask(task, list, credentials.auth()).awaitResult()
     suspend fun getNotes(task: CTask) = api.getNotes(task.id, task.checklist_id, credentials.auth()).awaitResult()
-    suspend fun createNote(comment: String, task: CTask) = api.createNote(CNote(comment), task.id, task.checklist_id, credentials.auth()).awaitResult()
+    suspend fun createNote(comment: String, task: CTask) = api.createNote(comment, task.id, task.checklist_id, credentials.auth()).awaitResult()
 }
 
 

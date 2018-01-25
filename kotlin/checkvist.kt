@@ -28,7 +28,7 @@ EOF
 fun main(args: Array<String>) = runBlocking {
     when (args.firstOrNull()) {
         "list" -> doStuff(app().coroutineApi, app().credentials)
-        "create" -> addTask(app().coroutineApi, app().credentials)
+        "create" -> addTask(app().coroutineApi, app().credentials, args.getOrNull(1))
         else -> println(CHECKVIST_USAGE)
     }
 }

@@ -30,9 +30,11 @@ fun <T> T.debug(name: String): T {
 }
 
 fun <T> List<T>.debugList(name: String): List<T> {
+    println("<List $name with $size elements>")
     forEachIndexed { i, t ->
         println("$name[$i] : $t")
     }
+    println("</list>")
     return this
 }
 

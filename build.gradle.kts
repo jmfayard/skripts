@@ -6,8 +6,8 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 plugins {
     `build-scan`
     application
-    kotlin("jvm") version "1.2.20"
-    kotlin("kapt") version "1.2.20"
+    kotlin("jvm") version "1.2.21"
+//    kotlin("kapt") version "1.2.21"
     id("com.github.ben-manes.versions").version("0.17.0")
 }
 
@@ -63,7 +63,7 @@ java -cp ${jarLocation.absolutePath} org.jetbrains.kotlin.cli.jvm.K2JVMCompiler 
 }
 
 object libs {
-    val kotlin = "1.2.20"
+    val kotlin = "1.2.21"
     val retrofit = "2.3.0"
     val okhttp = "3.9.1"
     val moshi = "1.4.0"
@@ -184,6 +184,7 @@ dependencies {
         this.exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib-jre7")
     }
 
+    compile("com.jakewharton.timber:timber:4.6.0")
 
     // https://github.com/edvin/tornadofx
     // https://www.gitbook.com/download/pdf/book/edvin/tornadofx-guide

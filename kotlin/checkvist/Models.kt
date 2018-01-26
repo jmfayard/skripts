@@ -42,7 +42,7 @@ val persons = listOf(
 
 
 interface CheckvistCredentials {
-    val defaultList: Int get() = 608643
+    val defaultList: Int get() = 649516
     val CHECKVIST_KEY: String
     val USER: String
     fun auth() = Credentials.basic(USER, CHECKVIST_KEY)
@@ -99,7 +99,7 @@ data class CTask(
 
 data class CNewTask(
     val parent_id: Int = 0,
-    val position: Int = 1,
+    val position: Int? = 1,
     val content: String = ""
 )
 

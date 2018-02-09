@@ -20,7 +20,7 @@ See https://github.com/andrewoma/kotlin-scripting-kickstarter
 All you need to get going is a JDK installed and a unix-ish environment.
 
 ```shell
-$ ./gradlew check copyToLib
+$ ./gradlew assemble copyToLib
 $ export PATH=$PATH:`pwd`/kotlin
 $ date_me.kt
 1487239456                           seconds since EPOCH

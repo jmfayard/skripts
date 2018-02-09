@@ -15,6 +15,7 @@ fun main(args: Array<String>) {
     osxOpenFile(File("README.html"))
 }
 
+
 fun postMarkdown(file: File, dest: File) {
     require(file.canRead()) { "Cannot find ${file.absolutePath}" }
 

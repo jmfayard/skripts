@@ -14,7 +14,7 @@ interface Heater {
 }
 
 // Inspired by dagger2 components
-interface Component {
+interface CoffeComponent {
     val coffee: Coffee
     val heater: Heater
     val pump: Pump
@@ -24,9 +24,9 @@ interface Component {
 
 var FANCY: Boolean = true
 
-fun component(): Component =
-    if (FANCY) FancyComponent
-    else BoringComponent
+fun component(): CoffeComponent =
+    if (FANCY) FancyCoffeeComponent
+    else BoringCoffeeComponent
 
 
 fun main(args: Array<String>) {
@@ -88,7 +88,7 @@ data class CoffeeMaker(
     }
 }
 
-object FancyComponent : Component {
+object FancyCoffeeComponent : CoffeComponent {
     override val heater: Heater = FancyHeater
     override val pump: Pump = Thermosiphon(heater)
     override val maker: CoffeeMaker by lazy {
@@ -134,7 +134,7 @@ object BoringHeater : Heater {
     override val isHot: Boolean = false
 }
 
-object BoringComponent : Component {
+object BoringCoffeeComponent : CoffeComponent {
     override val heater: Heater = BoringHeater
     override val pump: Pump = BoringPump
     override val maker: CoffeeMaker by lazy { CoffeeMaker(heater, pump) }

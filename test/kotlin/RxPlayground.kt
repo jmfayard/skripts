@@ -103,7 +103,7 @@ private fun <T> String.observer() = PrintObserver<T>(this)
 class PrintObserver<T>(val name: String) : Observer<T> {
     var emitted = mutableListOf<T>()
 
-    override fun onError(e: Throwable?) {
+    override fun onError(e: Throwable) {
         println("$name: ERROR $e")
     }
 
@@ -112,7 +112,7 @@ class PrintObserver<T>(val name: String) : Observer<T> {
         println("$name: $t")
     }
 
-    override fun onSubscribe(d: Disposable?) {
+    override fun onSubscribe(d: Disposable) {
 
     }
 

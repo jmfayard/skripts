@@ -7,8 +7,8 @@ plugins {
     `build-scan`
     application
     kotlin("jvm") version "1.2.21"
-//    kotlin("kapt") version "1.2.21"
     id("com.github.ben-manes.versions").version("0.17.0")
+//    kotlin("kapt") version "1.2.21"
 }
 
 application {
@@ -27,178 +27,63 @@ repositories {
     maven { setUrl("https://dl.bintray.com/jerady/maven") }
 }
 
-tasks {
-    val copyToLib by creating(Copy::class) {
-        from(configurations.runtime)
-        into("lib")
-    }
 
-//    val klean by creating(Delete::class) {
-//        delete = setOf("build/source/kapt", "build/source/kaptKotlin")
-//    }
-
-
-    // https://kotlinlang.slack.com/files/U1BASJRMW/F750V7R5G/task_for_setting_up_a_script_for_kshell.kt
-    // Usage: gw kshell && bash build/kshell.sh
-    val kshell by tasks.creating {
-        dependsOn("assemble")
-        doFirst {
-            val buildscriptClasspath = rootProject.buildscript.configurations["classpath"]
-
-            val embeddedableCompiler = buildscriptClasspath
-                .resolvedConfiguration
-                .resolvedArtifacts
-                .first { it.name == "kotlin-compiler-embeddable" }
-
-            val jarLocation = embeddedableCompiler.file
-            val mainClasspath = java.sourceSets["main"].runtimeClasspath.joinToString(separator = ":")
-            val scriptContent = """#!/usr/bin/env bash
-java -cp ${jarLocation.absolutePath} org.jetbrains.kotlin.cli.jvm.K2JVMCompiler -cp $mainClasspath
-"""
-            val output = file("$buildDir/kshell.sh")
-            output.writeText(scriptContent)
-            output.setExecutable(true)
-        }
-    }
+// missing in the kotlin-dsl
+fun DependencyHandler.`compile`(deps: List<String>) {
+    for (dep in deps) add("compile", dep)
 }
 
-object libs {
-    val kotlin = "1.2.21"
-    val retrofit = "2.3.0"
-    val okhttp = "3.9.1"
-    val moshi = "1.4.0"
-    val okio = "1.13.0"
-    val rxjava = "1.2.7"
-    val rxjava2 = "2.0.7"
-    val rxkotlin = "1.0.0"
-    val kotlintest = "1.3.7" // 2.0.7
-    val dagger = "2.9"
-    val konfig = "1.6.1.0"
-    val kotlinxhtml = "0.6.3"
-    val jodatime = "2.9.9"
-    val junit = "4.12"
-    val retrofitCoroutines = "0.9.0"
-    val mockito = "2.12.0"
-    val mockitoKotlin = "1.5.0"
-    val krangl = "0.6"
-    val kotlinPoet = "0.6.0"
-    val tornadofx = "1.7.13"
-
-    private val coroutineVersion = "0.21.1"
-    val coroutineModules = listOf("core", "rx1", "rx2", "reactive", "reactor", "android", "javafx", "swing", "jdk8", "nio", "guava", "quasar")
-
-    /** [Retrofit](http://square.github.io/retrofit) dependency
-     *
-     * [module] can be retrofit, retrofit converter-moshi adapter-rxjava retrofit-mock adapter-rxjava2
-    converter-wire converter-jackson converter-gson converter-simplexml converter-protobuf
-     *
-     * See [Future Studio](https://futurestud.io/tutorials/retrofit-getting-started-and-android-client)
-     * */
-    fun retrofit2(module: String): Any =
-        "com.squareup.retrofit2:$module:$retrofit"
-
-    /** OkHttp where [module] can be okhttp, logging-interceptor, mockwebserver
-     *
-     * See [Github](https://github.com/square/okhttp) [Recipes](https://github.com/square/okhttp/wiki/Recipes) **/
-    fun okhttp(module: String): Any =
-        "com.squareup.okhttp3:$module:$okhttp"
-
-    /** Kotlinx.coroutines dependancy where [module] one of [coroutineModules] **/
-    fun coroutine(module: String): String {
-        check(module in coroutineModules)
-        return "org.jetbrains.kotlinx:kotlinx-coroutines-$module:$coroutineVersion"
-    }
-}
 
 dependencies {
+    testCompile(Deps.KotlinTest)
+    testCompile(Deps.JUnit)
+    testCompile(Deps.MockitoKotlin)
+    testCompile(Deps.MockitoCore)
+    testCompile(kotlin("test"))
+    testCompile(kotlin("test-junit"))
 
+    testCompileOnly(Deps.Jsr305)
+    compileOnly(Deps.Jsr305)
 
+    // kotlin
     compile(kotlin("stdlib-jre8"))
     compile(kotlin("reflect"))
 
-    for (module in listOf("retrofit", "converter-moshi", "adapter-rxjava", "retrofit-mock", "adapter-rxjava2")) {
-        compile(libs.retrofit2(module))
-    }
-    for (module in listOf("okhttp", "logging-interceptor", "mockwebserver")) {
-        compile(libs.okhttp(module))
-    }
-
-    // coroutines
-    compile(libs.coroutine("core"))
-    compile(libs.coroutine("rx2"))
-
-    // https://github.com/gildor/kotlin-coroutines-retrofit
-    compile("ru.gildor.coroutines:kotlin-coroutines-retrofit:${libs.retrofitCoroutines}")
-
-    // https://github.com/square/moshi
-    compile("com.squareup.moshi:moshi:${libs.moshi}")
-
-    // https://github.com/serj-lotutovici/moshi-lazy-adapters
-    compile("com.serjltt.moshi:moshi-lazy-adapters:2.1")
-
-    // https://github.com/square/okio
-    compile("com.squareup.okio:okio:${libs.okio}")
-
-    // https://google.github.io/dagger/
-//    compile("com.google.dagger:dagger:${libs.dagger}")
-//    kapt("com.google.dagger:dagger-compiler:${libs.dagger}")
+    // concurrency
+    compile(Deps.Coroutines("kotlinx-coroutines-core", "kotlinx-coroutines-rx2"))
+    compile(Deps.RxJava2)
+    compile(Deps.RxKotlin)
 
 
-    // http://jtwig.org/documentation/reference
-    compile("org.jtwig:jtwig-core:5.85.3.RELEASE")
-    compile(group = "org.slf4j", name = "slf4j-simple", version= "1.7.25")
-//    compile(group = "org.slf4j", name = "slf4j-log4j12", version = "1.7.21")
+    // html
+    compile(Deps.JTwig)
+    compile(Deps.KotlinXHtml)
+
+    // UX
+    compile(Deps.TornadoFx)
+    compile(Deps.ControlsFx)
+    compile(Deps.FontAwesomeFx)
 
 
-    // https://github.com/Kotlin/kotlinx.html/wiki/Getting-started
-    compile("org.jetbrains.kotlinx:kotlinx-html-jvm:${libs.kotlinxhtml}")
+    // IO
+    compile(Deps.Okio)
+    compile(Deps.Moshi)
+    compile(Deps.MoshiLazyAdapters)
+    compile(listOf(Deps.Okhttp, Deps.OkhttpLogging, Deps.OkhttpMockserver))
+    compile(Deps.Retrofit("retrofit", "converter-moshi", "adapter-rxjava", "retrofit-mock", "adapter-rxjava2"))
+    compile(Deps.RetrofitCoroutines)
+    compile(Deps.ZeroTurnAround)
+    compile(Deps.Sl4J)
+    compile(Deps.Timber)
+    compile(Deps.JDom)
+    compile(Deps.Konfig)
+    compile(Deps.Sl4J)
+    compile(Deps.Timber)
 
-
-    // https://github.com/npryce/konfig
-    compile("com.natpryce:konfig:${libs.konfig}")
-
-    // http://www.joda.org/joda-time/userguide.html
-    compile("joda-time:joda-time:${libs.jodatime}")
-
-    // https://github.com/zeroturnaround/zt-exec
-    compile(group= "org.zeroturnaround", name= "zt-exec", version= "1.9")
-
-    // https://github.com/Kotlin/kotlinx.html/wiki/Getting-started
-    compile("org.jetbrains.kotlinx:kotlinx-html-jvm:${libs.kotlinxhtml}")
-
-
-    compile("org.jdom:jdom:2.0.2")
-
-
-    // JSR305
-//    compile("com.google.code.findbugs:jsr305:3.0.2")
-    compileOnly("com.google.code.findbugs:jsr305:3.0.2")
-    testCompileOnly("com.google.code.findbugs:jsr305:3.0.2")
-
-
-    // data wrangling https://github.com/holgerbrandl/krangl
-    compile("de.mpicbg.scicomp:krangl:${libs.krangl}")
-
-    // https://square.github.io/kotlinpoet/0.x/kotlinpoet/com.squareup.kotlinpoet/
-    compile("com.squareup:kotlinpoet:${libs.kotlinPoet}") {
-        this.exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib-jre7")
-    }
-
-    compile("com.jakewharton.timber:timber:4.6.0")
-
-    // https://github.com/edvin/tornadofx
-    // https://www.gitbook.com/download/pdf/book/edvin/tornadofx-guide
-    compile("no.tornado:tornadofx:${libs.tornadofx}")
-    compile("de.jensd:fontawesomefx:8.9")
-    compile("org.controlsfx:controlsfx:8.40.10")
-
-    // https://github.com/kotlintest/kotlintest
-    testCompile("io.kotlintest:kotlintest:${libs.kotlintest}")
-    testCompile(kotlin("test"))
-    testCompile(kotlin("test-junit"))
-    testCompile("junit:junit:${libs.junit}")
-    testCompile("org.mockito:mockito-core:${libs.mockito}")
-    testCompile("com.nhaarman:mockito-kotlin:${libs.mockitoKotlin}")
+    // Data
+    compile(Deps.JodaTime)
+    compile(Deps.Krangl)
+    compile(Deps.KotlinPoet)
 
 
 }
@@ -239,5 +124,40 @@ java {
         main.java.setSrcDirs(listOf("kotlin"))
         test.java.srcDir("test/kotlin")
         test.resources.srcDir("test/resources")
+    }
+}
+
+tasks {
+    val copyToLib by creating(Copy::class) {
+        from(configurations.runtime)
+        into("lib")
+    }
+
+//    val klean by creating(Delete::class) {
+//        delete = setOf("build/source/kapt", "build/source/kaptKotlin")
+//    }
+
+
+    // https://kotlinlang.slack.com/files/U1BASJRMW/F750V7R5G/task_for_setting_up_a_script_for_kshell.kt
+    // Usage: gw kshell && bash build/kshell.sh
+    val kshell by tasks.creating {
+        dependsOn("assemble")
+        doFirst {
+            val buildscriptClasspath = rootProject.buildscript.configurations["classpath"]
+
+            val embeddedableCompiler = buildscriptClasspath
+                .resolvedConfiguration
+                .resolvedArtifacts
+                .first { it.name == "kotlin-compiler-embeddable" }
+
+            val jarLocation = embeddedableCompiler.file
+            val mainClasspath = java.sourceSets["main"].runtimeClasspath.joinToString(separator = ":")
+            val scriptContent = """#!/usr/bin/env bash
+java -cp ${jarLocation.absolutePath} org.jetbrains.kotlin.cli.jvm.K2JVMCompiler -cp $mainClasspath
+"""
+            val output = file("$buildDir/kshell.sh")
+            output.writeText(scriptContent)
+            output.setExecutable(true)
+        }
     }
 }

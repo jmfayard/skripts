@@ -6,6 +6,16 @@ import org.intellij.lang.annotations.Language
 import org.zeroturnaround.exec.ProcessExecutor
 import java.io.File
 
+
+fun executeBashCommand(vararg args: String): String {
+    println("# " + args.joinToString(separator = " "))
+    val program = args.first()
+    return ProcessExecutor().command(*args)
+        .redirectErrorStream(true)
+        .readOutput(true).execute()
+        .outputUTF8()
+}
+
 fun osxOpenFile(file: File) {
     println("$ /usr/bin/open ${file.absolutePath}")
     require(file.canRead()) { System.exit(1); "ERROR File not found" }

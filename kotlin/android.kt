@@ -15,7 +15,7 @@ private val APP = "/Users/jmfayard/Dev/mautinoa/mautinoa-app"
 private fun usage(): Nothing {
     println(
         """
-$ androidstrings.kt COMMAND OPTIONS
+$ android.kt COMMAND OPTIONS
 
 Convert localisations between the android xml format and CSV (thus excel)
 

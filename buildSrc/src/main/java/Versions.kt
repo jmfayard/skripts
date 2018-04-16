@@ -1,5 +1,5 @@
 object Versions {
-    const val kotlin = "1.2.21"
+    const val kotlin = "1.2.31"
 
     const val androidjob = "1.2.1"
     const val architecture = "1.0.0"
@@ -49,4 +49,5 @@ object Versions {
     const val zeroTurnAround = "1.9"
     const val jtwig = "5.85.3.RELEASE"
     const val moshiLazyAdapters = "2.1"
+    const val koin = "0.9.1"
 }

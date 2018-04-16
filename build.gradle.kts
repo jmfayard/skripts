@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 plugins {
     `build-scan`
     application
-    kotlin("jvm") version "1.2.21"
+    kotlin("jvm") version Versions.kotlin
     id("com.github.ben-manes.versions").version("0.17.0")
 //    kotlin("kapt") version "1.2.21"
 }
@@ -22,9 +22,11 @@ kotlin { // configure<org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension>
 
 repositories {
     jcenter()
+    mavenCentral()
     google()
     maven { setUrl("https://jitpack.io") }
     maven { setUrl("https://dl.bintray.com/jerady/maven") }
+    maven { setUrl("https://dl.bintray.com/kotlin/ktor") }
 }
 
 
@@ -41,9 +43,11 @@ dependencies {
     testCompile(Deps.MockitoCore)
     testCompile(kotlin("test"))
     testCompile(kotlin("test-junit"))
+    testCompile(Deps.Koin("koin-test").first())
 
     testCompileOnly(Deps.Jsr305)
     compileOnly(Deps.Jsr305)
+    compile(Deps.Koin("koin-core"))
 
     // kotlin
     compile(kotlin("stdlib-jre8"))

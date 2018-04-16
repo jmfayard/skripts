@@ -1,5 +1,5 @@
 #!/usr/bin/env kotlin-script.sh
-package androidstrings
+package android
 
 import debug
 import jmfayard.*

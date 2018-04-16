@@ -76,6 +76,21 @@ object Deps {
 
     const val RetrofitRxjava2 = "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0"
 
+
+
+    /** Koin - DSL based simple Service Locator. For when Dagger is YAGNI
+    [https://insert-koin.io/](https://insert-koin.io/)
+     **/
+    @JvmStatic
+    fun Koin(vararg module: String): List<String> =
+        module.requireIn(ModulesKoin)
+            .map { module -> "org.koin:$module:${versions.koin}" }
+
+    private val ModulesKoin =
+        listOf("koin-android-architecture", "koin-android", "koin-core", "koin-test", "koin-ktor", "koin-spark")
+
+
+
     private fun Array<out String>.requireIn(modules: List<String>): List<String> {
         val invalids = this.filter { it !in modules }
         require(this.isNotEmpty() && invalids.isEmpty()) {
@@ -83,6 +98,9 @@ object Deps {
         }
         return this.toList()
     }
+
+
+
 
     /** Firebase Push Notifications     */
     /** BEEP-2 [https://git.mautinoa.com/long/apiSpec/merge_requests/2](https://git.mautinoa.com/long/apiSpec/merge_requests/2)     */

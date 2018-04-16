@@ -2,6 +2,9 @@
 
 package checkvist
 
+import checkvist.Property.CHECKVIST_LIST
+import checkvist.Property.CHECKVIST_URL
+import checkvist.Property.USER
 import com.squareup.moshi.Moshi
 import debug
 import debugList
@@ -11,12 +14,43 @@ import kotlinx.coroutines.experimental.channels.ReceiveChannel
 import kotlinx.coroutines.experimental.channels.produce
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
+import org.koin.dsl.module.applicationContext
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 import ru.gildor.coroutines.retrofit.Result
 import ru.gildor.coroutines.retrofit.awaitResult
+
+val checkvistModule = applicationContext {
+
+    val CHECKVIST_KEY by environmentVariable("No OpenApi Key found. Grab one at https://checkvist.com/auth/profile")
+
+    bean { buildOkHttpClient() }
+    bean { buildRetrofit(getProperty(CHECKVIST_URL), get(), get()) }
+    bean("moshi") { Moshi.Builder().build() }
+    bean { get<Retrofit>().create(CheckvistApi::class.java) as CheckvistApi }
+
+    bean { CheckvistCoroutineApi(get(), get()) }
+
+    bean { CheckvistCredentials(CHECKVIST_KEY, getProperty(USER), getProperty(CHECKVIST_LIST)) }
+
+}
+
+private object Property {
+
+    const val CHECKVIST_LIST = "CHECKVIST_LIST"
+    const val USER = "USER"
+    const val CHECKVIST_URL = "CHECKVIST_URL"
+}
+
+val CHECKVIST_DEFAULT_PARAMS = mapOf(
+        USER to "jmfayard@gmail.com",
+        CHECKVIST_URL to "https://checkvist.com/",
+        CHECKVIST_LIST to 649516
+)
+
 
 suspend fun addTask(api: CheckvistCoroutineApi, credentials: CheckvistCredentials, param: String?) {
     val stdin = if (param == null) checkvist.stdin() else textFrom(param)
@@ -60,7 +94,7 @@ Super note ici""".trim()
 @Suppress("UNUSED_VARIABLE")
 suspend fun doStuff(api: CheckvistCoroutineApi, credentials: CheckvistCredentials) {
     println(
-        """"
+            """"
         |USER=${credentials.USER}
         |CHECKVIST_KEY=${credentials.CHECKVIST_KEY}
         |AUTH=${credentials.auth()}
@@ -82,34 +116,18 @@ suspend fun doStuff(api: CheckvistCoroutineApi, credentials: CheckvistCredential
 }
 
 
-private fun app() = CheckvistComponent
-
-object CheckvistComponent {
-
-    val LEVEL = okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
-
+fun buildOkHttpClient(): OkHttpClient {
+    val LEVEL = BASIC
     val logger: HttpLoggingInterceptor = HttpLoggingInterceptor(::println).setLevel(LEVEL)
+    return OkHttpClient.Builder().addNetworkInterceptor(logger).build()
+}
 
-    val okHttpClient: OkHttpClient = OkHttpClient.Builder().addNetworkInterceptor(logger).build()
-
-    val moshi: Moshi = Moshi.Builder().build()
-
-    val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("https://checkvist.com/")
-        .client(okHttpClient)
+fun buildRetrofit(baseUrl: String, client: OkHttpClient, moshi: Moshi) = Retrofit.Builder()
+        .baseUrl(baseUrl)
+        .client(client)
         .validateEagerly(true)
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
-
-    val api: CheckvistApi by lazy { retrofit.create(CheckvistApi::class.java) }
-
-    val coroutineApi: CheckvistCoroutineApi by lazy { CheckvistCoroutineApi(api, credentials) }
-
-    val credentials: CheckvistCredentials = object : CheckvistCredentials {
-        override val CHECKVIST_KEY by environmentVariable("No OpenApi Key found. Grab one at https://checkvist.com/auth/profile")
-        override val USER = "jmfayard@gmail.com"
-    }
-}
 
 typealias Unknown = java.lang.Object
 
@@ -157,14 +175,14 @@ class CheckvistCoroutineApi(val api: CheckvistApi, val credentials: CheckvistCre
     suspend fun list(list: Int): Result<CList> = api.checklist(list, credentials.auth()).awaitResult()
     suspend fun tasks(list: Int): Result<List<CTask>> = api.checkTasks(list, credentials.auth()).awaitResult()
     suspend fun createTask(task: CNewTask, list: Int): Result<CTask> =
-        api.createTask(task, list, credentials.auth()).awaitResult()
+            api.createTask(task, list, credentials.auth()).awaitResult()
 
     suspend fun deleteTask(task: Int, list: Int): Result<CTask> =
-        api.deleteTask(task, list, credentials.auth()).awaitResult()
+            api.deleteTask(task, list, credentials.auth()).awaitResult()
 
     suspend fun getNotes(task: CTask) = api.getNotes(task.id, task.checklist_id, credentials.auth()).awaitResult()
     suspend fun createNote(comment: String, task: CTask) =
-        api.createNote(comment, task.id, task.checklist_id, credentials.auth()).awaitResult()
+            api.createNote(comment, task.id, task.checklist_id, credentials.auth()).awaitResult()
 }
 
 

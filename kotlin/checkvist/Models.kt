@@ -41,10 +41,11 @@ val persons = listOf(
 )
 
 
-interface CheckvistCredentials {
-    val defaultList: Int get() = 649516
-    val CHECKVIST_KEY: String
-    val USER: String
+data class CheckvistCredentials(
+    val CHECKVIST_KEY: String,
+    val USER: String,
+    val defaultList: Int
+) {
     fun auth() = Credentials.basic(USER, CHECKVIST_KEY)
 }
 

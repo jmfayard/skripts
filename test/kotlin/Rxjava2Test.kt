@@ -2,15 +2,27 @@ import io.reactivex.Observable
 import io.reactivex.RxMarble
 import io.reactivex.Single
 import io.reactivex.exceptions.CompositeException
+import io.reactivex.rxkotlin.merge
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.schedulers.TestScheduler
 import org.junit.Test
 import java.lang.RuntimeException
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by jmfayard on 18.07.17.
  */
 
 class Rxjava2Test {
+
+    @Test fun emitListWithTimer() {
+        // better alternatives to Observable.interval() to emit a list of values
+        val valuesToEmit = listOf("un", "deux", "trois", "quatre", "cinq")
+        val observable = valuesToEmit.mapIndexed { index, value ->
+            Observable.timer(index * 50L, TimeUnit.MILLISECONDS, Schedulers.computation()).map { value }
+        }.merge()
+        observable.blockingSubscribe(::println)
+    }
 
     @Test fun join() {
 

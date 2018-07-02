@@ -27,6 +27,7 @@ repositories {
     maven { setUrl("https://jitpack.io") }
     maven { setUrl("https://dl.bintray.com/jerady/maven") }
     maven { setUrl("https://dl.bintray.com/kotlin/ktor") }
+    maven { setUrl("https://dl.bintray.com/kotlin/exposed") }
 }
 
 
@@ -88,6 +89,9 @@ dependencies {
     compile(Deps.JodaTime)
     compile(Deps.Krangl)
     compile(Deps.KotlinPoet)
+    compile(Deps.Docopt)
+    compile(Deps.Expose)
+    compile(Deps.Postgres)
 
 
 }

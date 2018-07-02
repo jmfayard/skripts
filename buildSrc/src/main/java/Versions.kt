@@ -10,6 +10,7 @@ object Versions {
     const val dagger = "2.9"
     const val dagger2 = "2.8"
     const val espresso = "2.2.2"
+    const val expose = "0.10.3"
     const val fakeit = "v0.7"
     const val jetpack = "0.14.2"
     const val junit = "4.12"

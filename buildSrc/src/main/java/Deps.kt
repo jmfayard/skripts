@@ -211,6 +211,14 @@ object Deps {
     /** [https://github.com/android/android-ktx](https://github.com/android/android-ktx)     */
     const val AndroidxCore = "androidx.core:core-ktx:" + versions.ktx
 
+    /** See http://try.docopt.org/ https://github.com/docopt/docopt.java **/
+    const val Docopt = "com.offbytwo:docopt:0.6.0.20150202"
+
+    /** See https://github.com/JetBrains/Exposed **/
+    const val Expose = "org.jetbrains.exposed:exposed:" + versions.expose
+
+    const val Postgres = "org.postgresql:postgresql:42.2.2"
+
     /****** TESTING ****/
 
     /**

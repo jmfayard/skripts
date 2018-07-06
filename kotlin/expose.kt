@@ -6,8 +6,6 @@ import okSink
 import okSource
 import org.docopt.Docopt
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SchemaUtils.create
-import org.jetbrains.exposed.sql.SchemaUtils.drop
 import org.jetbrains.exposed.sql.statements.StatementContext
 import org.jetbrains.exposed.sql.statements.expandArgs
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -33,7 +31,7 @@ fun main(args: Array<String>) {
     val moshi = Moshi.Builder().build()
     val accounts = moshi.adapter(Accounts::class.java).fromJson(file.okSource())!!
     println(accounts)
-    testSql(accounts.userAccounts)
+    testSql(accounts.userAccounts, file.resolveSibling("oldusers.sql"))
 }
 
 
@@ -99,22 +97,22 @@ enum class enum_role {
 }
 
 
-private fun testSql(userAccounts: List<Account>) {
+private fun testSql(userAccounts: List<Account>, outputSql: File) {
 //    Database.connect("jdbc:h2:mem:test", driver = "org.h2.Driver")
-    val output = File("build/inserts.sql").okSink()
-    Database.connect("jdbc:postgresql://localhost:5432/kotlin", driver = "org.postgresql.Driver", user = "jmfayard")
+    val output = outputSql.okSink()
+    Database.connect("jdbc:postgresql://localhost:5432/mtap", driver = "org.postgresql.Driver", user = "jmfayard")
 
     transaction {
         logger.addLogger(StdOutSqlLogger)
         logger.addLogger(object : SqlLogger {
             override fun log(context: StatementContext, transaction: Transaction) {
-                output.writeUtf8("${context.expandArgs(transaction)}\n")
+                output.writeUtf8("${context.expandArgs(transaction)};\n")
             }
 
         })
 
-        drop(MtapKyc, MtapAccount, FudgeboxCounter, FudgeboxHead, FudgeboxNode)
-        create(MtapKyc, MtapAccount, FudgeboxCounter, FudgeboxHead, FudgeboxNode)
+//        drop(MtapKyc, MtapAccount, FudgeboxCounter, FudgeboxHead, FudgeboxNode)
+//        create(MtapKyc, MtapAccount, FudgeboxCounter, FudgeboxHead, FudgeboxNode)
 
         for (account in userAccounts) {
             MtapAccount.insert {
@@ -156,5 +154,6 @@ private fun testSql(userAccounts: List<Account>) {
 
     }
     output.close()
+    println("Written to ${outputSql.absolutePath}")
 }
 

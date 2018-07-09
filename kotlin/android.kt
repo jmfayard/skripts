@@ -55,7 +55,7 @@ fun main(args: Array<String>) {
 }
 
 fun pseudoLocale(androidStringFile: Map<String, String>) {
-    val map = androidStringFile.mapKeys { entry -> entry.key }
+    val map = androidStringFile.mapValues { it.key }
     val document = generateAndroidXml(map)
     document.printXml()
 //    document.writeXmlToFile(destination)

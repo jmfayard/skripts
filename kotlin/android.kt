@@ -11,6 +11,7 @@ import org.jdom2.Document
 import org.jdom2.Element
 import org.jdom2.Namespace
 import java.io.File
+import java.util.regex.Pattern
 
 
 private val HELP =
@@ -55,10 +56,22 @@ fun main(args: Array<String>) {
 }
 
 fun pseudoLocale(androidStringFile: Map<String, String>) {
-    val map = androidStringFile.mapValues { it.key }
+    val map = androidStringFile.mapValues { keyWithPlaceholder(it.key, it.value) }
     val document = generateAndroidXml(map)
     document.printXml()
 //    document.writeXmlToFile(destination)
+}
+
+
+private val regexpPH = Pattern.compile("(%s|%\\d\\\$s)")
+
+fun keyWithPlaceholder(key: String, value: String): String {
+    val placeHoldersNumber = value.split(regexpPH).size -  1
+    var valueWithPlaceHodler = key
+    repeat(placeHoldersNumber) {
+        valueWithPlaceHodler += " %s"
+    }
+    return valueWithPlaceHodler
 }
 
 fun extractIdsFromLayout(path: String): String {

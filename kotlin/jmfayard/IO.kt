@@ -45,7 +45,7 @@ fun readableFile(path: String, directory: Boolean = false): File = File(path).al
 }
 
 fun writableFile(path: String): File = File(path).also {
-    require(it.canWrite()) { "Cannot read file ${it.absolutePath}" }
+    it.createNewFile()
 }
 
 inline fun <T> List<T>.printList(name: String): List<T> {

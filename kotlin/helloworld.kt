@@ -1,5 +1,5 @@
 #!/usr/bin/env kotlin-script.sh
-package scripts.helloworld
+package helloworld
 
 fun main(args: Array<String>) {
     println("Hello World!")

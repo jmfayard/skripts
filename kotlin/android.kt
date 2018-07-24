@@ -2,7 +2,6 @@
 package android
 
 import debug
-import environmentVariable
 import jmfayard.*
 import krangl.*
 import org.apache.commons.csv.CSVFormat
@@ -14,6 +13,7 @@ import java.io.File
 import java.util.regex.Pattern
 
 
+private val VERSION = "0.2"
 private val HELP =
         """
 Kotlin scripts for Android devs.
@@ -21,38 +21,82 @@ Kotlin scripts for Android devs.
 Usage:
   android.kt layout <file>
   android.kt strings
-  android.kt xml2csv <file>
-  android.kt csv2xml <file>
+  android.kt xml2csv --dest <csv> <lang>...
+  android.kt csv2xml --src <csv> <lang>...
   android.kt pseudolocale <file>
   android.kt -h | --help
   android.kt --version
 
 Options:
-  -h --help     Show this screen.
-  --version     Show version.
+  --module <dir>    Path to the android module, "app" by default
+  -h --help         Show this screen.
+  --version         Show version.
 """.trim()
 
-private val APP : String by environmentVariable("Path to the android project you are working on")
 
 
 
 fun main(args: Array<String>) {
-    val p: Map<String, Any> = Docopt(HELP).withVersion("0.1").parse(args.toList())
+    val p: Map<String, Any> = Docopt(HELP).withVersion(VERSION).parse(args.toList())
     val file = p["<file>"] as? String
+    val module = p["<dir>"] as? String ?: "app"
 
     when {
         p["layout"] == true -> println(extractIdsFromLayout(file!!))
-        p["strings"] == true -> findFiles(APP).printList("strings")
-        p["csv2xml"] == true -> i18nCsv2xml(file!!, "$APP/app/src/main/res", listOf("pt", "tdt"))
-        p["xml2csv"] == true -> krangleStrings(parseAndroidStringFile(file!!).printMap("strings"), APP)
+        p["strings"] == true -> findFiles(module).printList("strings.xml")
+        p["csv2xml"] == true -> convertI18nFilesCsvToAndroid(p, module)
+        p["xml2csv"] == true -> convertI18nFilesAndroid2Csv(p, module)
         p["pseudolocale"] == true -> pseudoLocale(parseAndroidStringFile(file!!))
     }
 
-//        p["settings"] == true && p["<value>"] == null -> println("Show settings")
-//        p["settings"] == true -> println("SET " + p["<key>"] + " = " + p["<value>"])
-//android.kt settings
-//android.kt settings <key> <value>
+}
 
+//   android.kt xml2csv --module <dir> --dest <csv> <lang>...
+fun convertI18nFilesAndroid2Csv(p: Map<String, Any>, module: String) {
+    println(p)
+    val dest = p["<csv>"] as? String ?: error("Missing argument --dest output.csv")
+    val locales = p["<lang>"] as? List<String> ?: error("Missing locales [fr en pt]")
+    convertI18nFilesAndroid2Csv(readableFile(module, directory = true), writableFile(dest), locales)
+}
+
+/** android.kt csv2xml --module <dir> --src <csv> <lang>... **/
+fun convertI18nFilesCsvToAndroid(p: Map<String, Any>, module: String) {
+    println(p)
+    val src = p["<csv>"] as? String ?: error("Missing argument --src output.csv")
+    val locales = p["<lang>"] as? List<String> ?: error("Missing locales [fr en pt-rTL]")
+    val resDir = readableFile("$module/src/main/res", directory = true)
+    i18nCsv2xml(readableFile(src), resDir, locales)
+}
+
+fun convertI18nFilesAndroid2Csv(module: File, output: File, locales: List<String>) {
+    require( module.resolve("src/main/res").canRead()) {
+        "Invalid android repository ${module.absolutePath}"
+    }
+
+    val english = parseAndroidStringFile(module.resolve("src/main/res/values/strings.xml").absolutePath).printMap("strings")
+    val others = locales.associate { code ->
+        val localeFile = module.resolve("src/main/res/values-$code/strings.xml").absolutePath
+        code to parseAndroidStringFile(localeFile)
+    }
+    krangleStrings(english, output, others)
+
+}
+
+
+fun krangleStrings(english: Map<String, String>, dest: File, locales: Map<String, Map<String, String>>) {
+    val codes = locales.keys.sorted()
+    val rows = listOf("name", "en") + codes
+    val values = english.keys
+            .sorted()
+            .flatMap { key ->
+                val translations = codes.map { locales[it]!!.getOrDefault(key, english[key]) }
+                listOf(key, english[key]) + translations
+            }
+            .toTypedArray()
+    val df: DataFrame = dataFrameOf(*rows.toTypedArray())(*values)
+    df.print()
+    df.writeCSV(dest)
+    println("Written to ${dest.absolutePath}")
 }
 
 fun pseudoLocale(androidStringFile: Map<String, String>) {
@@ -120,9 +164,8 @@ private data class LayoutElement(val type: String, val id: String) {
     }
 }
 
-fun i18nCsv2xml(srcPath: String, destPath: String, langs: List<String>) {
-    val destDir = readableFile(destPath, directory = true)
-    val df = krangleParse(readableFile(srcPath), langs)
+fun i18nCsv2xml(csvFile: File, destDir: File, langs: List<String>) {
+    val df = krangleParse(csvFile, langs)
     for (lang in langs) {
         val i18nMap: Map<String, String> = i18nStrings(df, lang)
         val destination = destDir.resolve("values-$lang/strings.xml")
@@ -136,7 +179,7 @@ fun i18nCsv2xml(srcPath: String, destPath: String, langs: List<String>) {
 fun krangleParse(file: File, langs: List<String>): DataFrame {
     val lang = langs.first()
     val columns = arrayOf("name") + langs
-    val df = DataFrame.fromCSV(file, CSVFormat.DEFAULT.withHeader().withDelimiter(';'))
+    val df = DataFrame.fromCSV(file, CSVFormat.DEFAULT.withHeader().withDelimiter(','))
             .select(*columns)
             .filter { it[lang].asStrings().map { it?.startsWith("XXX") == false }.toBooleanArray() }
     df.glimpse()
@@ -171,13 +214,3 @@ fun parseAndroidStringFile(path: String): Map<String, String> {
 
 private fun Element.asAndroidString(): Pair<String, String> =
         this.getAttribute("name").value to this.text
-
-fun krangleStrings(map: Map<String, String>, path: String) {
-    val dest = readableFile(path, directory = true).resolve("strings.csv")
-
-    val values = map.entries.sortedBy { it.key }.flatMap { listOf(it.key, it.value, "") }.toTypedArray()
-    val df: DataFrame = dataFrameOf("name", "EN", "PT")(*values)
-    df.print()
-    df.writeCSV(dest)
-    println("Written to ${dest.absolutePath}")
-}

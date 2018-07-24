@@ -22,11 +22,23 @@ All you need to get going is a JDK installed and a unix-ish environment.
 ```shell
 $ ./gradlew assemble copyToLib
 $ export PATH=$PATH:`pwd`/kotlin
-$ date_me.kt
-1487239456                           seconds since EPOCH
-1487239456368                        milliseconds since EPOCH
-2017-02-16                           UTC time (simple format)
-2017-02-16T10:04:16.368Z             UTC time
-2017-02-16 10:04:16                  UTC time (MySql format)
-
 ```
+
+## Sample script
+
+`$ cat kotlin/helloworld.kt `
+
+```kotlin
+#!/usr/bin/env kotlin-script.sh
+package helloworld
+
+fun main(args: Array<String>) {
+    println("Hello World!")
+}
+```
+
+``` 
+$ chmod a+x kotlin/helloworld.kt
+$ helloworld.kt
+Hello World!
+``

@@ -13,7 +13,9 @@ import java.io.File
 import java.util.regex.Pattern
 
 
-private val VERSION = "0.2"
+private val CSV_DELIMITOR=';'
+private val VERSION = "0.3"
+val RES_DIR = listOf("src/main/res_shared", "app/src/main/res_shared", "app/src/main/res", "src/main/res")
 private val HELP =
         """
 Kotlin scripts for Android devs.
@@ -28,7 +30,7 @@ Usage:
   android.kt --version
 
 Options:
-  --module <dir>    Path to the android module, "app" by default
+  --module <dir>    Path to the android module
   -h --help         Show this screen.
   --version         Show version.
 """.trim()
@@ -39,7 +41,7 @@ Options:
 fun main(args: Array<String>) {
     val p: Map<String, Any> = Docopt(HELP).withVersion(VERSION).parse(args.toList())
     val file = p["<file>"] as? String
-    val module = p["<dir>"] as? String ?: "app"
+    val module = p["<dir>"] as? String ?: "."
 
     when {
         p["layout"] == true -> println(extractIdsFromLayout(file!!))
@@ -56,7 +58,7 @@ fun convertI18nFilesAndroid2Csv(p: Map<String, Any>, module: String) {
     println(p)
     val dest = p["<csv>"] as? String ?: error("Missing argument --dest output.csv")
     val locales = p["<lang>"] as? List<String> ?: error("Missing locales [fr en pt]")
-    convertI18nFilesAndroid2Csv(readableFile(module, directory = true), writableFile(dest), locales)
+    convertI18nFilesAndroid2Csv(module, writableFile(dest), locales)
 }
 
 /** android.kt csv2xml --module <dir> --src <csv> <lang>... **/
@@ -64,18 +66,23 @@ fun convertI18nFilesCsvToAndroid(p: Map<String, Any>, module: String) {
     println(p)
     val src = p["<csv>"] as? String ?: error("Missing argument --src output.csv")
     val locales = p["<lang>"] as? List<String> ?: error("Missing locales [fr en pt-rTL]")
-    val resDir = readableFile("$module/src/main/res", directory = true)
+    val resDir =   resDirectory(File(module))
+
     i18nCsv2xml(readableFile(src), resDir, locales)
 }
 
-fun convertI18nFilesAndroid2Csv(module: File, output: File, locales: List<String>) {
-    require( module.resolve("src/main/res").canRead()) {
-        "Invalid android repository ${module.absolutePath}"
-    }
+fun resDirectory(module: File) : File {
+    return RES_DIR.map { module.resolve(it) }.firstOrNull { it.isDirectory } ?: throw IllegalStateException("Invalid android repository ${module.absolutePath}")
+}
 
-    val english = parseAndroidStringFile(module.resolve("src/main/res/values/strings.xml").absolutePath).printMap("strings")
+
+fun convertI18nFilesAndroid2Csv(module: String, output: File, locales: List<String>) {
+
+    val RES = resDirectory(File(module))
+
+    val english = parseAndroidStringFile(RES.resolve("values/strings.xml").absolutePath).printMap("strings")
     val others = locales.associate { code ->
-        val localeFile = module.resolve("src/main/res/values-$code/strings.xml").absolutePath
+        val localeFile = RES.resolve("values-$code/strings.xml").absolutePath
         code to parseAndroidStringFile(localeFile)
     }
     krangleStrings(english, output, others)
@@ -95,7 +102,7 @@ fun krangleStrings(english: Map<String, String>, dest: File, locales: Map<String
             .toTypedArray()
     val df: DataFrame = dataFrameOf(*rows.toTypedArray())(*values)
     df.print()
-    df.writeCSV(dest)
+    df.writeCSV(dest, format = CSVFormat.EXCEL.withDelimiter(CSV_DELIMITOR))
     println("Written to ${dest.absolutePath}")
 }
 
@@ -179,7 +186,7 @@ fun i18nCsv2xml(csvFile: File, destDir: File, langs: List<String>) {
 fun krangleParse(file: File, langs: List<String>): DataFrame {
     val lang = langs.first()
     val columns = arrayOf("name") + langs
-    val df = DataFrame.fromCSV(file, CSVFormat.DEFAULT.withHeader().withDelimiter(','))
+    val df = DataFrame.fromCSV(file, CSVFormat.DEFAULT.withHeader().withDelimiter(CSV_DELIMITOR))
             .select(*columns)
             .filter { it[lang].asStrings().map { it?.startsWith("XXX") == false }.toBooleanArray() }
     df.glimpse()
@@ -194,10 +201,14 @@ fun generateAndroidXml(i18nMap: Map<String, String>): Document =
         xmlDocument("resources") {
             for ((key, value) in i18nMap) {
                 addElement("string", mapOf("name" to key)) {
-                    text = value
+                    text = espaceXmlValue(value)
                 }
             }
         }
+
+fun espaceXmlValue(value: String): String {
+    return value.replace("'", "\\'")
+}
 
 
 fun findFiles(path: String): List<File> {

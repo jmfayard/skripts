@@ -72,7 +72,7 @@ fun convertI18nFilesCsvToAndroid(p: Map<String, Any>, module: String) {
 }
 
 fun resDirectory(module: File) : File {
-    return RES_DIR.map { module.resolve(it) }.firstOrNull { it.isDirectory } ?: throw IllegalStateException("Invalid android repository ${module.absolutePath}")
+    return RES_DIR.map { module.resolve(it) }.firstOrNull { it.isDirectory } ?: error("Invalid android repository ${module.absolutePath}")
 }
 
 

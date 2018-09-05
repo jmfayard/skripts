@@ -63,6 +63,7 @@ dependencies {
     // html
     compile(Deps.JTwig)
     compile(Deps.KotlinXHtml)
+    compile(Deps.Selenium)
 
     // UX
     compile(Deps.TornadoFx)

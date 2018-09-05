@@ -322,6 +322,7 @@ object Deps {
     const val MockitoCore = "org.mockito:mockito-core:${versions.mockito}"
 
 
+    const val Selenium = "org.seleniumhq.selenium:selenium-java:" + versions.selenium
 
 
 }

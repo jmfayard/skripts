@@ -51,4 +51,5 @@ object Versions {
     const val jtwig = "5.85.3.RELEASE"
     const val moshiLazyAdapters = "2.1"
     const val koin = "0.9.1"
+    const val selenium = "2.41.0"
 }

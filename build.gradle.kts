@@ -1,5 +1,6 @@
 @file:Suppress("UNUSED_VARIABLE")
 
+import org.gradle.kotlin.dsl.accessors.tasks.PrintAccessors
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
@@ -136,37 +137,21 @@ java {
     }
 }
 
-tasks {
-    val copyToLib by creating(Copy::class) {
-        from(configurations.runtime)
-        into("lib")
-    }
 
-//    val klean by creating(Delete::class) {
-//        delete = setOf("build/source/kapt", "build/source/kaptKotlin")
-//    }
-
-
-    // https://kotlinlang.slack.com/files/U1BASJRMW/F750V7R5G/task_for_setting_up_a_script_for_kshell.kt
-    // Usage: gw kshell && bash build/kshell.sh
-    val kshell by tasks.creating {
-        dependsOn("assemble")
-        doFirst {
-            val buildscriptClasspath = rootProject.buildscript.configurations["classpath"]
-
-            val embeddedableCompiler = buildscriptClasspath
-                .resolvedConfiguration
-                .resolvedArtifacts
-                .first { it.name == "kotlin-compiler-embeddable" }
-
-            val jarLocation = embeddedableCompiler.file
-            val mainClasspath = java.sourceSets["main"].runtimeClasspath.joinToString(separator = ":")
-            val scriptContent = """#!/usr/bin/env bash
-java -cp ${jarLocation.absolutePath} org.jetbrains.kotlin.cli.jvm.K2JVMCompiler -cp $mainClasspath
-"""
-            val output = file("$buildDir/kshell.sh")
-            output.writeText(scriptContent)
-            output.setExecutable(true)
-        }
-    }
+val copyToLib by tasks.creating(Copy::class) {
+    from(configurations.runtime)
+    into("lib")
 }
+
+val hello1 = tasks.newSimpleTask(name = "hello1", description = "Prints Hello World") {
+    println("Hello World 1")
+}
+val hello2 = tasks.newSimpleTask(name = "hello2", dependsOn = listOf(":hello1")) {
+    println("Hello World 2")
+}
+val hello3 = tasks.newSimpleTask(name = "hello3", dependsOnTasks = listOf(hello1, hello2)) {
+    println("Hello World 3")
+    println("Hello World 3")
+}
+
+

@@ -1,5 +1,5 @@
 object Versions {
-    const val kotlin = "1.2.31"
+    const val kotlin = "1.2.61"
 
     const val androidjob = "1.2.1"
     const val architecture = "1.0.0"

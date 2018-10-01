@@ -8,7 +8,8 @@ plugins {
     `build-scan`
     application
     kotlin("jvm") version Versions.kotlin
-    id("com.github.ben-manes.versions").version("0.17.0")
+    id("com.github.ben-manes.versions").version("0.20.0")
+    id("jmfayard.github.io.gradle-kotlin-dsl-libs").version("0.2")
 //    kotlin("kapt") version "1.2.21"
 }
 
@@ -16,14 +17,14 @@ application {
     mainClassName = "samples.HelloCoroutinesKt"
 }
 
-kotlin { // configure<org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension>
+kotlin {
     experimental.coroutines = Coroutines.ENABLE
 }
 
 
 repositories {
-    jcenter()
     mavenCentral()
+    jcenter()
     google()
     maven { setUrl("https://jitpack.io") }
     maven { setUrl("https://dl.bintray.com/jerady/maven") }
@@ -32,75 +33,76 @@ repositories {
 }
 
 
-// missing in the kotlin-dsl
-fun DependencyHandler.`compile`(deps: List<String>) {
-    for (dep in deps) add("compile", dep)
-}
-
 
 dependencies {
-    testCompile(Deps.KotlinTest)
-    testCompile(Deps.JUnit)
-    testCompile(Deps.MockitoKotlin)
-    testCompile(Deps.MockitoCore)
-    testCompile(kotlin("test"))
-    testCompile(kotlin("test-junit"))
-    testCompile(Deps.Koin("koin-test").first())
+    testCompile(Libs.kotlin_test)
+    testCompile(Libs.junit)
+    testCompile(Libs.mockito_kotlin)
+    testCompile(Libs.mockito_core)
+    testCompile(Libs.kotlintest)
+    testCompile(Libs.kotlin_test_junit)
 
-    testCompileOnly(Deps.Jsr305)
-    compileOnly(Deps.Jsr305)
-    compile(Deps.Koin("koin-core"))
+    testCompileOnly(Libs.jsr305)
+    compileOnly(Libs.jsr305)
+
+    compile(Libs.koin_core)
 
     // kotlin
-    compile(kotlin("stdlib-jre8"))
-    compile(kotlin("reflect"))
+    compile(Libs.kotlin_stdlib_jdk8)
+    compile(Libs.kotlin_reflect)
 
     // concurrency
-    compile(Deps.Coroutines("kotlinx-coroutines-core", "kotlinx-coroutines-rx2"))
-    compile(Deps.RxJava2)
-    compile(Deps.RxKotlin)
+    compile(Libs.kotlinx_coroutines_core)
+    compile(Libs.kotlinx_coroutines_rx2)
+    compile(Libs.rxjava)
+    compile(Libs.rxkotlin)
 
 
     // html
-    compile(Deps.JTwig)
-    compile(Deps.KotlinXHtml)
-    compile(Deps.Selenium)
+    compile(Libs.jtwig_core)
+    compile(Libs.kotlinx_html_jvm)
+    compile(Libs.selenium_java)
 
     // UX
-    compile(Deps.TornadoFx)
-    compile(Deps.ControlsFx)
-    compile(Deps.FontAwesomeFx)
+    compile(Libs.tornadofx)
+    compile(Libs.controlsfx)
+    compile(Libs.fontawesomefx)
 
 
     // IO
-    compile(Deps.Okio)
-    compile(Deps.Moshi)
-    compile(Deps.MoshiLazyAdapters)
-    compile(listOf(Deps.Okhttp, Deps.OkhttpLogging, Deps.OkhttpMockserver))
-    compile(Deps.Retrofit("retrofit", "converter-moshi", "adapter-rxjava", "retrofit-mock", "adapter-rxjava2"))
-    compile(Deps.RetrofitCoroutines)
-    compile(Deps.ZeroTurnAround)
-    compile(Deps.Sl4J)
-    compile(Deps.Timber)
-    compile(Deps.JDom)
-    compile(Deps.Konfig)
-    compile(Deps.Sl4J)
-    compile(Deps.Timber)
+    compile(Libs.okio)
+    compile(Libs.moshi)
+    compile(Libs.moshi_lazy_adapters)
+    compile(Libs.okhttp)
+    compile(Libs.logging_interceptor)
+    compile(Libs.mockwebserver)
+    compile(Libs.retrofit)
+    compile(Libs.converter_moshi)
+    compile(Libs.adapter_rxjava2)
+    compile(Libs.retrofit_mock)
+    compile(Libs.kotlin_coroutines_retrofit)
+
+    compile(Libs.zt_exec)
+    compile(Libs.slf4j_simple)
+    compile(Libs.timber)
+    compile(Libs.jdom)
+    compile(Libs.konfig)
 
     // Data
-    compile(Deps.JodaTime)
-    compile(Deps.Krangl)
-    compile(Deps.KotlinPoet)
-    compile(Deps.Docopt)
-    compile(Deps.Expose)
-    compile(Deps.Postgres)
+    compile(Libs.joda_time)
+    compile(Libs.krangl)
+    compile(Libs.kotlinpoet)
+    compile(Libs.docopt)
+    compile(Libs.exposed)
+    compile(Libs.postgresql)
 
 
 }
 
 buildScan {
-    setLicenseAgreementUrl("https://gradle.com/terms-of-service")
-    setLicenseAgree("yes")
+    setTermsOfServiceUrl("https://gradle.com/terms-of-service")
+    setTermsOfServiceAgree("yes")
+    publishAlways()
 }
 
 
@@ -153,5 +155,4 @@ val hello3 = tasks.newSimpleTask(name = "hello3", dependsOnTasks = listOf(hello1
     println("Hello World 3")
     println("Hello World 3")
 }
-
 

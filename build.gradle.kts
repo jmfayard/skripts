@@ -8,8 +8,8 @@ plugins {
     `build-scan`
     application
     kotlin("jvm") version Versions.kotlin
-    id("com.github.ben-manes.versions").version("0.20.0")
-    id("jmfayard.github.io.gradle-kotlin-dsl-libs").version("0.2")
+    id("jmfayard.github.io.gradle-kotlin-dsl-libs").version("0.2.0")
+//    id("com.github.ben-manes.versions").version("0.20.0")
 //    kotlin("kapt") version "1.2.21"
 }
 
@@ -106,15 +106,6 @@ buildScan {
 }
 
 
-/**
- * JSR305 nullability annotations
- *
- * See https://medium.com/square-corner-blog/non-null-is-the-default-58ffc0bb9111
- * See https://github.com/Kotlin/KEEP/blob/jsr-305/proposals/jsr-305-custom-nullability-qualifiers.md
- * See https://github.com/square/tape/commit/8d87c7de3c799261f387019b793ee08bcce43545
- * See https://stackoverflow.com/a/11807961/936870
- * Many thanks to Eric Cochran /  Gabriel Ittner / Benoît Quenaudon
- * **/
 tasks.withType(KotlinCompile::class.java).all {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
@@ -144,15 +135,3 @@ val copyToLib by tasks.creating(Copy::class) {
     from(configurations.runtime)
     into("lib")
 }
-
-val hello1 = tasks.newSimpleTask(name = "hello1", description = "Prints Hello World") {
-    println("Hello World 1")
-}
-val hello2 = tasks.newSimpleTask(name = "hello2", dependsOn = listOf(":hello1")) {
-    println("Hello World 2")
-}
-val hello3 = tasks.newSimpleTask(name = "hello3", dependsOnTasks = listOf(hello1, hello2)) {
-    println("Hello World 3")
-    println("Hello World 3")
-}
-

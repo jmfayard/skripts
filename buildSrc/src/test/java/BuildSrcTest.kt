@@ -1,12 +1,8 @@
-import io.kotlintest.matchers.shouldBe
-import io.kotlintest.specs.StringSpec
+import org.amshove.kluent.`should be`
 
+class BuildSrcTest {
 
-class BuildSrcTest: StringSpec() { init {
-
-    "2+2 = 4" {
-        2+2 shouldBe 4
-
+    fun helloworld() {
+        (2+2) `should be` 4
     }
-
-}}
+}

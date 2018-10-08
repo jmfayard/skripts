@@ -2,7 +2,7 @@
 package base64
 
 import okio.Buffer
-import okio.Okio
+import okio.source
 import java.io.File
 
 fun main(args: Array<String>) {
@@ -15,7 +15,7 @@ fun main(args: Array<String>) {
 fun base64(file: File): String {
     check(file.canRead())
     Buffer().use { buffer ->
-        Okio.source(file).use { source ->
+        file.source().use { source ->
             buffer.writeAll(source)
         }
         return buffer.readByteString().base64()

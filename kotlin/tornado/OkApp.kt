@@ -1,6 +1,5 @@
 package tornado
 
-import javafx.collections.FXCollections
 import javafx.scene.layout.GridPane
 import tornadofx.*
 
@@ -31,11 +30,11 @@ class DemoTableView : View() {
             row {
                 vbox {
                     label("Tableview from a map")
-                    tableview(FXCollections.observableArrayList<Map.Entry<String, Int>>(mapTableContent.entries)) {
-                        column("Item", Map.Entry<String, Int>::key)
-                        column("Count", Map.Entry<String, Int>::value)
-                        resizeColumnsToFitContent()
-                    }
+//                    tableview(FXCollections.observableArrayList<Map.Entry<String, Int>>(mapTableContent.entries)) {
+//                        column("Item", Map.Entry<String, Int>::key)
+//                        column("Count", Map.Entry<String, Int>::value)
+//                        resizeColumnsToFitContent()
+//                    }
                 }
             }
         }

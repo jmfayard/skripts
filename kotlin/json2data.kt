@@ -2,13 +2,14 @@
 package json2data
 
 import com.squareup.moshi.Moshi
-import okio.Okio
+import okio.buffer
+import okio.source
 import java.util.*
 
 
 fun main(args: Array<String>) {
 
-    val buffer = Okio.buffer(Okio.source(System.`in`))
+    val buffer = System.`in`.source().buffer()
     val json = buffer.readUtf8()
     println(json)
 

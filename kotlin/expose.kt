@@ -2,8 +2,9 @@
 package expose
 
 import com.squareup.moshi.Moshi
-import okSink
-import okSource
+import okio.buffer
+import okio.sink
+import okio.source
 import org.docopt.Docopt
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.statements.StatementContext
@@ -29,7 +30,7 @@ fun main(args: Array<String>) {
     val docopt = Docopt(HELP).withVersion("0.1").parse(args.toList())
     val file = File(docopt.get("<users.json>") as String)
     val moshi = Moshi.Builder().build()
-    val accounts = moshi.adapter(Accounts::class.java).fromJson(file.okSource())!!
+    val accounts = moshi.adapter(Accounts::class.java).fromJson(file.source().buffer())!!
     println(accounts)
     testSql(accounts.userAccounts, file.resolveSibling("oldusers.sql"))
 }
@@ -99,7 +100,7 @@ enum class enum_role {
 
 private fun testSql(userAccounts: List<Account>, outputSql: File) {
 //    Database.connect("jdbc:h2:mem:test", driver = "org.h2.Driver")
-    val output = outputSql.okSink()
+    val output = outputSql.sink().buffer()
     Database.connect("jdbc:postgresql://localhost:5432/mtap", driver = "org.postgresql.Driver", user = "jmfayard")
 
     transaction {

@@ -5,13 +5,13 @@
  *   `$ ./gradlew syncLibs`
  * to update this file */
 object Versions {
-    const val adapter_rxjava2: String = "2.3.0" // available: milestone=2.4.0
+    const val adapter_rxjava2: String = "2.4.0" // up-to-date
 
     const val com_gradle_build_scan_gradle_plugin: String = "1.16" // up-to-date
 
-    const val controlsfx: String = "8.40.10" // available: milestone=9.0.0
+    const val controlsfx: String = "9.0.0" // up-to-date
 
-    const val converter_moshi: String = "2.3.0" // available: milestone=2.4.0
+    const val converter_moshi: String = "2.4.0" // up-to-date
 
     const val docopt: String = "0.6.0.20150202" // up-to-date
 
@@ -24,11 +24,11 @@ object Versions {
     const val jmfayard_github_io_gradle_kotlin_dsl_libs_gradle_plugin: String =
             "0.2.2" // exceed the version found: 0.2.1
 
-    const val joda_time: String = "2.9.9" // available: milestone=2.10
+    const val joda_time: String = "2.10" // up-to-date
 
     const val jsr305: String = "3.0.2" // up-to-date
 
-    const val jtwig_core: String = "5.85.3.RELEASE" // available: milestone=5.87.0.RELEASE
+    const val jtwig_core: String = "5.87.0.RELEASE" // up-to-date
 
     const val junit: String = "4.12" // up-to-date
 
@@ -38,15 +38,15 @@ object Versions {
 
     const val kotlin_coroutines_retrofit: String = "0.9.0" // available: milestone=0.12.0
 
-    const val kotlin_reflect: String = "1.2.50" // available: milestone=1.2.71
+    const val kotlin_reflect: String = "1.2.71" // up-to-date
 
     const val kotlin_scripting_compiler_embeddable: String = "1.2.61" // available: milestone=1.2.71
 
-    const val kotlin_stdlib_jdk8: String = "1.2.61" // available: milestone=1.2.71
+    const val kotlin_stdlib_jdk8: String = "1.2.71" // up-to-date
 
-    const val kotlin_test: String = "1.2.61" // available: milestone=1.2.71
+    const val kotlin_test: String = "1.2.71" // up-to-date
 
-    const val kotlin_test_junit: String = "1.2.61" // available: milestone=1.2.71
+    const val kotlin_test_junit: String = "1.2.71" // up-to-date
 
     const val kotlinpoet: String = "0.6.0" // available: milestone=1.0.0-RC1
 
@@ -56,48 +56,48 @@ object Versions {
 
     const val kotlinx_coroutines_rx2: String = "0.21.1" // available: milestone=0.30.1
 
-    const val kotlinx_html_jvm: String = "0.6.3" // available: milestone=0.6.11
+    const val kotlinx_html_jvm: String = "0.6.11" // up-to-date
 
     const val krangl: String = "0.6" // available: milestone=0.10.3
 
-    const val logging_interceptor: String = "3.9.1" // available: milestone=3.11.0
+    const val logging_interceptor: String = "3.11.0" // up-to-date
 
-    const val mockito_core: String = "2.12.0" // available: milestone=2.23.0
+    const val mockito_core: String = "2.23.0" // up-to-date
 
-    const val mockito_kotlin: String = "1.5.0" // available: milestone=1.6.0
+    const val mockito_kotlin: String = "1.6.0" // up-to-date
 
-    const val mockwebserver: String = "3.9.1" // available: milestone=3.11.0
+    const val mockwebserver: String = "3.11.0" // up-to-date
 
-    const val moshi: String = "1.5.0" // available: milestone=1.7.0
+    const val moshi: String = "1.7.0" // up-to-date
 
-    const val moshi_lazy_adapters: String = "2.1" // available: milestone=2.2
+    const val moshi_lazy_adapters: String = "2.2" // up-to-date
 
-    const val okhttp: String = "3.9.1" // available: milestone=3.11.0
+    const val okhttp: String = "3.11.0" // up-to-date
 
-    const val okio: String = "1.13.0" // available: milestone=2.1.0
+    const val okio: String = "2.0.0" // available: milestone=2.1.0
 
     const val org_jetbrains_kotlin_jvm_gradle_plugin: String =
             "1.2.61" // available: milestone=1.2.71
 
-    const val postgresql: String = "42.2.2" // available: milestone=42.2.5
+    const val postgresql: String = "42.2.5" // up-to-date
 
-    const val retrofit: String = "2.3.0" // available: milestone=2.4.0
+    const val retrofit: String = "2.4.0" // up-to-date
 
-    const val retrofit_mock: String = "2.3.0" // available: milestone=2.4.0
+    const val retrofit_mock: String = "2.4.0" // up-to-date
 
-    const val rxjava: String = "2.1.7" // available: milestone=2.2.2
+    const val rxjava: String = "2.2.2" // up-to-date
 
-    const val rxkotlin: String = "2.2.0" // available: milestone=2.3.0
+    const val rxkotlin: String = "2.3.0" // up-to-date
 
     const val selenium_java: String = "2.41.0" // available: milestone=3.14.0
 
     const val slf4j_simple: String = "1.7.25" // available: milestone=1.8.0-beta2
 
-    const val timber: String = "4.6.0" // available: milestone=4.7.1
+    const val timber: String = "4.7.1" // up-to-date
 
-    const val tornadofx: String = "1.7.13" // available: milestone=1.7.17
+    const val tornadofx: String = "1.7.17" // up-to-date
 
-    const val zt_exec: String = "1.9" // available: milestone=1.10
+    const val zt_exec: String = "1.10" // up-to-date
 
     object Gradle {
         const val runningVersion: String = "4.10.2"

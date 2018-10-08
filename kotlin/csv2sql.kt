@@ -1,14 +1,15 @@
 #!/usr/bin/env kotlin-script.sh
 package csv2sql
 
-import okSource
 import okio.BufferedSource
+import okio.buffer
+import okio.source
 import java.io.File
 
 fun main(args: Array<String>) {
     val file = File(args[0])
 
-    generateSql(file.okSource())
+    generateSql(file.source().buffer())
 }
 
 val start = """

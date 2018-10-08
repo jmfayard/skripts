@@ -2,11 +2,12 @@
 package hellomarkdown
 
 import jmfayard.osxOpenFile
-import okSink
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
+import okio.buffer
+import okio.sink
 import java.io.File
 
 fun main(args: Array<String>) {
@@ -30,7 +31,7 @@ fun postMarkdown(file: File, dest: File) {
     val response = client.newCall(request).execute()
     val body = requireNotNull(response.body()) { "Unexpected code $response " }
 
-    dest.okSink().use { sink ->
+    dest.sink().buffer().use { sink ->
         sink.writeAll(body.source())
     }
 

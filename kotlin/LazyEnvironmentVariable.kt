@@ -1,6 +1,6 @@
 import okio.BufferedSink
-import okio.BufferedSource
-import okio.Okio
+import okio.appendingSink
+import okio.buffer
 import java.io.File
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
@@ -39,6 +39,4 @@ fun <T> List<T>.debugList(name: String): List<T> {
 }
 
 fun BufferedSink.newLine() = writeUtf8("\n")
-fun File.okSource(): BufferedSource = Okio.buffer(Okio.source(this))
-fun File.okSink(): BufferedSink = Okio.buffer(Okio.sink(this))
-fun File.okAppendingSink(): BufferedSink = Okio.buffer(Okio.appendingSink(this))
+fun File.okAppendingSink(): BufferedSink = this.appendingSink().buffer()

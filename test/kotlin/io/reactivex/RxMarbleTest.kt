@@ -1,8 +1,6 @@
 package io.reactivex
 
 import io.kotlintest.specs.FreeSpec
-import io.reactivex.schedulers.TestScheduler
-import java.util.concurrent.TimeUnit
 
 class RxMarbleTest : FreeSpec() { init {
 
@@ -74,7 +72,7 @@ class RxMarbleTest : FreeSpec() { init {
                 val (output, actual) = rxMarble.marbleOf(rxMarble.cold(input, ints))
                 output shouldBe input
                 actual shouldBe value
-            }
+            }.config(ignored = true)
         }
     }
 

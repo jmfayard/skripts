@@ -15,7 +15,10 @@ import kotlinx.coroutines.experimental.channels.produce
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
-import org.koin.dsl.module.applicationContext
+import org.kodein.di.Kodein
+import org.kodein.di.generic.bind
+import org.kodein.di.generic.instance
+import org.kodein.di.generic.singleton
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -23,19 +26,16 @@ import retrofit2.http.*
 import ru.gildor.coroutines.retrofit.Result
 import ru.gildor.coroutines.retrofit.awaitResult
 
-val checkvistModule = applicationContext {
 
+val kodeinCheckvistModule = Kodein.Module("checkvist") {
     val CHECKVIST_KEY by environmentVariable("No OpenApi Key found. Grab one at https://checkvist.com/auth/profile")
 
-    bean { buildOkHttpClient() }
-    bean { buildRetrofit(getProperty(CHECKVIST_URL), get(), get()) }
-    bean("moshi") { Moshi.Builder().build() }
-    bean { get<Retrofit>().create(CheckvistApi::class.java) as CheckvistApi }
-
-    bean { CheckvistCoroutineApi(get(), get()) }
-
-    bean { CheckvistCredentials(CHECKVIST_KEY, getProperty(USER), getProperty(CHECKVIST_LIST)) }
-
+    bind() from singleton { buildOkHttpClient() }
+    bind() from singleton { Moshi.Builder().build()  }
+    bind() from singleton { buildRetrofit(CHECKVIST_DEFAULT_PARAMS["CHECKVIST_URL"] as String, instance(), instance()) }
+    bind() from singleton { CheckvistCoroutineApi(instance(), instance()) }
+    bind() from singleton { CheckvistCredentials(CHECKVIST_KEY, CHECKVIST_DEFAULT_PARAMS["USER"] as String, CHECKVIST_DEFAULT_PARAMS["CHECKVIST_LIST"] as Int) }
+    bind() from singleton { instance<Retrofit>().create(CheckvistApi::class.java) }
 }
 
 private object Property {

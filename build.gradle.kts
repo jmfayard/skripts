@@ -33,66 +33,68 @@ repositories {
 
 
 dependencies {
-    testCompile(Libs.kotlin_test)
-    testCompile(Libs.junit)
-    testCompile(Libs.mockito_kotlin)
-    testCompile(Libs.mockito_core)
-    testCompile(Libs.kotlintest)
-    testCompile(Libs.kotlin_test_junit)
+    testImplementation(Libs.kotlin_test)
+    testImplementation(Libs.junit)
+    testImplementation(Libs.mockito_kotlin)
+    testImplementation(Libs.mockito_core)
+    testImplementation(Libs.kotlintest)
+    testImplementation(Libs.kotlin_test_junit)
 
     testCompileOnly(Libs.jsr305)
     compileOnly(Libs.jsr305)
 
-    compile(Libs.koin_core)
+    implementation(Libs.koin_core)
 
     // kotlin
-    compile(Libs.kotlin_stdlib_jdk8)
-    compile(Libs.kotlin_reflect)
+    implementation(Libs.kotlin_stdlib_jdk8)
+    implementation(Libs.kotlin_reflect)
 
     // concurrency
-    compile(Libs.kotlinx_coroutines_core)
-    compile(Libs.kotlinx_coroutines_rx2)
-    compile(Libs.rxjava)
-    compile(Libs.rxkotlin)
+    implementation(Libs.kotlinx_coroutines_core)
+    implementation(Libs.kotlinx_coroutines_rx2)
+    implementation(Libs.rxjava)
+    implementation(Libs.rxkotlin)
 
 
     // html
-    compile(Libs.jtwig_core)
-    compile(Libs.kotlinx_html_jvm)
-    compile(Libs.selenium_java)
+    implementation(Libs.jtwig_core)
+    implementation(Libs.kotlinx_html_jvm)
+    implementation(Libs.selenium_java)
 
     // UX
-    compile(Libs.tornadofx)
-    compile(Libs.controlsfx)
-    compile(Libs.fontawesomefx)
+    implementation(Libs.tornadofx)
+    implementation(Libs.controlsfx)
+    implementation(Libs.fontawesomefx)
 
 
     // IO
-    compile(Libs.okio)
-    compile(Libs.moshi)
-    compile(Libs.moshi_lazy_adapters)
-    compile(Libs.okhttp)
-    compile(Libs.logging_interceptor)
-    compile(Libs.mockwebserver)
-    compile(Libs.retrofit)
-    compile(Libs.converter_moshi)
-    compile(Libs.adapter_rxjava2)
-    compile(Libs.retrofit_mock)
-    compile(Libs.kotlin_coroutines_retrofit)
+    implementation(Libs.okio)
+    implementation(Libs.moshi)
+    implementation(Libs.moshi_lazy_adapters)
+    implementation(Libs.okhttp)
+    implementation(Libs.logging_interceptor)
+    implementation(Libs.mockwebserver)
+    implementation(Libs.retrofit)
+    implementation(Libs.converter_moshi)
+    implementation(Libs.adapter_rxjava2)
+    implementation(Libs.retrofit_mock)
+    implementation(Libs.kotlin_coroutines_retrofit)
 
-    compile(Libs.zt_exec)
-    compile(Libs.slf4j_simple)
-    compile(Libs.timber)
-    compile(Libs.jdom)
-    compile(Libs.konfig)
+    implementation(Libs.zt_exec)
+    implementation(Libs.slf4j_simple)
+    implementation(Libs.timber)
+    implementation(Libs.jdom)
+    implementation(Libs.konfig)
 
     // Data
-    compile(Libs.joda_time)
-    compile(Libs.krangl)
-    compile(Libs.kotlinpoet)
-    compile(Libs.docopt)
-    compile(Libs.exposed)
-    compile(Libs.postgresql)
+    implementation(Libs.joda_time)
+    implementation(Libs.krangl)
+    implementation(Libs.kotlinpoet)
+    implementation(Libs.docopt)
+    implementation(Libs.exposed)
+    implementation(Libs.postgresql)
+
+    implementation(Libs.kodein_di_generic_jvm)
 
 
 }

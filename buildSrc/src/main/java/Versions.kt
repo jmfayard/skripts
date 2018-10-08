@@ -32,6 +32,8 @@ object Versions {
 
     const val junit: String = "4.12" // up-to-date
 
+    const val kodein_di_generic_jvm: String = "5.3.0" // up-to-date
+
     const val koin_core: String = "0.9.1" // available: milestone=1.0.1
 
     const val konfig: String = "1.5.0.0" // available: milestone=1.6.10.0

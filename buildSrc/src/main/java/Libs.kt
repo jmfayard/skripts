@@ -55,6 +55,9 @@ object Libs {
      * [junit website](http://junit.org) */
     const val junit: String = "junit:junit:" + Versions.junit
 
+    const val kodein_di_generic_jvm: String =
+            "org.kodein.di:kodein-di-generic-jvm:" + Versions.kodein_di_generic_jvm
+
     const val koin_core: String = "org.koin:koin-core:" + Versions.koin_core
 
     /**

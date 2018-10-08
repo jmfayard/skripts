@@ -6,9 +6,9 @@ package checkvist
 import kotlinx.coroutines.experimental.channels.ReceiveChannel
 import kotlinx.coroutines.experimental.channels.produce
 import kotlinx.coroutines.experimental.runBlocking
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.StandAloneContext.startKoin
-import org.koin.standalone.inject
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.generic.instance
 import java.io.File
 
 /**
@@ -29,19 +29,19 @@ EOF
 """
 
 fun main(args: Array<String>) =
-    CheckvistApplication().launch(args)
+        CheckvistApplication().launch(args)
 
 
+class CheckvistApplication : KodeinAware {
 
-class CheckvistApplication: KoinComponent {
-
-    init {
-        startKoin(listOf(checkvistModule), properties = CHECKVIST_DEFAULT_PARAMS)
+    override val kodein = Kodein {
+        import(kodeinCheckvistModule)
     }
-    val coroutineApi: CheckvistCoroutineApi by inject()
-    val credentials: CheckvistCredentials by inject()
 
-    fun launch(args: Array<String>) = runBlocking{
+    val coroutineApi: CheckvistCoroutineApi by instance()
+    val credentials: CheckvistCredentials by instance()
+
+    fun launch(args: Array<String>) = runBlocking {
         when (args.firstOrNull()) {
             "list" -> doStuff(coroutineApi, credentials)
             "create" -> addTask(coroutineApi, credentials, args.getOrNull(1))
@@ -50,7 +50,6 @@ class CheckvistApplication: KoinComponent {
     }
 
 }
-
 
 
 class FilesReader(val stdin: Boolean = false, val files: List<String>) {

@@ -2,13 +2,13 @@
 
 import org.gradle.kotlin.dsl.accessors.tasks.PrintAccessors
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `build-scan`
     application
     kotlin("jvm") version "1.2.61"
-    id("jmfayard.github.io.gradle-kotlin-dsl-libs") version "0.2.2"
+    id("jmfayard.github.io.gradle-kotlin-dsl-libs") version "0.2.4"
 }
 
 application {
@@ -24,10 +24,10 @@ repositories {
     mavenCentral()
     jcenter()
     google()
-    maven { setUrl("https://jitpack.io") }
-    maven { setUrl("https://dl.bintray.com/jerady/maven") }
-    maven { setUrl("https://dl.bintray.com/kotlin/ktor") }
-    maven { setUrl("https://dl.bintray.com/kotlin/exposed") }
+    maven("https://jitpack.io")
+    maven("https://dl.bintray.com/jerady/maven")
+    maven("https://dl.bintray.com/kotlin/ktor")
+    maven("https://dl.bintray.com/kotlin/exposed")
 }
 
 
@@ -106,14 +106,12 @@ buildScan {
 }
 
 
-tasks.withType(KotlinCompile::class.java).all {
+
+tasks.withType<KotlinCompile> {
     kotlinOptions {
+        jvmTarget = "1.8"
         freeCompilerArgs = listOf("-Xjsr305=strict")
     }
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
 }
 
 

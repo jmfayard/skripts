@@ -15,14 +15,14 @@ object Versions {
 
     const val docopt: String = "0.6.0.20150202" // up-to-date
 
-    const val exposed: String = "0.10.3" // available: milestone=0.10.5
+    const val exposed: String = "0.10.3" // available milestone: "0.10.5" 
 
     const val fontawesomefx: String = "8.9" // up-to-date
 
     const val jdom: String = "2.0.2" // up-to-date
 
     const val jmfayard_github_io_gradle_kotlin_dsl_libs_gradle_plugin: String =
-            "0.2.2" // exceed the version found: 0.2.1
+            "0.2.4" // exceed the version found: 0.2.3
 
     const val joda_time: String = "2.10" // up-to-date
 
@@ -34,15 +34,16 @@ object Versions {
 
     const val kodein_di_generic_jvm: String = "5.3.0" // up-to-date
 
-    const val koin_core: String = "0.9.1" // available: milestone=1.0.1
+    const val koin_core: String = "0.9.1" // available milestone: "1.0.1" 
 
-    const val konfig: String = "1.5.0.0" // available: milestone=1.6.10.0
+    const val konfig: String = "1.5.0.0" // available milestone: "1.6.10.0" 
 
-    const val kotlin_coroutines_retrofit: String = "0.9.0" // available: milestone=0.12.0
+    const val kotlin_coroutines_retrofit: String = "0.9.0" // available milestone: "0.13.0" 
 
     const val kotlin_reflect: String = "1.2.71" // up-to-date
 
-    const val kotlin_scripting_compiler_embeddable: String = "1.2.61" // available: milestone=1.2.71
+    const val kotlin_scripting_compiler_embeddable: String =
+            "1.2.61" // available milestone: "1.2.71" 
 
     const val kotlin_stdlib_jdk8: String = "1.2.71" // up-to-date
 
@@ -50,17 +51,17 @@ object Versions {
 
     const val kotlin_test_junit: String = "1.2.71" // up-to-date
 
-    const val kotlinpoet: String = "0.6.0" // available: milestone=1.0.0-RC1
+    const val kotlinpoet: String = "0.6.0" // available milestone: "1.0.0-RC1" 
 
-    const val kotlintest: String = "1.3.7" // available: milestone=2.0.7
+    const val kotlintest: String = "1.3.7" // available milestone: "2.0.7" 
 
-    const val kotlinx_coroutines_core: String = "0.21.1" // available: milestone=0.30.1
+    const val kotlinx_coroutines_core: String = "0.21.1" // available milestone: "0.30.2" 
 
-    const val kotlinx_coroutines_rx2: String = "0.21.1" // available: milestone=0.30.1
+    const val kotlinx_coroutines_rx2: String = "0.21.1" // available milestone: "0.30.2" 
 
     const val kotlinx_html_jvm: String = "0.6.11" // up-to-date
 
-    const val krangl: String = "0.6" // available: milestone=0.10.3
+    const val krangl: String = "0.6" // available milestone: "0.10.3" 
 
     const val logging_interceptor: String = "3.11.0" // up-to-date
 
@@ -76,10 +77,10 @@ object Versions {
 
     const val okhttp: String = "3.11.0" // up-to-date
 
-    const val okio: String = "2.0.0" // available: milestone=2.1.0
+    const val okio: String = "2.0.0" // available milestone: "2.1.0" 
 
     const val org_jetbrains_kotlin_jvm_gradle_plugin: String =
-            "1.2.61" // available: milestone=1.2.71
+            "1.2.61" // available milestone: "1.2.71" 
 
     const val postgresql: String = "42.2.5" // up-to-date
 
@@ -91,9 +92,9 @@ object Versions {
 
     const val rxkotlin: String = "2.3.0" // up-to-date
 
-    const val selenium_java: String = "2.41.0" // available: milestone=3.14.0
+    const val selenium_java: String = "2.41.0" // available milestone: "3.14.0" 
 
-    const val slf4j_simple: String = "1.7.25" // available: milestone=1.8.0-beta2
+    const val slf4j_simple: String = "1.7.25" // available milestone: "1.8.0-beta2" 
 
     const val timber: String = "4.7.1" // up-to-date
 
@@ -101,12 +102,17 @@ object Versions {
 
     const val zt_exec: String = "1.10" // up-to-date
 
+    /**
+     *
+     *   To update Gradle, edit the wrapper file at path:
+     *      ./gradle/wrapper/gradle-wrapper.properties
+     */
     object Gradle {
         const val runningVersion: String = "4.10.2"
 
         const val currentVersion: String = "4.10.2"
 
-        const val nightlyVersion: String = "5.0-20181007235844+0000"
+        const val nightlyVersion: String = "5.1-20181015235836+0000"
 
         const val releaseCandidate: String = ""
     }

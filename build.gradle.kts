@@ -8,7 +8,7 @@ plugins {
     `build-scan`
     application
     kotlin("jvm") version "1.2.61"
-    id("jmfayard.github.io.gradle-kotlin-dsl-libs") version "0.2.4"
+    id("jmfayard.github.io.gradle-kotlin-dsl-libs") version "0.2.6"
 }
 
 application {

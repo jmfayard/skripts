@@ -5,6 +5,9 @@
  *   `$ ./gradlew syncLibs`
  * to update this file */
 object Libs {
+    const val kscript_support: String =
+            "com.github.holgerbrandl:kscript-support:" + Versions.kscript_support
+
     /**
      * [jsr305 website](http://findbugs.sourceforge.net/) */
     const val jsr305: String = "com.google.code.findbugs:jsr305:" + Versions.jsr305
@@ -80,10 +83,16 @@ object Libs {
     const val kotlinpoet: String = "com.squareup:kotlinpoet:" + Versions.kotlinpoet
 
     /**
+     * [config website](https://github.com/lightbend/config) */
+    const val config: String = "com.typesafe:config:" + Versions.config
+
+    /**
      * [fontawesomefx website](http://www.jensd.de) */
     const val fontawesomefx: String = "de.jensd:fontawesomefx:" + Versions.fontawesomefx
 
     const val krangl: String = "de.mpicbg.scicomp:krangl:" + Versions.krangl
+
+    const val config4k: String = "io.github.config4k:config4k:" + Versions.config4k
 
     /**
      * [kotlintest website](http://www.github.com/kotlintest/kotlintest) */

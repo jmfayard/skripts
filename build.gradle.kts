@@ -95,8 +95,10 @@ dependencies {
     implementation(Libs.postgresql)
 
     implementation(Libs.kodein_di_generic_jvm)
-    implementation("com.github.holgerbrandl:kscript-support:1.2.4")
+    implementation(Libs.kscript_support)
 
+    implementation(Libs.config)
+    implementation(Libs.config4k)
 
 }
 
@@ -124,6 +126,7 @@ java {
         val main: SourceSet by getting
         val test: SourceSet by getting
         main.java.setSrcDirs(listOf("kotlin"))
+        main.resources.srcDir("resources")
         test.java.srcDir("test/kotlin")
         test.resources.srcDir("test/resources")
     }

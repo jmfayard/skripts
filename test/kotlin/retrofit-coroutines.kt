@@ -27,7 +27,7 @@ class KotlinCoroutinesRetrofitTest : StringSpec() { init {
 
     "ApiTEST" {
         runBlocking {
-            IO.httpbinService.raw().await().debug("ApiTEST") shouldBe 42
+            IO.httpbinService.raw().await().debug("ApiTEST") shouldBe  ApiTest(ok2=true)
         }
     }
 

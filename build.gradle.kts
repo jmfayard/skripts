@@ -84,7 +84,6 @@ dependencies {
     implementation(Libs.slf4j_simple)
     implementation(Libs.timber)
     implementation(Libs.jdom)
-    implementation(Libs.konfig)
 
     // Data
     implementation(Libs.joda_time)

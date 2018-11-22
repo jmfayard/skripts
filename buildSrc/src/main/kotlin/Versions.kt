@@ -5,7 +5,7 @@
  *
  * YOU are responsible for updating manually the dependency version. */
 object Versions {
-    const val kscript_support: String = "1.2.4" //available: "1.2.5" 
+    const val kscript_support: String =  "1.2.5"
 
     const val jsr305: String = "3.0.2" 
 
@@ -13,7 +13,7 @@ object Versions {
 
     const val timber: String = "4.7.1" 
 
-    const val konfig: String = "1.5.0.0" //available: "1.6.10.0" 
+    const val konfig: String = "1.5.0.0" //available: "1.6.10.0"
 
     const val mockito_kotlin: String = "1.6.0" 
 
@@ -21,17 +21,17 @@ object Versions {
 
     const val moshi_lazy_adapters: String = "2.2" 
 
-    const val moshi: String = "1.7.0" //available: "1.8.0" 
+    const val moshi: String = "1.8.0"
 
-    const val com_squareup_okhttp3: String = "3.11.0" //available: "3.12.0" 
+    const val com_squareup_okhttp3: String = "3.12.0"
 
-    const val okio: String = "2.0.0" //available: "2.1.0" 
+    const val okio: String =  "2.1.0"
 
-    const val com_squareup_retrofit2: String = "2.4.0" //available: "2.5.0" 
+    const val com_squareup_retrofit2: String = "2.5.0"
 
     const val kotlinpoet: String = "0.6.0" //available: "0.7.0" 
 
-    const val config: String = "1.3.2" //available: "1.3.3" 
+    const val config: String = "1.3.3"
 
     const val fontawesomefx: String = "8.9" 
 
@@ -41,13 +41,13 @@ object Versions {
 
     const val kotlintest: String = "1.3.7" //available: "2.0.7" 
 
-    const val rxjava: String = "2.2.2" //available: "2.2.3" 
+    const val rxjava: String = "2.2.3"
 
     const val rxkotlin: String = "2.3.0" 
 
     const val jmfayard_github_io_gradle_kotlin_dsl_libs_gradle_plugin: String = "0.2.6" 
 
-    const val joda_time: String = "2.10" //available: "2.10.1" 
+    const val joda_time: String = "2.10.1"
 
     const val junit: String = "4.12" 
 
@@ -79,15 +79,15 @@ object Versions {
 
     const val jtwig_core: String = "5.87.0.RELEASE" 
 
-    const val kodein_di_generic_jvm: String = "5.3.0" //available: "6.0.0" 
+    const val kodein_di_generic_jvm: String = "5.3.0"
 
-    const val koin_core: String = "0.9.1" //available: "1.0.2" 
+    const val koin_core: String = "1.0.2"
 
-    const val mockito_core: String = "2.23.0" //available: "2.23.4" 
+    const val mockito_core: String = "2.23.4"
 
     const val postgresql: String = "42.2.5" 
 
-    const val selenium_java: String = "2.41.0" //available: "3.141.59" 
+    const val selenium_java: String = "3.141.59"
 
     const val slf4j_simple: String = "1.7.25" 
 

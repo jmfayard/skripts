@@ -13,24 +13,33 @@ fun main(args: Array<String>) {
     config4k()
 }
 
-internal data class Person(val name: String, val age: Int)
-internal data class Family(val list: List<Person>)
-enum class Size { SMALL, MEDIUM, LARGE }
-
-/**
- * https://github.com/config4k/config4k
- * https://github.com/lightbend/config
- **/
-internal fun config4k() {
+// https://github.com/config4k/config4k
+fun config4k() {
     val config: Config  = ConfigFactory.load("config4k.conf")
     val myFamily = Family(listOf(Person("foo", 20), Person("bar", 25)))
     config.extract<Family>("family") shouldBe myFamily
-    println(myFamily.toConfig("family").root().render(ConfigRenderOptions.concise()))
     config.extract<Map<String, Int>>("map") shouldBe mapOf("bar" to 6, "foo" to 5)
     config.extract<Int?>("maybeInt1") shouldBe 6
     config.extract<Int?>("maybeInt2") shouldBe null
     config.extract<Size>("size") shouldBe Size.SMALL
+
+    val jsonExport = myFamily.toConfig("family").root().render(ConfigRenderOptions.concise())
+    println(jsonExport)
 }
+
+internal data class Person(val name: String, val age: Int)
+internal data class Family(val list: List<Person>)
+enum class Size { SMALL, MEDIUM, LARGE }
+
+
+
+
+
+
+
+
+
+
 
 internal  fun typesafeConfig() {
     // example of how system properties override; note this

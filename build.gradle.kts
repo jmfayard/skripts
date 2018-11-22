@@ -95,6 +95,7 @@ dependencies {
     implementation(Libs.postgresql)
 
     implementation(Libs.kodein_di_generic_jvm)
+    implementation("com.github.holgerbrandl:kscript-support:1.2.4")
 
 
 }

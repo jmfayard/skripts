@@ -25,7 +25,19 @@ import ru.gildor.coroutines.retrofit.awaitResult
 class KotlinCoroutinesRetrofitTest : StringSpec() { init {
     val args = mapOf("gender" to "MALE", "age" to "42")
 
-    "Call.await()" {
+    "ApiTEST" {
+        runBlocking {
+            IO.httpbinService.raw().await().debug("ApiTEST") shouldBe 42
+        }
+    }
+
+    "ApiTEST2" {
+        runBlocking {
+            IO.httpbinService.raw().await().debug("ApiTEST")
+        }
+    }
+
+    "Call.await() ta mere" {
         runBlocking {
             val response = IO.httpbinService.get(args).await().debug("response")
             response.args shouldBe args
@@ -54,6 +66,8 @@ class KotlinCoroutinesRetrofitTest : StringSpec() { init {
             IO.httpbinService.invalid().awaitResult() should be an Result.Exception::class
         }
     }
+
+
 }
 }
 
@@ -78,7 +92,12 @@ object IO {
 
 }
 
+data class ApiTest(val ok2: Boolean)
+
 interface ApiService {
+
+    @GET("https://gist.githubusercontent.com/jmfayard/d3965f2b34d9f9cc6ba88c9b624f4ed4/raw/017d28af92a498a090ec1db92177064050b42135/example.json")
+    fun raw(): Call<ApiTest>
 
     @GET("/get")
     fun get(@QueryMap map: Map<String, String>): Call<HttpbinResponse>

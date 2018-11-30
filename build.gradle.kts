@@ -116,7 +116,10 @@ tasks.withType<KotlinCompile> {
     }
 }
 
-
+tasks.register<Copy>("copyToLib") {
+    from(configurations.runtime)
+    into("lib")
+}
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -131,8 +134,8 @@ java {
     }
 }
 
-
-val copyToLib by tasks.creating(Copy::class) {
-    from(configurations.runtime)
-    into("lib")
+tasks.withType<Wrapper> {
+    distributionType = Wrapper.DistributionType.ALL
+    gradleVersion = Versions.Gradle.currentVersion
 }
+

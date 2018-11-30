@@ -20,10 +20,6 @@ object Libs {
     const val timber: String = "com.jakewharton.timber:timber:" + Versions.timber
 
     /**
-     * [konfig website](https://github.com/npryce/konfig) */
-    const val konfig: String = "com.natpryce:konfig:" + Versions.konfig
-
-    /**
      * [mockito-kotlin website](https://github.com/nhaarman/mockito-kotlin) */
     const val mockito_kotlin: String = "com.nhaarman:mockito-kotlin:" + Versions.mockito_kotlin
 

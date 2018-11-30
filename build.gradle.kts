@@ -7,8 +7,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     `build-scan`
     application
-    kotlin("jvm") version "1.2.61"
-    id("jmfayard.github.io.gradle-kotlin-dsl-libs") version "0.2.6"
+    kotlin("jvm") version Versions.org_jetbrains_kotlin_jvm_gradle_plugin
+    id("jmfayard.github.io.gradle-kotlin-dsl-libs") version Versions.jmfayard_github_io_gradle_kotlin_dsl_libs_gradle_plugin
 }
 
 application {
@@ -102,8 +102,8 @@ dependencies {
 }
 
 buildScan {
-    setTermsOfServiceUrl("https://gradle.com/terms-of-service")
-    setTermsOfServiceAgree("yes")
+    termsOfServiceUrl = "https://gradle.com/terms-of-service"
+    termsOfServiceAgree = "yes"
     publishAlways()
 }
 

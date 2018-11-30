@@ -133,26 +133,27 @@ object Libs {
     /**
      * [kotlin-reflect website](https://kotlinlang.org/) */
     const val kotlin_reflect: String =
-            "org.jetbrains.kotlin:kotlin-reflect:" + Versions.kotlin_reflect
+            "org.jetbrains.kotlin:kotlin-reflect:" + Versions.org_jetbrains_kotlin
 
     /**
      * [kotlin-scripting-compiler-embeddable website](https://kotlinlang.org/) */
     const val kotlin_scripting_compiler_embeddable: String =
-            "org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable:" + Versions.kotlin_scripting_compiler_embeddable
+            "org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable:" + Versions.org_jetbrains_kotlin
 
     /**
      * [kotlin-stdlib-jdk8 website](https://kotlinlang.org/) */
     const val kotlin_stdlib_jdk8: String =
-            "org.jetbrains.kotlin:kotlin-stdlib-jdk8:" + Versions.kotlin_stdlib_jdk8
+            "org.jetbrains.kotlin:kotlin-stdlib-jdk8:" + Versions.org_jetbrains_kotlin
 
     /**
      * [kotlin-test-junit website](https://kotlinlang.org/) */
     const val kotlin_test_junit: String =
-            "org.jetbrains.kotlin:kotlin-test-junit:" + Versions.kotlin_test_junit
+            "org.jetbrains.kotlin:kotlin-test-junit:" + Versions.org_jetbrains_kotlin
 
     /**
      * [kotlin-test website](https://kotlinlang.org/) */
-    const val kotlin_test: String = "org.jetbrains.kotlin:kotlin-test:" + Versions.kotlin_test
+    const val kotlin_test: String =
+            "org.jetbrains.kotlin:kotlin-test:" + Versions.org_jetbrains_kotlin
 
     /**
      * [kotlinx-coroutines-core website](https://github.com/Kotlin/kotlinx.coroutines) */

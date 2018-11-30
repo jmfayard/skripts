@@ -27,7 +27,7 @@ object Versions {
 
     const val com_squareup_retrofit2: String = "2.5.0" 
 
-    const val kotlinpoet: String = "0.6.0" //available: "0.7.0" 
+    const val kotlinpoet: String = "0.7.0"
 
     const val config: String = "1.3.3" 
 
@@ -39,7 +39,7 @@ object Versions {
 
     const val kotlintest: String = "1.3.7" //available: "2.0.7" 
 
-    const val rxjava: String = "2.2.3" //available: "2.2.4" 
+    const val rxjava: String = "2.2.4" 
 
     const val rxkotlin: String = "2.3.0" 
 
@@ -57,17 +57,9 @@ object Versions {
 
     const val exposed: String = "0.10.3" //available: "0.11.2" 
 
-    const val org_jetbrains_kotlin_jvm_gradle_plugin: String = "1.2.61" //available: "1.3.10" 
+    const val org_jetbrains_kotlin_jvm_gradle_plugin: String = "1.3.10" 
 
-    const val kotlin_reflect: String = "1.2.71" //available: "1.3.10" 
-
-    const val kotlin_scripting_compiler_embeddable: String = "1.2.61" //available: "1.3.10" 
-
-    const val kotlin_stdlib_jdk8: String = "1.2.71" //available: "1.3.10" 
-
-    const val kotlin_test_junit: String = "1.2.71" //available: "1.3.10" 
-
-    const val kotlin_test: String = "1.2.71" //available: "1.3.10" 
+    const val org_jetbrains_kotlin: String = "1.3.10" 
 
     const val kotlinx_coroutines_core: String = "0.21.1" //available: "1.0.1" 
 

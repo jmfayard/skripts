@@ -23,11 +23,10 @@ kotlin {
 
 repositories {
     jcenter()
-    google()
     maven("https://jitpack.io")
-    maven("https://dl.bintray.com/jerady/maven")
-    maven("https://dl.bintray.com/kotlin/ktor")
-    maven("https://dl.bintray.com/kotlin/exposed")
+//    google()
+//    maven("https://dl.bintray.com/jerady/maven")
+//    maven("https://dl.bintray.com/kotlin/ktor")
 }
 
 
@@ -42,9 +41,7 @@ dependencies {
 
     testCompileOnly(Libs.jsr305)
     compileOnly(Libs.jsr305)
-
-    implementation(Libs.koin_core)
-
+    
     // kotlin
     implementation(Libs.kotlin_stdlib_jdk8)
     implementation(Libs.kotlin_reflect)

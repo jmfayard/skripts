@@ -55,7 +55,7 @@ object Versions {
 
     const val jdom: String = "2.0.2"
 
-    const val exposed: String = "0.10.3" //available: "0.11.2" 
+    const val exposed: String = "0.11.2" 
 
     const val org_jetbrains_kotlin_jvm_gradle_plugin: String = "1.3.10"
 
@@ -69,9 +69,7 @@ object Versions {
 
     const val jtwig_core: String = "5.87.0.RELEASE"
 
-    const val kodein_di_generic_jvm: String = "5.3.0" //available: "6.0.0" 
-
-    const val koin_core: String = "1.0.2"
+    const val kodein_di_generic_jvm: String = "5.3.0"
 
     const val mockito_core: String = "2.23.4"
 

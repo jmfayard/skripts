@@ -176,9 +176,7 @@ object Libs {
 
     const val kodein_di_generic_jvm: String =
         "org.kodein.di:kodein-di-generic-jvm:" + Versions.kodein_di_generic_jvm
-
-    const val koin_core: String = "org.koin:koin-core:" + Versions.koin_core
-
+    
     /**
      * [mockito-core website](https://github.com/mockito/mockito) */
     const val mockito_core: String = "org.mockito:mockito-core:" + Versions.mockito_core

@@ -1,8 +1,8 @@
 package pingpong
 
-import kotlinx.coroutines.experimental.channels.Channel
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.concurrent.ThreadLocalRandom
 
 fun main(args: Array<String>) = runBlocking<Unit> {

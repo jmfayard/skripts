@@ -1,8 +1,8 @@
 package p2p
 
-import kotlinx.coroutines.experimental.*
-import kotlinx.coroutines.experimental.channels.Channel
-import kotlinx.coroutines.experimental.selects.whileSelect
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.selects.whileSelect
 
 fun main(args: Array<String>) {
     simulation()

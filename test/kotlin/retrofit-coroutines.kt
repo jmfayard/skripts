@@ -1,7 +1,7 @@
 import com.squareup.moshi.Moshi
 import io.kotlintest.matchers.be
 import io.kotlintest.specs.StringSpec
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call

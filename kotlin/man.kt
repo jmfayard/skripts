@@ -1,13 +1,14 @@
 #!/usr/bin/env kotlin-script.sh
 package man
 
-import kotlinx.coroutines.experimental.channels.Channel
-import kotlinx.coroutines.experimental.channels.ReceiveChannel
-import kotlinx.coroutines.experimental.channels.produce
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.produce
+import kotlinx.coroutines.runBlocking
 import okio.Buffer
 import org.zeroturnaround.exec.ProcessExecutor
-import kotlin.coroutines.experimental.CoroutineContext
+import kotlin.coroutines.CoroutineContext
 
 
 fun main(args: Array<String>) = runBlocking {
@@ -39,7 +40,7 @@ suspend fun searchForOption(option: String, producer: ReceiveChannel<String>) {
     }
 }
 
-suspend fun executeBashCommand(context: CoroutineContext, command: String, vararg args: String) =
+suspend fun CoroutineScope.executeBashCommand(context: CoroutineContext, command: String, vararg args: String) =
     produce<String>(context, Channel.UNLIMITED) {
 
         val allArgs = arrayOf(command, *args)

@@ -1,9 +1,10 @@
 package statemachine
 
-import kotlinx.coroutines.experimental.channels.Channel
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import statemachine.BrokenEvent.MachineRepairDidComplete
 import statemachine.LockedEvent.*
 import statemachine.StateMachineStrategy.*
@@ -274,7 +275,7 @@ Note that it has no domain knowledge: it just connects object interfaces.
 
 suspend fun runStateMachineWithSideEffects(): TurnStyleController {
     val controller = TurnStyleController(DoorHardwareController(), SpeakerController(), TurnStyle())
-    launch { controller.consumeEvents() }
+    GlobalScope.launch { controller.consumeEvents() }
     return controller
 }
 

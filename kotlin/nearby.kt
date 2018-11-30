@@ -2,32 +2,33 @@
 
 package p2p
 
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.channels.*
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.runBlocking
-import kotlinx.coroutines.experimental.selects.select
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.selects.select
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 
 data class Msg(val id: Int, val value: Int)
 
 
-fun main(args: Array<String>) = runBlocking {
+fun main() = runBlocking {
 
     val streamToSend = Channel<Msg>()
     val streamSent = Channel<Msg>()
     val streamError = Channel<Msg>()
 
-    val nearby = FakeNearby("tx42", true, "sender23", streamToSend, streamSent, streamError)
+    val nearby = FakeNearby("tx42", true, "sender23", streamToSend, streamSent, streamError, coroutineContext)
 
-    val launchNearbyJob = launch(CommonPool) {
+    val launchNearbyJob = launch {
         //        withTimeout(30, TimeUnit.SECONDS) {
         nearby.orchestrateNearby()
 //        }
     }
 
-    val sendMessagesJob = launch(CommonPool) {
+    val sendMessagesJob = launch {
         for (id in 1..10) {
             val msg = Msg(id = id, value = id * id)
             println("Please send $msg")
@@ -35,14 +36,14 @@ fun main(args: Array<String>) = runBlocking {
             delay(200)
         }
     }
-    val replayErrorsJob = launch(CommonPool) {
+    val replayErrorsJob = launch {
         for (msg in streamError) {
             println("Message error $msg - please retry it")
             streamToSend.send(msg)
         }
     }
 
-    val msgsOkJob = launch(CommonPool) {
+    val msgsOkJob = launch {
         for (msg in streamSent) {
             println("Msg $msg was correctly sent")
         }
@@ -59,13 +60,14 @@ fun main(args: Array<String>) = runBlocking {
 
 
 class FakeNearby(
-    val transaction: String,
-    val isSender: Boolean,
-    var peer: String,
-    val inputChannel: ReceiveChannel<Msg>,
-    val outputOkChannel: SendChannel<Msg>,
-    val outputErrorChannel: SendChannel<Msg>
-) {
+        val transaction: String,
+        val isSender: Boolean,
+        var peer: String,
+        val inputChannel: ReceiveChannel<Msg>,
+        val outputOkChannel: SendChannel<Msg>,
+        val outputErrorChannel: SendChannel<Msg>,
+        override val coroutineContext: CoroutineContext
+) : CoroutineScope{
 
     val canSendChannel = Channel<Boolean>()
 
@@ -164,7 +166,7 @@ class FakeNearby(
         }
     }
 
-    suspend fun appLifecycleEvents() = produce<String>(CommonPool) {
+    suspend fun appLifecycleEvents() = produce {
         println("START")
         send("START")
         delay(10000)
@@ -177,7 +179,7 @@ class FakeNearby(
         send("STOP")
     }
 
-    suspend fun randomNetworkErrors() = produce<String>(CommonPool) {
+    suspend fun randomNetworkErrors() = produce {
         while (true) {
             delay(1000)
             if (badLuck(10)) send("DISCONNECT")
@@ -196,7 +198,7 @@ class FakeNearby(
 
     suspend fun discover() = advertise()
 
-    suspend fun advertise() = produce<String>(CommonPool) {
+    suspend fun advertise() = produce {
         when (random.nextInt(100)) {
             in 0..30 -> { // Best case scenario, we discover our peer, only once, no error
                 delay(100)

@@ -3,13 +3,16 @@
 
 package checkvist
 
-import kotlinx.coroutines.experimental.channels.ReceiveChannel
-import kotlinx.coroutines.experimental.channels.produce
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.produce
+import kotlinx.coroutines.runBlocking
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
 import java.io.File
+import kotlin.coroutines.CoroutineContext
 
 /**
  * Playing with coroutines, retrofit and the checkvist api
@@ -52,7 +55,10 @@ class CheckvistApplication : KodeinAware {
 }
 
 
-class FilesReader(val stdin: Boolean = false, val files: List<String>) {
+class FilesReader(val stdin: Boolean = false, val files: List<String>): CoroutineScope {
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
+
     val existingFiles = files.map { File(it) }.filter { it.canRead() }
     val invalidFiles = files.filterNot { File(it).canRead() }
 
@@ -71,7 +77,7 @@ class FilesReader(val stdin: Boolean = false, val files: List<String>) {
 
 }
 
-suspend fun stdin(): ReceiveChannel<String> = produce {
+suspend fun CoroutineScope.stdin(): ReceiveChannel<String> = produce {
     while (System.`in`.available() != 0) {
         channel.send(readLine() ?: return@produce)
     }

@@ -61,9 +61,9 @@ object Versions {
 
     const val org_jetbrains_kotlin: String = "1.3.10" 
 
-    const val kotlinx_coroutines_core: String = "0.21.1" //available: "1.0.1" 
+    const val kotlinx_coroutines_core: String =  "1.0.1"
 
-    const val kotlinx_coroutines_rx2: String = "0.21.1" //available: "1.0.1" 
+    const val kotlinx_coroutines_rx2: String = "1.0.1"
 
     const val kotlinx_html_jvm: String = "0.6.11" 
 
@@ -83,7 +83,7 @@ object Versions {
 
     const val zt_exec: String = "1.10" 
 
-    const val kotlin_coroutines_retrofit: String = "0.9.0" //available: "0.13.0" 
+    const val kotlin_coroutines_retrofit: String = "0.13.0-eap13"
 
     /**
      *

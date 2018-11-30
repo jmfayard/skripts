@@ -10,8 +10,9 @@ import debug
 import debugList
 import environmentVariable
 import jmfayard.checkOk
-import kotlinx.coroutines.experimental.channels.ReceiveChannel
-import kotlinx.coroutines.experimental.channels.produce
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.produce
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
@@ -52,8 +53,8 @@ val CHECKVIST_DEFAULT_PARAMS = mapOf(
 )
 
 
-suspend fun addTask(api: CheckvistCoroutineApi, credentials: CheckvistCredentials, param: String?) {
-    val stdin = if (param == null) checkvist.stdin() else textFrom(param)
+suspend fun CoroutineScope.addTask(api: CheckvistCoroutineApi, credentials: CheckvistCredentials, param: String?) {
+    val stdin = if (param == null) stdin() else textFrom(param)
     val title = stdin.receiveOrNull() ?: run { println(CHECKVIST_USAGE); return }
     val parentTask = api.createTask(CNewTask(content = title), credentials.defaultList).checkOk()
     var position = 0
@@ -78,7 +79,7 @@ suspend fun addTask(api: CheckvistCoroutineApi, credentials: CheckvistCredential
     }
 }
 
-suspend fun textFrom(param: String): ReceiveChannel<String> = produce {
+suspend fun CoroutineScope.textFrom(param: String): ReceiveChannel<String> = produce {
     val input = """
 Ingrédients
 Carottes

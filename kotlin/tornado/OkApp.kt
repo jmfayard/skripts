@@ -1,9 +1,17 @@
 package tornado
 
 import javafx.scene.layout.GridPane
-import tornadofx.*
+import tornadofx.App
+import tornadofx.Stylesheet
+import tornadofx.View
+import tornadofx.box
+import tornadofx.cssclass
+import tornadofx.label
+import tornadofx.px
+import tornadofx.row
+import tornadofx.vbox
 
-class OkApp: App(DemoTableView::class, OkStyles::class)
+class OkApp : App(DemoTableView::class, OkStyles::class)
 
 class OkStyles : Stylesheet() {
     companion object {
@@ -19,14 +27,13 @@ class OkStyles : Stylesheet() {
     }
 }
 
-
 class DemoTableView : View() {
     override val root = GridPane()
 
     val mapTableContent = mapOf(Pair("item 1", 5), Pair("item 2", 10), Pair("item 3", 6))
 
     init {
-        with (root) {
+        with(root) {
             row {
                 vbox {
                     label("Tableview from a map")
@@ -39,5 +46,4 @@ class DemoTableView : View() {
             }
         }
     }
-
 }

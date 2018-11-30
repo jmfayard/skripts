@@ -2,7 +2,6 @@ package hackerrank
 
 import org.junit.Test
 
-
 fun stdin(): List<String> {
     if (System.`in`.available() == 0) {
         System.err.println("nothing in stdin"); System.exit(1)
@@ -20,7 +19,6 @@ inline fun <T> Iterable<T>.sumLong(selector: (T) -> Long): Long {
 
 private fun String.toInts() = split(" ").map { it.toIntOrNull() }.filterNotNull()
 private fun String.toLongs() = split(" ").map { it.toLongOrNull() }.filterNotNull()
-
 
 typealias Input = List<String>
 
@@ -76,7 +74,6 @@ class AlgorithmTests {
         simpleArraySum(lines) shouldBe 31
     }
 }
-
 
 infix fun <T> T?.shouldBe(expected: Any?) {
     if (this != expected) error("ShouldBe Failed!\nExpected: $expected\nGot:      $this")

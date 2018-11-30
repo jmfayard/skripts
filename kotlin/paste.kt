@@ -5,7 +5,6 @@ import copy.clipboardFile
 import debugList
 import java.io.File
 
-
 fun main(args: Array<String>) {
     pasteFiles()
 }
@@ -32,4 +31,3 @@ fun pasteFiles() {
         })
     }
 }
-

@@ -50,5 +50,4 @@ fun generateSql(okSource: BufferedSource) {
     }
 
     println(end)
-
 }

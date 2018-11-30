@@ -1,8 +1,12 @@
 package p2p
 
-import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.selects.whileSelect
+import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.yield
 
 fun main(args: Array<String>) {
     simulation()
@@ -12,7 +16,6 @@ fun simulation() = runBlocking {
     val networkChannel = Channel<Int>(Channel.UNLIMITED)
     val nexus5x = Nearby("nexus5x", networkChannel)
     val nexus6p = Nearby("nexus6p", networkChannel)
-
 
     val job1 = launch(coroutineContext) {
         val job1 = launch(coroutineContext) { nexus5x.start(1500, 12000) }
@@ -34,12 +37,11 @@ fun simulation() = runBlocking {
     listOf(job1, job2, job3).forEach { it.join() }
 }
 
-
 class App(val name: String) {
     suspend fun sendToNearby(nearby: Nearby) {
         for (nb in 1..10) {
             delay(50)
-            println("App ${name} : I sent $nb")
+            println("App $name : I sent $nb")
             nearby.sendMessageAsync(nb)
             delay(100)
         }
@@ -49,11 +51,10 @@ class App(val name: String) {
         for (i in 1..10) {
             delay(100)
             val nb = nearby.waitForMessage()
-            println("App ${name} : I Received $nb")
+            println("App $name : I Received $nb")
             delay(150)
         }
     }
-
 }
 
 class Nearby(val name: String, val peer: Channel<Int>) {
@@ -108,6 +109,4 @@ class Nearby(val name: String, val peer: Channel<Int>) {
         println("$nearby: timeout reached, I will abort here")
         peer.close()
     }
-
-
 }

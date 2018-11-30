@@ -17,7 +17,6 @@ fun main(args: Array<String>) = runBlocking<Unit> {
     }
     channel.send(1)
     listOf(job1, job2).map { it.join() }
-
 }
 
 suspend fun player(name: String, court: Channel<Int>) {

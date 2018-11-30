@@ -6,7 +6,6 @@ data class Pizza(val name: String, val price: Int)
 
 fun Gen.Companion.pizza() = object : Gen<Pizza> {
     override fun generate() = Pizza(Gen.string().generate(), Gen.int().generate())
-
 }
 
 class MoshiProperties : StringSpec() { init {
@@ -31,6 +30,5 @@ class MoshiProperties : StringSpec() { init {
             }
         }
     }
-
 }
 }

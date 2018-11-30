@@ -7,7 +7,6 @@ import org.jtwig.JtwigTemplate
 class TwigTest : StringSpec() {
     init {
 
-
         "Hello World" {
             val template = JtwigTemplate.classpathTemplate("twig/hello.twig")
             val model = JtwigModel.newModel()
@@ -38,10 +37,7 @@ class TwigTest : StringSpec() {
             val model = JtwigModel.newModel().with("presentations", presentations)
 
             template.render(model) should have text (expected)
-
         }
-
-
     }
 }
 
@@ -51,7 +47,6 @@ private infix fun HaveWrapper<String>.text(text: String) {
     if (actual != expected) {
         throw AssertionError("Content are not identical:\nWanted =>\n$expected\nGot =>\n$actual\n")
     }
-
 }
 
 private val spaces = Regex("[ \\t]+")

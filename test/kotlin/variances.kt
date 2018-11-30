@@ -3,13 +3,12 @@ package variances
 data class Producer<out T : Beverage>(
     val beverage: T
 ) {
-    fun produce() : T = beverage
+    fun produce(): T = beverage
 }
 
-class Consumer<in T: Beverage> {
+class Consumer<in T : Beverage> {
     fun consume(t: T) = println("Thanks for the drink $t!")
 }
-
 
 interface Beverage
 object Coffee : Beverage
@@ -29,5 +28,4 @@ fun main(args: Array<String>) {
     val pub = Consumer<Whisky>()
     pub.consume(scottland.produce())
 //    pub.consume(colombia.produce()) // error
-
 }

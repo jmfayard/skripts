@@ -32,8 +32,7 @@ EOF
 """
 
 fun main(args: Array<String>) =
-        CheckvistApplication().launch(args)
-
+    CheckvistApplication().launch(args)
 
 class CheckvistApplication : KodeinAware {
 
@@ -51,11 +50,9 @@ class CheckvistApplication : KodeinAware {
             else -> println(CHECKVIST_USAGE)
         }
     }
-
 }
 
-
-class FilesReader(val stdin: Boolean = false, val files: List<String>): CoroutineScope {
+class FilesReader(val stdin: Boolean = false, val files: List<String>) : CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
@@ -74,7 +71,6 @@ class FilesReader(val stdin: Boolean = false, val files: List<String>): Coroutin
             }
         }
     }
-
 }
 
 suspend fun CoroutineScope.stdin(): ReceiveChannel<String> = produce {

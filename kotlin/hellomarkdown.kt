@@ -16,7 +16,6 @@ fun main(args: Array<String>) {
     osxOpenFile(File("README.html"))
 }
 
-
 fun postMarkdown(file: File, dest: File) {
     require(file.canRead()) { "Cannot find ${file.absolutePath}" }
 
@@ -34,5 +33,4 @@ fun postMarkdown(file: File, dest: File) {
     dest.sink().buffer().use { sink ->
         sink.writeAll(body.source())
     }
-
 }

@@ -5,7 +5,6 @@ import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 import org.joda.time.LocalTime
 
-
 /***
  *
  * The five date-time classes that will be used most are:
@@ -25,7 +24,6 @@ See http://www.joda.org/joda-time/quickstart.html
 
  */
 class JodaTimeTests : FreeSpec() { init {
-
 
     "Instant - Immutable class representing an instantaneous point on the time-line" - {
         "Epoch" {
@@ -59,7 +57,6 @@ class JodaTimeTests : FreeSpec() { init {
         }
 
         LocalTime.parse("10:00") shouldBe openingTime
-
     }
 
     "LocalDate - Immutable class representing a local date without a time (no time-zone)" {
@@ -74,6 +71,5 @@ class JodaTimeTests : FreeSpec() { init {
         concertStart.toString() shouldBe "2017-09-27T20:00:00.000"
         LocalDateTime.parse("2017-09-27T20:00") shouldBe concertStart
     }
-
 }
 }

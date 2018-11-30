@@ -3,18 +3,14 @@ package io.reactivex
 import com.google.common.annotations.VisibleForTesting
 import io.reactivex.observers.TestObserver
 import io.reactivex.schedulers.TestScheduler
-import java.lang.RuntimeException
 import java.util.concurrent.TimeUnit
 
-
 const val TICK = 1000L
-
 
 fun TestScheduler.advanceByFrame(nb: Int, tickMs: Long = TICK): TestScheduler {
     this.advanceTimeBy(tickMs * nb, TimeUnit.MILLISECONDS)
     return this
 }
-
 
 class RxMarble(val tickMs: Long = 15L, val scheduler: Scheduler = TestScheduler(), val max: Long = Long.MAX_VALUE) {
 
@@ -36,10 +32,10 @@ class RxMarble(val tickMs: Long = 15L, val scheduler: Scheduler = TestScheduler(
         return create(marbles, hot = false).map { mapping[it] }
     }
 
-    fun <T> marbleOf(observable: Observable<T>, max: Int = 30) : Pair<String, List<T>> {
+    fun <T> marbleOf(observable: Observable<T>, max: Int = 30): Pair<String, List<T>> {
         val testScheduler = if (scheduler is TestScheduler) scheduler else error("this is not a test scheduler")
         val observer = observable.test()
-        var lastValues : List<T> = emptyList()
+        var lastValues: List<T> = emptyList()
         var lastCount = 0
         var found: Int = 0
         val marble = buildString {
@@ -48,7 +44,6 @@ class RxMarble(val tickMs: Long = 15L, val scheduler: Scheduler = TestScheduler(
                 if (observer.isTerminated) break
                 lastCount = observer.valueCount()
                 testScheduler.advanceTimeBy(tickMs, TimeUnit.MILLISECONDS)
-
 
 //                val newCount = observer.valueCount().debug("Count$tick: ")
 //                if (observer.errorCount() > 0) {
@@ -72,11 +67,11 @@ class RxMarble(val tickMs: Long = 15L, val scheduler: Scheduler = TestScheduler(
         return marble.padEnd(max, '-') to observer.values()
     }
 
-    private fun <T> marbleNewEvents(observer: TestObserver<T>, oldCount: Int) : String {
-        var events =  mutableListOf<String>()
+    private fun <T> marbleNewEvents(observer: TestObserver<T>, oldCount: Int): String {
+        var events = mutableListOf<String>()
 
         observer.values().forEachIndexed { i, v ->
-            if (i >= oldCount) events.add((i+1).toString())
+            if (i >= oldCount) events.add((i + 1).toString())
         }
 //        var i = oldValues.size
 //        for (v in observer.values() - oldValues) {
@@ -92,7 +87,7 @@ class RxMarble(val tickMs: Long = 15L, val scheduler: Scheduler = TestScheduler(
         }
     }
 
-    internal fun parseNumbers(marbles: String) : List<Int> {
+    internal fun parseNumbers(marbles: String): List<Int> {
         return marbles.split(*OTHERS).mapNotNull { it.toIntOrNull() }.distinct().sorted()
     }
 
@@ -100,11 +95,14 @@ class RxMarble(val tickMs: Long = 15L, val scheduler: Scheduler = TestScheduler(
     internal fun checkMarbles(marbles: String, hot: Boolean = false) {
         val invalidChars = marbles.filterNot { it in NUMBERS || it in OTHERS }
         require(invalidChars.isEmpty()) {
-            "Marble: [$marbles] contains invalid characters [$invalidChars]" }
+            "Marble: [$marbles] contains invalid characters [$invalidChars]"
+        }
         require(marbles.filter { it == '^' }.count() <= 1) {
-            "Marble [$marbles]  contains multiple subscriptions" }
+            "Marble [$marbles]  contains multiple subscriptions"
+        }
         require(marbles.filter { it == '#' || it == '|' }.count() <= 1) {
-            "Marble [$marbles] contains multiple terminal events" }
+            "Marble [$marbles] contains multiple terminal events"
+        }
         require(hot || !marbles.contains('^')) {
             "Marble [$marbles] is cold but contains a subscription point"
         }
@@ -132,12 +130,13 @@ class RxMarble(val tickMs: Long = 15L, val scheduler: Scheduler = TestScheduler(
 
     fun create(marbles: String, hot: Boolean): Observable<Int> {
         return Observable.merge(Observable.interval(tickMs, TimeUnit.MILLISECONDS, scheduler)
-                .take(lastFrame(marbles, hot))
+            .take(lastFrame(marbles, hot))
 //                .skip(firstFrame(marbles, hot))
-                .map { l -> marbles.getOrNull(l.toInt()) ?: "-" }
-                .filter { it in NUMBERS }
-                .map { "$it".toInt() },
-                completion(marbles))
+            .map { l -> marbles.getOrNull(l.toInt()) ?: "-" }
+            .filter { it in NUMBERS }
+            .map { "$it".toInt() },
+            completion(marbles)
+        )
     }
 
     companion object {

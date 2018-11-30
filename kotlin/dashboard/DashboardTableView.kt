@@ -12,7 +12,7 @@ class DashboardTableView : View() {
     val mapTableContent = mapOf(Pair("item 1", 5), Pair("item 2", 10), Pair("item 3", 6))
 
     init {
-        with (root) {
+        with(root) {
             row {
                 vbox {
                     label("Tableview from a map")
@@ -25,5 +25,4 @@ class DashboardTableView : View() {
             }
         }
     }
-
 }

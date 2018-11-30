@@ -6,7 +6,6 @@ import io.reactivex.rxkotlin.merge
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.schedulers.TestScheduler
 import org.junit.Test
-import java.lang.RuntimeException
 import java.util.concurrent.TimeUnit
 
 /**
@@ -15,7 +14,8 @@ import java.util.concurrent.TimeUnit
 
 class Rxjava2Test {
 
-    @Test fun emitListWithTimer() {
+    @Test
+    fun emitListWithTimer() {
         // better alternatives to Observable.interval() to emit a list of values
         val valuesToEmit = listOf("un", "deux", "trois", "quatre", "cinq")
         val observable = valuesToEmit.mapIndexed { index, value ->
@@ -24,22 +24,22 @@ class Rxjava2Test {
         observable.blockingSubscribe(::println)
     }
 
-    @Test fun join() {
+    @Test
+    fun join() {
 
-        fun <T> just(observable: Observable<T>) = io.reactivex.functions.Function {
-            i : Int -> observable
+        fun <T> just(observable: Observable<T>) = io.reactivex.functions.Function { i: Int ->
+            observable
         }
 
         val scheduler = TestScheduler()
         val marble = RxMarble(scheduler = scheduler)
         val ints = marble.cold(
-            "--1---3-4---5--6----7-9", List(10) { it*it  })
+            "--1---3-4---5--6----7-9", List(10) { it * it })
         val lifecycle = marble.cold(
             "----1-----2---1---2--1-", listOf(0, 1)
         )
-
-
     }
+
     @Test
     fun values() {
         val t = Observable.just(1, 2, 3)
@@ -50,7 +50,6 @@ class Rxjava2Test {
             .assertNever(4)
 
         t.values().debug("values")
-
     }
 
     @Test
@@ -91,6 +90,4 @@ class Rxjava2Test {
         flow.onErrorResumeNext { _ -> Single.error(niceError) }
             .test().await().assertError(niceError)
     }
-
-
 }

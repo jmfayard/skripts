@@ -1,7 +1,14 @@
-import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.DOUBLE
+import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.INT
+import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.ParameterSpec
+import com.squareup.kotlinpoet.PropertySpec
+import com.squareup.kotlinpoet.TypeName
+import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.asClassName
 
 val STRING = String::class.asClassName()
-
 
 fun Val(name: String, type: TypeName, vararg modifers: KModifier) =
     ParameterSpec.builder(name, type, *modifers)
@@ -31,5 +38,4 @@ fun DataClass(name: String, vararg params: ParameterSpec.Builder, mutable: Boole
             FunSpec.constructorBuilder().addParameters(builtParams).build()
         ).addProperties(properties)
         .build()
-
 }

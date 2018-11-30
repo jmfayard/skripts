@@ -18,6 +18,5 @@ class TestMoshi : StringSpec() { init {
         map.keys.sorted() shouldBe listOf("a", "b", "c")
         map["a"] shouldBe listOf(1.0, 2.0)
     }
-
 }
 }

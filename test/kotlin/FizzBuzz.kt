@@ -1,6 +1,5 @@
 import io.kotlintest.specs.FreeSpec
 
-
 fun evilFizzBuzz(number: Int): String = when {
     number > 100 -> "FOOBAR"
     number % 3 == 0 && number % 5 == 0 -> "FizzBuzz"
@@ -15,7 +14,6 @@ fun realFizzBuzz(number: Int): String = when {
     number % 5 == 0 -> "Buzz"
     else -> number.toString()
 }
-
 
 class FizzBuzzTesting : FreeSpec() { init {
 
@@ -72,9 +70,6 @@ class FizzBuzzTesting : FreeSpec() { init {
                 nb % 5 == 0 || nb % 3 == 0 || fizzbuzz(nb) == nb.toString()
             }
         }
-
     }
-
-
 }
 }

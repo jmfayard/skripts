@@ -16,7 +16,6 @@ import ru.gildor.coroutines.retrofit.await
 import ru.gildor.coroutines.retrofit.awaitResponse
 import ru.gildor.coroutines.retrofit.awaitResult
 
-
 /**
  ** Trying out: Kotlin Coroutines for Retrofit
  ** https://github.com/gildor/kotlin-coroutines-retrofit
@@ -27,7 +26,7 @@ class KotlinCoroutinesRetrofitTest : StringSpec() { init {
 
     "ApiTEST" {
         runBlocking {
-            IO.httpbinService.raw().await().debug("ApiTEST") shouldBe  ApiTest(ok2=true)
+            IO.httpbinService.raw().await().debug("ApiTEST") shouldBe ApiTest(ok2 = true)
         }
     }
 
@@ -66,8 +65,6 @@ class KotlinCoroutinesRetrofitTest : StringSpec() { init {
             IO.httpbinService.invalid().awaitResult() should be an Result.Exception::class
         }
     }
-
-
 }
 }
 
@@ -89,7 +86,6 @@ object IO {
         .build()
 
     val httpbinService = retrofit.create(ApiService::class.java)
-
 }
 
 data class ApiTest(val ok2: Boolean)
@@ -105,7 +101,6 @@ interface ApiService {
     /** Returns given HTTP Status code. **/
     @GET("/status/{code}")
     fun status(@Path("code") code: Int): Call<HttpbinResponse>
-
 
     @GET("/get")
     fun invalid(): Call<Boolean>

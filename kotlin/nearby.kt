@@ -3,16 +3,19 @@
 package p2p
 
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.channels.*
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.SendChannel
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.selects.select
-import java.util.*
+import java.util.Random
 import kotlin.coroutines.CoroutineContext
 
 data class Msg(val id: Int, val value: Int)
-
 
 fun main() = runBlocking {
 
@@ -47,27 +50,22 @@ fun main() = runBlocking {
         for (msg in streamSent) {
             println("Msg $msg was correctly sent")
         }
-
     }
-
 
     // wait for all jobs to complete
     listOf(launchNearbyJob, sendMessagesJob, replayErrorsJob, msgsOkJob)
         .forEach { job -> job.join() }
-
-
 }
 
-
 class FakeNearby(
-        val transaction: String,
-        val isSender: Boolean,
-        var peer: String,
-        val inputChannel: ReceiveChannel<Msg>,
-        val outputOkChannel: SendChannel<Msg>,
-        val outputErrorChannel: SendChannel<Msg>,
-        override val coroutineContext: CoroutineContext
-) : CoroutineScope{
+    val transaction: String,
+    val isSender: Boolean,
+    var peer: String,
+    val inputChannel: ReceiveChannel<Msg>,
+    val outputOkChannel: SendChannel<Msg>,
+    val outputErrorChannel: SendChannel<Msg>,
+    override val coroutineContext: CoroutineContext
+) : CoroutineScope {
 
     val canSendChannel = Channel<Boolean>()
 
@@ -79,7 +77,6 @@ class FakeNearby(
         val randomEvents = randomNetworkErrors()
 
         var shouldContinue = true
-
 
         while (true) {
             select<Unit> {
@@ -116,7 +113,6 @@ class FakeNearby(
             }
         }
         println("Nearby interrupted, you may want to retry it")
-
     }
 
     suspend fun startNearby() {
@@ -223,7 +219,6 @@ class FakeNearby(
         }
     }
 
-
     suspend fun tryConnect(): Boolean {
         delay(100)
         return badLuck(40)
@@ -234,5 +229,4 @@ class FakeNearby(
         check(probability in 0..100) { "Probability $probability invalid, should be in 0..100" }
         return random.nextInt() <= probability
     }
-
 }

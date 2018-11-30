@@ -2,7 +2,15 @@ package checkvist
 
 import javafx.scene.control.TreeItem
 import javafx.scene.layout.HBox
-import tornadofx.*
+import tornadofx.View
+import tornadofx.addClass
+import tornadofx.cellFormat
+import tornadofx.label
+import tornadofx.onUserSelect
+import tornadofx.plusAssign
+import tornadofx.populate
+import tornadofx.treeview
+import tornadofx.vbox
 
 class DemoTreeViews : View() {
     override val root = HBox()

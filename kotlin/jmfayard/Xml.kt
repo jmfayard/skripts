@@ -14,7 +14,6 @@ fun parseXmlFile(path: String): Document =
 fun parseXmlFile(file: File): Document =
     SAXBuilder().build(file).document
 
-
 fun Document.writeXmlToFile(destination: File) {
     destination.parentFile.mkdirs()
     println("Writing to ${destination.absolutePath}")
@@ -45,7 +44,6 @@ class DocumentWalker(document: Document, maxLevel: Int, val depthFirst: Boolean,
                 stack.add(e)
                 findChildren(e, level - 1)
             }
-
         } else {
             stack.addAll(element.children)
             for (e in element.children) {
@@ -53,7 +51,6 @@ class DocumentWalker(document: Document, maxLevel: Int, val depthFirst: Boolean,
             }
         }
     }
-
 }
 
 fun xmlDocument(
@@ -77,4 +74,3 @@ fun Element.addElement(
     addContent(child)
     return child
 }
-

@@ -1,4 +1,11 @@
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.doReturn
+import com.nhaarman.mockito_kotlin.eq
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.never
+import com.nhaarman.mockito_kotlin.times
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import io.kotlintest.specs.FreeSpec
 
 private interface Logger {
@@ -13,7 +20,7 @@ private class DummyList(val list: List<Int>, val logger: Logger) : List<Int> by 
 
     fun second(): Int {
         val second = list[1]
-        logger.log("second: ${second}")
+        logger.log("second: $second")
         return second
     }
 
@@ -30,7 +37,6 @@ interface Foo {
 }
 
 class MockitoTests : FreeSpec() { init {
-
 
     "Given a mocked logger" - {
         /* Given */
@@ -68,7 +74,6 @@ class MockitoTests : FreeSpec() { init {
             verify(list, times(2)).get(2)
             verify(list, never()).get(10)
         }
-
     }
 
     "Testing properties" {
@@ -76,6 +81,5 @@ class MockitoTests : FreeSpec() { init {
         foo.bar = "set"
         verify(foo).bar = "set"
     }
-
 }
 }

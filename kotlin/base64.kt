@@ -11,7 +11,6 @@ fun main(args: Array<String>) {
     println(base64(file))
 }
 
-
 fun base64(file: File): String {
     check(file.canRead())
     Buffer().use { buffer ->
@@ -20,5 +19,4 @@ fun base64(file: File): String {
         }
         return buffer.readByteString().base64()
     }
-
 }

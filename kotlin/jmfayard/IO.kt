@@ -6,7 +6,6 @@ import org.intellij.lang.annotations.Language
 import org.zeroturnaround.exec.ProcessExecutor
 import java.io.File
 
-
 fun executeBashCommand(vararg args: String): String {
     println("# " + args.joinToString(separator = " "))
     val program = args.first()

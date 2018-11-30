@@ -25,7 +25,7 @@ class LazyEnvironmentVariable<in T>(val notfoundMesssage: String, val default: S
 }
 
 fun <T> T.debug(name: String): T {
-    println("DEBUG: ${name} = ${toString()}")
+    println("DEBUG: $name = ${toString()}")
     return this
 }
 

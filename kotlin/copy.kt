@@ -4,7 +4,6 @@ package copy
 import debugList
 import java.io.File
 
-
 fun main(args: Array<String>) {
     if (args.isEmpty()) {
         println("Usage: $ copy.kt a b c d && cd /tmp && paste.kt ")

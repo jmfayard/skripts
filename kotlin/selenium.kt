@@ -14,7 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait
  */
 
 private val HELP =
-        """
+    """
 Kotlin scripts for Android devs.
 
 Usage:
@@ -34,7 +34,6 @@ fun main(args: Array<String>) {
         p["hn"] == true -> hackerNews()
         else -> println(HELP)
     }
-
 }
 
 fun hackerNews() {
@@ -46,9 +45,9 @@ fun hackerNews() {
     driver.waitUntilPageIsReady()
     driver.get("https://news.ycombinator.com/upvoted?id=jmfayard")
     val titles = driver.findElementsByClassName("athing")
-            .flatMap { element -> element.findElements(By.className("title")) }
-            .flatMap { it.findElements(By.tagName("a")) }
-            .map { it.getAttribute("href") to it.text }
+        .flatMap { element -> element.findElements(By.className("title")) }
+        .flatMap { it.findElements(By.tagName("a")) }
+        .map { it.getAttribute("href") to it.text }
     titles.printList("HN")
     driver.close()
     driver.quit()
@@ -59,9 +58,9 @@ fun waitButWhyArchive() {
     driver.get("https://waitbutwhy.com/archive")
     driver.waitUntilPageIsReady()
     val titles = driver.findElementsByClassName("post-right")
-            .map { element -> element.findElement(By.tagName("H5")) }
-            .map { it.findElement(By.tagName("A")) }
-            .map { it.text }
+        .map { element -> element.findElement(By.tagName("H5")) }
+        .map { it.findElement(By.tagName("A")) }
+        .map { it.text }
 
     titles.printList("WaitButWhy")
     driver.close()
@@ -70,6 +69,6 @@ fun waitButWhyArchive() {
 fun ChromeDriver.waitUntilPageIsReady(): ChromeDriver {
     val executor = this as JavascriptExecutor
     WebDriverWait(this, 1)
-            .until { executor.executeScript("return document.readyState") == "complete" }
+        .until { executor.executeScript("return document.readyState") == "complete" }
     return this
 }

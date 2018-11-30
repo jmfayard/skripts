@@ -1,17 +1,14 @@
 import io.kotlintest.properties.Gen
 import io.kotlintest.specs.FreeSpec
 import java.math.BigInteger
-import java.util.*
+import java.util.Random
 
 /*
  http://fsharpforfunandprofit.com/posts/property-based-testing-2/
 
  */
 
-
-
 class PropertiesTesting : FreeSpec() { init {
-
 
     "Different paths, same destination" - {
         fun List<Int>.mysort() = this.sorted()
@@ -76,8 +73,6 @@ class PropertiesTesting : FreeSpec() { init {
         }
     }
 
-
-
     "Property: it never crashes" {
         forAll { s: String ->
             try {
@@ -86,7 +81,6 @@ class PropertiesTesting : FreeSpec() { init {
             } catch (e: Exception) {
                 false
             }
-
         }
     }
 
@@ -109,7 +103,6 @@ class PropertiesTesting : FreeSpec() { init {
             "$a$b$a".isPalindrome() && "$a$b$b$a".isPalindrome()
         }
     }
-
 
     "Hard to prove, easy to verify" {
         val gen = Gen.list(Gen.choose(1, 100))
@@ -135,11 +128,8 @@ class PropertiesTesting : FreeSpec() { init {
             }
         }
     }
-
-
 }
 }
-
 
 fun String.isPalindrome(): Boolean {
     for (i in 0 until length) {

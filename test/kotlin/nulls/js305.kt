@@ -24,6 +24,4 @@ fun main(args: Array<String>) {
 
     /* OK */
     println(greeting.length)
-
-
 }

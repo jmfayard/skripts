@@ -4,7 +4,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 
-
 class OkRecipes : StringSpec() { init {
 
     "Synchronous get" {
@@ -46,10 +45,6 @@ class OkRecipes : StringSpec() { init {
 
         val body = requireNotNull(response.body()) { "Response failed: $response" }
         println(body)
-
     }
 }
 }
-
-
-

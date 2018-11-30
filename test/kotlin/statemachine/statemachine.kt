@@ -6,9 +6,17 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import statemachine.BrokenEvent.MachineRepairDidComplete
-import statemachine.LockedEvent.*
-import statemachine.StateMachineStrategy.*
-import statemachine.TurnStyle.Command.*
+import statemachine.LockedEvent.AdmitPersonWhileLocked
+import statemachine.LockedEvent.InsertCoin
+import statemachine.LockedEvent.MachineDidFailWhileLocked
+import statemachine.StateMachineStrategy.CRASH
+import statemachine.StateMachineStrategy.DROP
+import statemachine.StateMachineStrategy.FIRE_NOW
+import statemachine.StateMachineStrategy.STORE
+import statemachine.TurnStyle.Command.CallSomeone
+import statemachine.TurnStyle.Command.CloseDoors
+import statemachine.TurnStyle.Command.OpenDoors
+import statemachine.TurnStyle.Command.SoundAlarm
 import statemachine.TurnStyle.Companion.FARE_PRICE
 import statemachine.UnlockedEvent.AdmitPerson
 import statemachine.UnlockedEvent.MachineDidFail
@@ -25,7 +33,6 @@ import statemachine.UnlockedEvent.MachineDidFail
  *
  * ![TurnStyle](https://camo.githubusercontent.com/a74ea94a7eab348f991fb22d6f70a92c5bef3740/68747470733a2f2f616e64796d617475736368616b2e6f72672f7374617465732f666967757265332e706e67)
  ***/
-
 
 /** Generic State Machine **/
 interface Event
@@ -49,7 +56,6 @@ data class Transition<State : StateType, Command : StateCommand>(
 enum class StateMachineStrategy { FIRE_NOW, DROP, STORE, CRASH }
 
 object StartEvent : NamedEvent("StartEvent")
-
 
 interface StateMachine<State : StateType, Command : StateCommand> {
     fun initialState(): State
@@ -79,10 +85,7 @@ Commands: $commands
     """
         )
     }
-
-
 }
-
 
 fun main(args: Array<String>) {
 
@@ -107,7 +110,6 @@ fun main(args: Array<String>) {
 
     stateMachine.printHistory()
     val history = stateMachine.history()
-
 
     val expectedStates = listOf(
         Locked(credit = 0), Locked(credit = 20), Locked(credit = 40),
@@ -137,17 +139,12 @@ fun main(args: Array<String>) {
         val expectedSideEffects =
             listOf("sendControlSignalToOpenDoors", "sendControlSignalToCloseDoors", "askSomeoneToRepair")
         controller.doorHardwareController.msgs shouldBe expectedSideEffects
-
     }
-
-
 }
-
 
 /***
  * Functional Core of our state machine.
  */
-
 
 interface StateType
 
@@ -159,7 +156,6 @@ sealed class TurnStyleState(val name: String? = null) : StateType {
 }
 
 typealias TurnStyleTransition = Transition<TurnStyleState, TurnStyle.Command>
-
 
 sealed class LockedEvent(name: String? = null) : NamedEvent(name) {
     data class InsertCoin(val value: Int) : LockedEvent()
@@ -181,7 +177,6 @@ data class Locked(val credit: Int) : TurnStyleState() {
                     transition.moveAndEmit(Unlocked, OpenDoors)
                 else
                     transition.moveTo(Locked(newCredit))
-
             }
         }
     }
@@ -210,7 +205,6 @@ data class Broken(val oldState: TurnStyleState) : TurnStyleState() {
         check(transition.event == MachineRepairDidComplete)
         return transition.moveTo(this.oldState)
     }
-
 }
 
 class TurnStyle : StateMachine<TurnStyleState, TurnStyle.Command> {
@@ -235,7 +229,6 @@ class TurnStyle : StateMachine<TurnStyleState, TurnStyle.Command> {
         return newTransition.command
     }
 
-
     override fun enqueueEvent(event: Event): StateMachineStrategy {
         return when (event) {
             is LockedEvent -> when {
@@ -255,7 +248,6 @@ class TurnStyle : StateMachine<TurnStyleState, TurnStyle.Command> {
         }
     }
 
-
     companion object {
         private val doNothing: TurnStyle.Command? = null
         const val FARE_PRICE = 50
@@ -266,7 +258,6 @@ private fun printList(list: List<Any?>) = list.joinToString(prefix = "listOf(", 
 private infix fun <T> T?.shouldBe(expected: Any?) {
     if (this != expected) error("ShouldBe Failed!\nExpected: $expected\nGot:      $this")
 }
-
 
 /***
 Now, an imperative shell that hides the enums and delegates to actuators.
@@ -346,12 +337,9 @@ class TurnStyleController(
         enqueue(MachineDidFailWhileLocked)
     }
 
-
     suspend fun customerDidInsertCoin(value: Int) {
         enqueue(InsertCoin(value))
     }
-
-
 }
 
 class DoorHardwareController {
@@ -375,13 +363,10 @@ class DoorHardwareController {
         return MachineRepairDidComplete
     }
 
-
     private fun say(msg: String) {
         msgs += msg
         println(msg)
     }
-
-
 }
 
 class SpeakerController {
@@ -396,5 +381,4 @@ class SpeakerController {
         println(msg)
         msgs += msg
     }
-
 }

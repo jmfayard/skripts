@@ -1,11 +1,25 @@
-import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.CodeBlock
+import com.squareup.kotlinpoet.DOUBLE
+import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.ParameterizedTypeName
+import com.squareup.kotlinpoet.PropertySpec
+import com.squareup.kotlinpoet.asClassName
+import com.squareup.kotlinpoet.joinToCode
 import jmfayard.resourceFile
-import krangl.*
+import krangl.DataFrame
+import krangl.DataFrameRow
+import krangl.fromCSV
+import krangl.greaterThan
+import krangl.gt
+import krangl.listOf
+import krangl.print
+import krangl.range
+import krangl.startsWith
 
 // todo convert to script
 
 /** Reproduce popular sleep data workflow with krangl*/
-
 
 fun main(args: Array<String>) {
 
@@ -18,14 +32,11 @@ fun main(args: Array<String>) {
     // Negative selection (aka column removal)
     sleepData.remove("conservation")
 
-
     // Do a range selection
     sleepData.select { range("name", "order") }
 
-
     // Select all columns that start with the character string "sl" along with the `name` column, use the function `startsWith()`:
     sleepData.select({ listOf("name") }, { startsWith("sl") })
-
 
     //
     // Filter rows with `filter`
@@ -42,7 +53,6 @@ fun main(args: Array<String>) {
         CodeBlock.of("%T(%S, %S, %L)", sheepClass, row["name"], row["genus"], row["awake"])
     }
 
-
     val sheepProperty = PropertySpec.builder("sheeps", ParameterizedTypeName.get(List::class.asClassName(), sheepClass))
         .addKdoc("All the sheeps")
         .initializer(kSheeps.joinToCode(prefix = "listOf(\n", suffix = "\n)", separator = ",\n"))
@@ -56,15 +66,12 @@ fun main(args: Array<String>) {
         mutable = false
     )
 
-
     val file = FileSpec.builder("krangl", "sheeps.kt")
         .addComment("Sheeps as code")
         .addType(sheepSpec)
         .addProperty(sheepProperty)
         .build()
     print(file)
-
 }
-
 
 data class Sheep(val name: String, val genus: String, val awake: Double)

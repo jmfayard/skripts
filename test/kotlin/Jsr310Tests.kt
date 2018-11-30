@@ -21,9 +21,7 @@ class Jsr310Tests : FreeSpec() { init {
         val yyyyMMdd = DateTimeFormatter.ofPattern("yyyy/MM/dd")
         LocalDate.parse("1970/01/01", yyyyMMdd).atStartOfDay(ZoneOffset.UTC) shouldBe epoch
 
-
         println(ZonedDateTime.parse("2017-09-27T14:08:27.948Z"))
     }
-
 }
 }

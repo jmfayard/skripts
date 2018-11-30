@@ -2,8 +2,23 @@
 package android
 
 import debug
-import jmfayard.*
-import krangl.*
+import jmfayard.addElement
+import jmfayard.parseXmlFile
+import jmfayard.printList
+import jmfayard.printMap
+import jmfayard.printXml
+import jmfayard.readableFile
+import jmfayard.walk
+import jmfayard.writableFile
+import jmfayard.writeXmlToFile
+import jmfayard.xmlDocument
+import krangl.DataFrame
+import krangl.asStrings
+import krangl.dataFrameOf
+import krangl.fromCSV
+import krangl.glimpse
+import krangl.print
+import krangl.writeCSV
 import org.apache.commons.csv.CSVFormat
 import org.docopt.Docopt
 import org.jdom2.Document
@@ -12,12 +27,11 @@ import org.jdom2.Namespace
 import java.io.File
 import java.util.regex.Pattern
 
-
-private val CSV_DELIMITOR=';'
+private val CSV_DELIMITOR = ';'
 private val VERSION = "0.3"
 val RES_DIR = listOf("src/main/res_shared", "app/src/main/res_shared", "app/src/main/res", "src/main/res")
 private val HELP =
-        """
+    """
 Kotlin scripts for Android devs.
 
 Usage:
@@ -35,9 +49,6 @@ Options:
   --version         Show version.
 """.trim()
 
-
-
-
 fun main(args: Array<String>) {
     val p: Map<String, Any> = Docopt(HELP).withVersion(VERSION).parse(args.toList())
     val file = p["<file>"] as? String
@@ -50,7 +61,6 @@ fun main(args: Array<String>) {
         p["xml2csv"] == true -> convertI18nFilesAndroid2Csv(p, module)
         p["pseudolocale"] == true -> pseudoLocale(parseAndroidStringFile(file!!))
     }
-
 }
 
 //   android.kt xml2csv --module <dir> --dest <csv> <lang>...
@@ -66,15 +76,15 @@ fun convertI18nFilesCsvToAndroid(p: Map<String, Any>, module: String) {
     println(p)
     val src = p["<csv>"] as? String ?: error("Missing argument --src output.csv")
     val locales = p["<lang>"] as? List<String> ?: error("Missing locales [fr en pt-rTL]")
-    val resDir =   resDirectory(File(module))
+    val resDir = resDirectory(File(module))
 
     i18nCsv2xml(readableFile(src), resDir, locales)
 }
 
-fun resDirectory(module: File) : File {
-    return RES_DIR.map { module.resolve(it) }.firstOrNull { it.isDirectory } ?: error("Invalid android repository ${module.absolutePath}")
+fun resDirectory(module: File): File {
+    return RES_DIR.map { module.resolve(it) }.firstOrNull { it.isDirectory }
+        ?: error("Invalid android repository ${module.absolutePath}")
 }
-
 
 fun convertI18nFilesAndroid2Csv(module: String, output: File, locales: List<String>) {
 
@@ -86,20 +96,18 @@ fun convertI18nFilesAndroid2Csv(module: String, output: File, locales: List<Stri
         code to parseAndroidStringFile(localeFile)
     }
     krangleStrings(english, output, others)
-
 }
-
 
 fun krangleStrings(english: Map<String, String>, dest: File, locales: Map<String, Map<String, String>>) {
     val codes = locales.keys.sorted()
     val rows = listOf("name", "en") + codes
     val values = english.keys
-            .sorted()
-            .flatMap { key ->
-                val translations = codes.map { locales[it]!!.getOrDefault(key, english[key]) }
-                listOf(key, english[key]) + translations
-            }
-            .toTypedArray()
+        .sorted()
+        .flatMap { key ->
+            val translations = codes.map { locales[it]!!.getOrDefault(key, english[key]) }
+            listOf(key, english[key]) + translations
+        }
+        .toTypedArray()
     val df: DataFrame = dataFrameOf(*rows.toTypedArray())(*values)
     df.print()
     df.writeCSV(dest, format = CSVFormat.EXCEL.withDelimiter(CSV_DELIMITOR))
@@ -113,11 +121,10 @@ fun pseudoLocale(androidStringFile: Map<String, String>) {
 //    document.writeXmlToFile(destination)
 }
 
-
 private val regexpPH = Pattern.compile("(%s|%\\d\\\$s)")
 
 fun keyWithPlaceholder(key: String, value: String): String {
-    val placeHoldersNumber = value.split(regexpPH).size -  1
+    val placeHoldersNumber = value.split(regexpPH).size - 1
     var valueWithPlaceHodler = key
     repeat(placeHoldersNumber) {
         valueWithPlaceHodler += " %s"
@@ -129,8 +136,8 @@ fun extractIdsFromLayout(path: String): String {
     val layoutFile = readableFile(path).debug("layoutFile")
     val pathId = "R.layout." + layoutFile.nameWithoutExtension
     val layoutElements = parseXmlFile(layoutFile).walk(skipRoot = false)
-            .map(Element::asLayoutElement)
-            .filter { it.id.isNotBlank() }
+        .map(Element::asLayoutElement)
+        .filter { it.id.isNotBlank() }
 
     val enums = layoutElements.joinToString(separator = "\n") { e: LayoutElement ->
         "    " + e.suggestedName + " (" + e.androidId() + "), // " + e.type
@@ -146,7 +153,6 @@ $enums
     Layout($pathId) // Layout ${layoutFile.name}
 }
     """.trimIndent()
-
 }
 
 private fun Element.asLayoutElement(): LayoutElement {
@@ -155,7 +161,6 @@ private fun Element.asLayoutElement(): LayoutElement {
     } ?: ""
     return LayoutElement(this.name, id)
 }
-
 
 val NAMESPACE_ANDROID = Namespace.getNamespace("http://schemas.android.com/apk/res/android")
 
@@ -166,8 +171,8 @@ private data class LayoutElement(val type: String, val id: String) {
 
     fun camelCaseOf(name: String): String {
         return name.split("_")
-                .map { it.capitalize() }
-                .joinToString(separator = "")
+            .map { it.capitalize() }
+            .joinToString(separator = "")
     }
 }
 
@@ -182,34 +187,31 @@ fun i18nCsv2xml(csvFile: File, destDir: File, langs: List<String>) {
     }
 }
 
-
 fun krangleParse(file: File, langs: List<String>): DataFrame {
     val lang = langs.first()
     val columns = arrayOf("name") + langs
     val df = DataFrame.fromCSV(file, CSVFormat.DEFAULT.withHeader().withDelimiter(CSV_DELIMITOR))
-            .select(*columns)
-            .filter { it[lang].asStrings().map { it?.startsWith("XXX") == false }.toBooleanArray() }
+        .select(*columns)
+        .filter { it[lang].asStrings().map { it?.startsWith("XXX") == false }.toBooleanArray() }
     df.glimpse()
     return df
 }
 
 fun i18nStrings(df: DataFrame, lang: String): Map<String, String> =
-        df.rows.associate { it["name"] as String to it[lang] as String }
-
+    df.rows.associate { it["name"] as String to it[lang] as String }
 
 fun generateAndroidXml(i18nMap: Map<String, String>): Document =
-        xmlDocument("resources") {
-            for ((key, value) in i18nMap) {
-                addElement("string", mapOf("name" to key)) {
-                    text = espaceXmlValue(value)
-                }
+    xmlDocument("resources") {
+        for ((key, value) in i18nMap) {
+            addElement("string", mapOf("name" to key)) {
+                text = espaceXmlValue(value)
             }
         }
+    }
 
 fun espaceXmlValue(value: String): String {
     return value.replace("'", "\\'")
 }
-
 
 fun findFiles(path: String): List<File> {
     val base = readableFile(path, directory = true)
@@ -224,4 +226,4 @@ fun parseAndroidStringFile(path: String): Map<String, String> {
 }
 
 private fun Element.asAndroidString(): Pair<String, String> =
-        this.getAttribute("name").value to this.text
+    this.getAttribute("name").value to this.text

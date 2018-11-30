@@ -1,7 +1,7 @@
 #!/usr/bin/env kotlin-script.sh
 // Installation:  see kotlin-scripts/README.md
 
-package date_me
+package dateme
 
 import jmfayard.printAsTable
 import org.joda.time.DateTime
@@ -10,8 +10,7 @@ import org.joda.time.Instant
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatterBuilder
 import org.joda.time.format.ISODateTimeFormat
-import java.util.*
-
+import java.util.Locale
 
 /***
  * Give the date in different formats
@@ -30,7 +29,6 @@ $ date_me.kt
 2017-01-05T08:57:41.563-05:00             Time in the JDK default time zone
 jeudi 5 janvier 2017 13 h 57 UTC          fullDateTime() France
 
-
  * A specific date can be given in any of the formats above
 
 $ date_me.kt 2017-01-05T13:57:41.563Z
@@ -45,7 +43,6 @@ fun main(args: Array<String>) {
     val instant = if (args.isEmpty()) Instant.now() else parseDate(args[0])
     printDate(instant)
 }
-
 
 fun printDate(instant: Instant) {
     val utc = instant.toDateTime(DateTimeZone.UTC)
@@ -62,10 +59,7 @@ fun printDate(instant: Instant) {
         default to "Time in the JDK default time zone",
         DateTimeFormat.fullDateTime().withLocale(Locale.FRANCE).print(utc) to "fullDateTime() France"
     )
-
-
 }
-
 
 fun parseDate(input: String): Instant {
     if (input.isBlank()) {
@@ -92,7 +86,6 @@ fun parseDate(input: String): Instant {
     }
     throw IllegalArgumentException("Cannot parse $input")
 }
-
 
 val mySql = DateTimeFormatterBuilder()
     .appendYear(4, 4)

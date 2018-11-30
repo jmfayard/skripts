@@ -6,14 +6,14 @@
  * to update this file */
 object Libs {
     const val kscript_support: String =
-            "com.github.holgerbrandl:kscript-support:" + Versions.kscript_support
+        "com.github.holgerbrandl:kscript-support:" + Versions.kscript_support
 
     /**
      * [jsr305 website](http://findbugs.sourceforge.net/) */
     const val jsr305: String = "com.google.code.findbugs:jsr305:" + Versions.jsr305
 
     const val com_gradle_build_scan_gradle_plugin: String =
-            "com.gradle.build-scan:com.gradle.build-scan.gradle.plugin:" + Versions.com_gradle_build_scan_gradle_plugin
+        "com.gradle.build-scan:com.gradle.build-scan.gradle.plugin:" + Versions.com_gradle_build_scan_gradle_plugin
 
     /**
      * [timber website](https://github.com/JakeWharton/timber) */
@@ -30,7 +30,7 @@ object Libs {
     /**
      * [moshi-lazy-adapters website](https://github.com/serj-lotutovici/moshi-lazy-adapters/) */
     const val moshi_lazy_adapters: String =
-            "com.serjltt.moshi:moshi-lazy-adapters:" + Versions.moshi_lazy_adapters
+        "com.serjltt.moshi:moshi-lazy-adapters:" + Versions.moshi_lazy_adapters
 
     /**
      * [moshi website](https://github.com/square/moshi) */
@@ -39,12 +39,12 @@ object Libs {
     /**
      * [logging-interceptor website](https://github.com/square/okhttp) */
     const val logging_interceptor: String =
-            "com.squareup.okhttp3:logging-interceptor:" + Versions.com_squareup_okhttp3
+        "com.squareup.okhttp3:logging-interceptor:" + Versions.com_squareup_okhttp3
 
     /**
      * [mockwebserver website](https://github.com/square/okhttp) */
     const val mockwebserver: String =
-            "com.squareup.okhttp3:mockwebserver:" + Versions.com_squareup_okhttp3
+        "com.squareup.okhttp3:mockwebserver:" + Versions.com_squareup_okhttp3
 
     /**
      * [okhttp website](https://github.com/square/okhttp) */
@@ -57,22 +57,22 @@ object Libs {
     /**
      * [adapter-rxjava2 website](https://github.com/square/retrofit/) */
     const val adapter_rxjava2: String =
-            "com.squareup.retrofit2:adapter-rxjava2:" + Versions.com_squareup_retrofit2
+        "com.squareup.retrofit2:adapter-rxjava2:" + Versions.com_squareup_retrofit2
 
     /**
      * [converter-moshi website](https://github.com/square/retrofit/) */
     const val converter_moshi: String =
-            "com.squareup.retrofit2:converter-moshi:" + Versions.com_squareup_retrofit2
+        "com.squareup.retrofit2:converter-moshi:" + Versions.com_squareup_retrofit2
 
     /**
      * [retrofit-mock website](https://github.com/square/retrofit/) */
     const val retrofit_mock: String =
-            "com.squareup.retrofit2:retrofit-mock:" + Versions.com_squareup_retrofit2
+        "com.squareup.retrofit2:retrofit-mock:" + Versions.com_squareup_retrofit2
 
     /**
      * [retrofit website](https://github.com/square/retrofit/) */
     const val retrofit: String =
-            "com.squareup.retrofit2:retrofit:" + Versions.com_squareup_retrofit2
+        "com.squareup.retrofit2:retrofit:" + Versions.com_squareup_retrofit2
 
     /**
      * [kotlinpoet website](http://github.com/square/kotlinpoet/) */
@@ -103,7 +103,7 @@ object Libs {
     const val rxkotlin: String = "io.reactivex.rxjava2:rxkotlin:" + Versions.rxkotlin
 
     const val jmfayard_github_io_gradle_kotlin_dsl_libs_gradle_plugin: String =
-            "jmfayard.github.io.gradle-kotlin-dsl-libs:jmfayard.github.io.gradle-kotlin-dsl-libs.gradle.plugin:" + Versions.jmfayard_github_io_gradle_kotlin_dsl_libs_gradle_plugin
+        "jmfayard.github.io.gradle-kotlin-dsl-libs:jmfayard.github.io.gradle-kotlin-dsl-libs.gradle.plugin:" + Versions.jmfayard_github_io_gradle_kotlin_dsl_libs_gradle_plugin
 
     /**
      * [joda-time website](https://www.joda.org/joda-time/) */
@@ -128,54 +128,54 @@ object Libs {
     const val exposed: String = "org.jetbrains.exposed:exposed:" + Versions.exposed
 
     const val org_jetbrains_kotlin_jvm_gradle_plugin: String =
-            "org.jetbrains.kotlin.jvm:org.jetbrains.kotlin.jvm.gradle.plugin:" + Versions.org_jetbrains_kotlin_jvm_gradle_plugin
+        "org.jetbrains.kotlin.jvm:org.jetbrains.kotlin.jvm.gradle.plugin:" + Versions.org_jetbrains_kotlin_jvm_gradle_plugin
 
     /**
      * [kotlin-reflect website](https://kotlinlang.org/) */
     const val kotlin_reflect: String =
-            "org.jetbrains.kotlin:kotlin-reflect:" + Versions.org_jetbrains_kotlin
+        "org.jetbrains.kotlin:kotlin-reflect:" + Versions.org_jetbrains_kotlin
 
     /**
      * [kotlin-scripting-compiler-embeddable website](https://kotlinlang.org/) */
     const val kotlin_scripting_compiler_embeddable: String =
-            "org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable:" + Versions.org_jetbrains_kotlin
+        "org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable:" + Versions.org_jetbrains_kotlin
 
     /**
      * [kotlin-stdlib-jdk8 website](https://kotlinlang.org/) */
     const val kotlin_stdlib_jdk8: String =
-            "org.jetbrains.kotlin:kotlin-stdlib-jdk8:" + Versions.org_jetbrains_kotlin
+        "org.jetbrains.kotlin:kotlin-stdlib-jdk8:" + Versions.org_jetbrains_kotlin
 
     /**
      * [kotlin-test-junit website](https://kotlinlang.org/) */
     const val kotlin_test_junit: String =
-            "org.jetbrains.kotlin:kotlin-test-junit:" + Versions.org_jetbrains_kotlin
+        "org.jetbrains.kotlin:kotlin-test-junit:" + Versions.org_jetbrains_kotlin
 
     /**
      * [kotlin-test website](https://kotlinlang.org/) */
     const val kotlin_test: String =
-            "org.jetbrains.kotlin:kotlin-test:" + Versions.org_jetbrains_kotlin
+        "org.jetbrains.kotlin:kotlin-test:" + Versions.org_jetbrains_kotlin
 
     /**
      * [kotlinx-coroutines-core website](https://github.com/Kotlin/kotlinx.coroutines) */
     const val kotlinx_coroutines_core: String =
-            "org.jetbrains.kotlinx:kotlinx-coroutines-core:" + Versions.kotlinx_coroutines_core
+        "org.jetbrains.kotlinx:kotlinx-coroutines-core:" + Versions.kotlinx_coroutines_core
 
     /**
      * [kotlinx-coroutines-rx2 website](https://github.com/Kotlin/kotlinx.coroutines) */
     const val kotlinx_coroutines_rx2: String =
-            "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:" + Versions.kotlinx_coroutines_rx2
+        "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:" + Versions.kotlinx_coroutines_rx2
 
     /**
      * [kotlinx-html-jvm website](https://github.com/Kotlin/kotlinx.html) */
     const val kotlinx_html_jvm: String =
-            "org.jetbrains.kotlinx:kotlinx-html-jvm:" + Versions.kotlinx_html_jvm
+        "org.jetbrains.kotlinx:kotlinx-html-jvm:" + Versions.kotlinx_html_jvm
 
     /**
      * [jtwig-core website](http://jtwig.org) */
     const val jtwig_core: String = "org.jtwig:jtwig-core:" + Versions.jtwig_core
 
     const val kodein_di_generic_jvm: String =
-            "org.kodein.di:kodein-di-generic-jvm:" + Versions.kodein_di_generic_jvm
+        "org.kodein.di:kodein-di-generic-jvm:" + Versions.kodein_di_generic_jvm
 
     const val koin_core: String = "org.koin:koin-core:" + Versions.koin_core
 
@@ -190,7 +190,7 @@ object Libs {
     /**
      * [selenium-java website](http://www.seleniumhq.org/) */
     const val selenium_java: String =
-            "org.seleniumhq.selenium:selenium-java:" + Versions.selenium_java
+        "org.seleniumhq.selenium:selenium-java:" + Versions.selenium_java
 
     /**
      * [slf4j-simple website](http://www.slf4j.org) */
@@ -203,5 +203,5 @@ object Libs {
     /**
      * [kotlin-coroutines-retrofit website](https://github.com/gildor/kotlin-coroutines-retrofit) */
     const val kotlin_coroutines_retrofit: String =
-            "ru.gildor.coroutines:kotlin-coroutines-retrofit:" + Versions.kotlin_coroutines_retrofit
+        "ru.gildor.coroutines:kotlin-coroutines-retrofit:" + Versions.kotlin_coroutines_retrofit
 }

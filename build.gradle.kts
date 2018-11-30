@@ -9,6 +9,7 @@ plugins {
     application
     kotlin("jvm") version Versions.org_jetbrains_kotlin_jvm_gradle_plugin
     id("jmfayard.github.io.gradle-kotlin-dsl-libs") version Versions.jmfayard_github_io_gradle_kotlin_dsl_libs_gradle_plugin
+    id("org.jlleitschuh.gradle.ktlint") version "6.3.1" 
 }
 
 application {
@@ -21,7 +22,6 @@ kotlin {
 
 
 repositories {
-    mavenCentral()
     jcenter()
     google()
     maven("https://jitpack.io")

@@ -7,13 +7,11 @@ class RxMarbleTest : FreeSpec() { init {
     val rxMarble = RxMarble(tickMs = 200L)
     val empty = emptyList<Int>()
 
-
-
     "error cases" - {
         val invalidMarbles = listOf(
-                "--a-b---c--", " 10-", "-0-1-%-",
-                "---|#", "--||", "---##", "--^^",
-                "-^--" // not allowed for cold
+            "--a-b---c--", " 10-", "-0-1-%-",
+            "---|#", "--||", "---##", "--^^",
+            "-^--" // not allowed for cold
         )
         for (marble in invalidMarbles) {
             "marble: $marble" {
@@ -22,7 +20,6 @@ class RxMarbleTest : FreeSpec() { init {
                 }
             }
         }
-
     }
 
     "parseNumbers" {
@@ -59,13 +56,13 @@ class RxMarbleTest : FreeSpec() { init {
         val ints = listOf(2, 4, 6, 8, 10)
         val e = listOf(4, 6, 8)
         val tests = mapOf(
-                "--1----2---3-|----------------" to e,
-                "--1----2---3-#----------------" to e,
-                "-#----------------------------" to empty,
-                "-|----------------------------" to empty,
-                "|-----------------------------" to empty,
-                "------------------------------" to empty,
-                "----1---2--3------------------" to e
+            "--1----2---3-|----------------" to e,
+            "--1----2---3-#----------------" to e,
+            "-#----------------------------" to empty,
+            "-|----------------------------" to empty,
+            "|-----------------------------" to empty,
+            "------------------------------" to empty,
+            "----1---2--3------------------" to e
         )
         for ((input, value) in tests) {
             "Marble $input" {
@@ -83,7 +80,6 @@ class RxMarbleTest : FreeSpec() { init {
                 marble shouldBe "------------------------------"
                 values shouldBe empty
             }
-
         }
 
         "just" {
@@ -92,9 +88,6 @@ class RxMarbleTest : FreeSpec() { init {
                 values shouldBe listOf(2)
             }
         }
-
-
     }
-
 }
 }

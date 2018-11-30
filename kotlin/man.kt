@@ -10,7 +10,6 @@ import okio.Buffer
 import org.zeroturnaround.exec.ProcessExecutor
 import kotlin.coroutines.CoroutineContext
 
-
 fun main(args: Array<String>) = runBlocking {
     if (args.size < 2) {
         println("Usage: $ main.kt ls -l")
@@ -23,7 +22,6 @@ fun main(args: Array<String>) = runBlocking {
     val producer = executeBashCommand(coroutineContext, "man", command)
 
     searchForOption(option, producer)
-
 }
 
 suspend fun searchForOption(option: String, producer: ReceiveChannel<String>) {
@@ -36,7 +34,6 @@ suspend fun searchForOption(option: String, producer: ReceiveChannel<String>) {
         if (foundBefore && hasArgument) break
         foundBefore = foundBefore or foundNow
         if (foundBefore && line.isNotBlank()) println(line)
-
     }
 }
 
@@ -56,7 +53,6 @@ suspend fun CoroutineScope.executeBashCommand(context: CoroutineContext, command
         }
     }
 
-
 private fun String.splitToWords(): List<String> {
     var line = this.trim()
     line = line.filterIndexed { i, c ->
@@ -66,4 +62,3 @@ private fun String.splitToWords(): List<String> {
     val words = line.split(' ', '\t', ',')
     return words.filter { it.isNotBlank() }
 }
-

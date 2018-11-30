@@ -22,7 +22,6 @@ fun main(args: Array<String>) {
     }
 }
 
-
 fun rxShare() {
     val sharedSeconds = Observable.interval(1, SECONDS)
         .share()
@@ -33,7 +32,6 @@ fun rxShare() {
     sleep(4000)
     sharedSeconds.take(5).subscribe("share3".observer())
     sleep(6000)
-
 }
 
 fun rxReplay() {
@@ -47,7 +45,6 @@ fun rxReplay() {
     sleep(4000)
     sharedSeconds.take(5).subscribe("share3".observer())
     sleep(6000)
-
 }
 
 fun rxPublishSubject() {
@@ -75,7 +72,6 @@ fun rxSwitchMap() {
     val switchedGreeks = intervalOf(5_000, 30_000)
         .switchMap { greeks }
     switchedGreeks.blockingSubscribe("switched".observer())
-
 }
 
 fun randomSleepTime() = ThreadLocalRandom.current().nextLong(2000)
@@ -87,7 +83,6 @@ fun rxBuffer() {
     Observable.merge(hotFire, coldFire)
         .debounce(200, MILLISECONDS)
         .blockingSubscribe("FireBack".observer())
-
 }
 
 fun intervalOf(period: Int, take: Long = 3000L) =
@@ -98,7 +93,6 @@ fun intervalOf(period: Int, take: Long = 3000L) =
 private fun sleep(ms: Int) = Thread.sleep(ms.toLong())
 
 private fun <T> String.observer() = PrintObserver<T>(this)
-
 
 class PrintObserver<T>(val name: String) : Observer<T> {
     var emitted = mutableListOf<T>()
@@ -113,10 +107,7 @@ class PrintObserver<T>(val name: String) : Observer<T> {
     }
 
     override fun onSubscribe(d: Disposable) {
-
     }
 
     override fun onComplete() {}
-
 }
-

@@ -18,11 +18,9 @@ operator fun Point.compareTo(b: Point): Int = when {
     else -> 0
 }
 
-
 private operator fun String.minus(regex: Regex): String = replace(regex, "")
 
-
-class OperatorTest : StringSpec() {init {
+class OperatorTest : StringSpec() { init {
     val a = Point(1, 3)
     val b = Point(4, 5)
 
@@ -48,9 +46,3 @@ class OperatorTest : StringSpec() {init {
     }
 }
 }
-
-
-
-
-
-

@@ -40,7 +40,6 @@ val persons = listOf(
     Person("Larry Cable", "Customer Service")
 )
 
-
 data class CheckvistCredentials(
     val CHECKVIST_KEY: String,
     val USER: String,
@@ -48,7 +47,6 @@ data class CheckvistCredentials(
 ) {
     fun auth() = Credentials.basic(USER, CHECKVIST_KEY)
 }
-
 
 data class CUser(
     val email: String = "",

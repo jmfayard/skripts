@@ -4,8 +4,7 @@ package json2data
 import com.squareup.moshi.Moshi
 import okio.buffer
 import okio.source
-import java.util.*
-
+import java.util.Stack
 
 fun main(args: Array<String>) {
 
@@ -19,10 +18,7 @@ fun main(args: Array<String>) {
     val classes = generator.dataClasses()
     val code = classes.map { generator.generateKotlinCode(it) }.joinToString(separator = "")
     println(code)
-
-
 }
-
 
 data class DataClass(val name: String, val properties: List<DataClassProp>)
 data class DataClassProp(val name: String, val type: String, val defaultValue: String?, val required: Boolean)
@@ -38,7 +34,6 @@ sealed class Schema(val name: String, var type: String?) {
     class S(name: String, val s: String) : Schema(name, "String")
     class N(name: String) : Schema(name, "Any?")
 }
-
 
 @Suppress("UNCHECKED_CAST")
 fun schemaOf(name: String, value: Any?): Schema = when (value) {
@@ -64,7 +59,6 @@ fun schemaOf(name: String, value: Any?): Schema = when (value) {
     }
     else -> TODO("Unexpected value $value")
 }
-
 
 val json = """
 {
@@ -114,7 +108,6 @@ data class KotlinPoet(val schema: Schema) {
             }
         }
     }
-
 
     fun defaultValue(schema: Schema): String? =
         when (schema) {
@@ -168,7 +161,6 @@ data class KotlinPoet(val schema: Schema) {
             if (i != props.lastIndex) {
                 append(",")
             }
-
         }
         append("\n")
         append(")")

@@ -1,4 +1,5 @@
 import io.kotlintest.properties.Gen
+import io.kotlintest.properties.forAll
 import io.kotlintest.specs.FreeSpec
 import java.math.BigInteger
 import java.util.Random

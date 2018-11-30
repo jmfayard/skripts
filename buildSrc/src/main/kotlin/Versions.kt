@@ -37,7 +37,7 @@ object Versions {
 
     const val config4k: String = "0.4.1"
 
-    const val kotlintest: String = "1.3.7" //available: "2.0.7" 
+    const val kotlintest: String =  "2.0.7" 
 
     const val rxjava: String = "2.2.4"
 

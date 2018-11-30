@@ -1,5 +1,8 @@
 import com.squareup.moshi.Moshi
-import io.kotlintest.matchers.be
+import io.kotlintest.matchers.beOfType
+import io.kotlintest.matchers.should
+import io.kotlintest.matchers.shouldBe
+import io.kotlintest.matchers.shouldThrow
 import io.kotlintest.specs.StringSpec
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
@@ -60,9 +63,9 @@ class KotlinCoroutinesRetrofitTest : StringSpec() { init {
 
     "Call.awaitResult()" {
         runBlocking {
-            IO.httpbinService.get(args).awaitResult() should be an Result.Ok::class
-            IO.httpbinService.status(404).awaitResult() should be an Result.Error::class
-            IO.httpbinService.invalid().awaitResult() should be an Result.Exception::class
+            IO.httpbinService.get(args).awaitResult() should beOfType<Result.Ok<*>>()
+            IO.httpbinService.status(404).awaitResult() should beOfType<Result.Error>()
+            IO.httpbinService.invalid().awaitResult() should beOfType<Result.Exception>()
         }
     }
 }

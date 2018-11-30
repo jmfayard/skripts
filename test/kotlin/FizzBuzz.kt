@@ -1,3 +1,5 @@
+import io.kotlintest.matchers.shouldBe
+import io.kotlintest.properties.forAll
 import io.kotlintest.specs.FreeSpec
 
 fun evilFizzBuzz(number: Int): String = when {

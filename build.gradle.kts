@@ -1,5 +1,7 @@
 @file:Suppress("UNUSED_VARIABLE")
 
+import Android.kotlin
+import org.gradle.internal.impldep.org.bouncycastle.asn1.iana.IANAObjectIdentifiers.experimental
 import org.gradle.kotlin.dsl.accessors.tasks.PrintAccessors
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -10,7 +12,7 @@ plugins {
     kotlin("jvm") version Versions.org_jetbrains_kotlin_jvm_gradle_plugin
 //    id("jmfayard.github.io.gradle-kotlin-dsl-libs") version Versions.jmfayard_github_io_gradle_kotlin_dsl_libs_gradle_plugin
     id("org.jlleitschuh.gradle.ktlint") version "6.3.1"
-    id("de.fayard.buildSrcVersions") version "0.3"
+    id("de.fayard.buildSrcVersions") version "0.3.2"
 }
 
 application {

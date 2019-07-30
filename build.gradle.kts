@@ -109,7 +109,7 @@ buildScan {
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         jvmTarget = "1.8"
-        freeCompilerArgs = listOf("-Xjsr305=strict")
+        freeCompilerArgs = listOf("-Xjsr305=strict", "-Xuse-experimental=org.mylibrary.ExperimentalMarker")
     }
 }
 
@@ -133,6 +133,6 @@ java {
 
 tasks.withType<Wrapper> {
     distributionType = Wrapper.DistributionType.ALL
-    gradleVersion = Versions.Gradle.currentVersion
+    gradleVersion = Versions.gradleLatestVersion
 }
 

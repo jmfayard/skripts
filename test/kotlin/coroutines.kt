@@ -1,8 +1,10 @@
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.selects.select
 
+@UseExperimental(ExperimentalCoroutinesApi::class)
 suspend fun selectAorB(a: ReceiveChannel<String>, b: ReceiveChannel<String>): String =
     select<String> {
         a.onReceiveOrNull { value ->

@@ -74,7 +74,12 @@ class KotlinCoroutinesRetrofitTest : StringSpec() { init {
 object IO {
     val LEVEL = okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
 
-    val logger: HttpLoggingInterceptor = HttpLoggingInterceptor(::println).setLevel(LEVEL)
+    val printlnLogger = object : HttpLoggingInterceptor.Logger {
+        override fun log(message: String) {
+            println(message)
+        }
+    }
+    val logger: HttpLoggingInterceptor = HttpLoggingInterceptor(printlnLogger).also { it.level = LEVEL }
 
     val okHttpClient: OkHttpClient = OkHttpClient.Builder().addNetworkInterceptor(logger).build()
 

@@ -1,10 +1,8 @@
 import io.reactivex.Observable
-import io.reactivex.RxMarble
 import io.reactivex.Single
 import io.reactivex.exceptions.CompositeException
 import io.reactivex.rxkotlin.merge
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.schedulers.TestScheduler
 import org.junit.Test
 import java.util.concurrent.TimeUnit
 
@@ -23,23 +21,7 @@ class Rxjava2Test {
         }.merge()
         observable.blockingSubscribe(::println)
     }
-
-    @Test
-    fun join() {
-
-        fun <T> just(observable: Observable<T>) = io.reactivex.functions.Function { i: Int ->
-            observable
-        }
-
-        val scheduler = TestScheduler()
-        val marble = RxMarble(scheduler = scheduler)
-        val ints = marble.cold(
-            "--1---3-4---5--6----7-9", List(10) { it * it })
-        val lifecycle = marble.cold(
-            "----1-----2---1---2--1-", listOf(0, 1)
-        )
-    }
-
+    
     @Test
     fun values() {
         val t = Observable.just(1, 2, 3)

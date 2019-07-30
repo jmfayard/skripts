@@ -128,8 +128,12 @@ suspend fun doStuff(api: CheckvistCoroutineApi, credentials: CheckvistCredential
 }
 
 fun buildOkHttpClient(): OkHttpClient {
-    val LEVEL = BASIC
-    val logger: HttpLoggingInterceptor = HttpLoggingInterceptor(::println).setLevel(LEVEL)
+    val logger: HttpLoggingInterceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+        override fun log(message: String) {
+            println(message)
+        }
+    })
+    logger.level = BASIC
     return OkHttpClient.Builder().addNetworkInterceptor(logger).build()
 }
 

@@ -1,5 +1,6 @@
 import io.kotlintest.specs.StringSpec
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
@@ -14,16 +15,16 @@ class OkRecipes : StringSpec() { init {
         val response = client.newCall(request).execute()
         require(response.isSuccessful) { "Unexpected code $response" }
 
-        val responseHeaders = response.headers()
-        for (i in 0 until responseHeaders.size()) {
+        val responseHeaders = response.headers
+        for (i in 0 until responseHeaders.size) {
             println(responseHeaders.name(i) + ": " + responseHeaders.value(i))
         }
-        val body = requireNotNull(response.body()) { "Response failed: $response" }
+        val body = requireNotNull(response.body) { "Response failed: $response" }
         println(body.string())
     }
 
     "Post Markdown" {
-        val MEDIA_TYPE_MARKDOWN = MediaType.parse("text/x-markdown; charset=utf-8")
+        val MEDIA_TYPE_MARKDOWN = "text/x-markdown; charset=utf-8".toMediaTypeOrNull()
 
         val client = OkHttpClient()
 
@@ -43,7 +44,7 @@ class OkRecipes : StringSpec() { init {
         val response = client.newCall(request).execute()
         require(response.isSuccessful) { "Unexpected code $response " }
 
-        val body = requireNotNull(response.body()) { "Response failed: $response" }
+        val body = requireNotNull(response.body) { "Response failed: $response" }
         println(body)
     }
 }

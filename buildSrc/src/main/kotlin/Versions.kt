@@ -15,7 +15,7 @@ object Versions {
 
     const val jsr305: String = "3.0.2" 
 
-    const val com_gradle_build_scan_gradle_plugin: String = "2.1" // available: "2.3"
+    const val com_gradle_build_scan_gradle_plugin: String = "2.1"
 
     const val timber: String = "4.7.1" 
 
@@ -27,15 +27,15 @@ object Versions {
 
     const val moshi: String = "1.8.0" 
 
-    const val com_squareup_okhttp3: String = "3.12.0" // available: "4.0.1"
+    const val com_squareup_okhttp3: String = "4.0.1"
 
-    const val okio: String = "2.1.0" // available: "2.3.0"
+    const val okio: String ="2.3.0"
 
-    const val com_squareup_retrofit2: String = "2.5.0" // available: "2.6.0"
+    const val com_squareup_retrofit2: String = "2.6.0"
 
     const val kotlinpoet: String = "0.7.0" // available: "1.3.0"
 
-    const val config: String = "1.3.3" // available: "1.3.4"
+    const val config: String = "1.3.4"
 
     const val de_fayard_buildsrcversions_gradle_plugin: String = "0.4.0" 
 
@@ -47,9 +47,9 @@ object Versions {
 
     const val kotlintest: String = "2.0.7" 
 
-    const val rxjava: String = "2.2.4" // available: "2.2.10"
+    const val rxjava: String = "2.2.10"
 
-    const val rxkotlin: String = "2.3.0" // available: "2.4.0"
+    const val rxkotlin: String = "2.4.0"
 
     const val joda_time: String = "2.10.1" // available: "2.10.3"
 
@@ -63,17 +63,17 @@ object Versions {
 
     const val exposed: String = "0.11.2" // available: "0.16.3"
 
-    const val org_jetbrains_kotlin_jvm_gradle_plugin: String = "1.3.10" // available: "1.3.41"
+    const val org_jetbrains_kotlin_jvm_gradle_plugin: String = "1.3.41"
 
-    const val org_jetbrains_kotlin: String = "1.3.10" // available: "1.3.41"
+    const val org_jetbrains_kotlin: String = "1.3.41"
 
-    const val kotlinx_coroutines_core: String = "1.0.1" // available: "1.3.0-RC-1.3.50-eap-5"
+    const val kotlinx_coroutines_core: String = "1.2.2"
 
-    const val kotlinx_coroutines_rx2: String = "1.0.1" // available: "1.3.0-RC-1.3.50-eap-5"
+    const val kotlinx_coroutines_rx2: String = "1.2.2"
 
-    const val kotlinx_html_jvm: String = "0.6.11" // available: "0.6.12"
+    const val kotlinx_html_jvm: String = "0.6.12"
 
-    const val org_jlleitschuh_gradle_ktlint_gradle_plugin: String = "6.3.1" // available: "8.2.0"
+    const val org_jlleitschuh_gradle_ktlint_gradle_plugin: String = "8.2.0"
 
     const val jtwig_core: String = "5.87.0.RELEASE" 
 
@@ -81,15 +81,15 @@ object Versions {
 
     const val mockito_core: String = "2.23.4" // available: "3.0.0"
 
-    const val postgresql: String = "42.2.5" // available: "42.2.6"
+    const val postgresql: String = "42.2.6"
 
     const val selenium_java: String = "3.141.59" 
 
-    const val slf4j_simple: String = "1.7.25" // available: "1.7.26"
+    const val slf4j_simple: String = "1.7.26"
 
-    const val zt_exec: String = "1.10" // available: "1.11"
+    const val zt_exec: String = "1.11"
 
-    const val kotlin_coroutines_retrofit: String = "0.13.0-eap13" // available: "1.1.0"
+    const val kotlin_coroutines_retrofit: String = "1.1.0"
 
     /**
      *

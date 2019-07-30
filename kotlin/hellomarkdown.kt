@@ -2,7 +2,7 @@
 package hellomarkdown
 
 import jmfayard.osxOpenFile
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
 fun postMarkdown(file: File, dest: File) {
     require(file.canRead()) { "Cannot find ${file.absolutePath}" }
 
-    val MEDIA_TYPE_MARKDOWN = MediaType.parse("text/x-markdown; charset=utf-8")
+    val MEDIA_TYPE_MARKDOWN = "text/x-markdown; charset=utf-8".toMediaTypeOrNull()
 
     val client = OkHttpClient()
 
@@ -28,7 +28,7 @@ fun postMarkdown(file: File, dest: File) {
         .build()
 
     val response = client.newCall(request).execute()
-    val body = requireNotNull(response.body()) { "Unexpected code $response " }
+    val body = requireNotNull(response.body) { "Unexpected code $response " }
 
     dest.sink().buffer().use { sink ->
         sink.writeAll(body.source())

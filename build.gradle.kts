@@ -113,8 +113,8 @@ tasks.withType<KotlinCompile> {
     }
 }
 
-tasks.register<Copy>("copyToLib") {
-    from(configurations.runtime)
+tasks.create<Copy>("copyToLib") {
+    from(configurations.runtimeClasspath)
     into("lib")
 }
 

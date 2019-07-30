@@ -11,7 +11,7 @@ import kotlin.String
 object Versions {
     const val kscript_support: String = "1.2.5" 
 
-    const val ktlint: String = "0.29.0" // available: "0.34.2"
+    const val ktlint: String = "0.34.2"
 
     const val jsr305: String = "3.0.2" 
 
@@ -33,7 +33,7 @@ object Versions {
 
     const val com_squareup_retrofit2: String = "2.6.0"
 
-    const val kotlinpoet: String = "0.7.0" // available: "1.3.0"
+    const val kotlinpoet: String = "1.3.0"
 
     const val config: String = "1.3.4"
 
@@ -41,7 +41,7 @@ object Versions {
 
     const val fontawesomefx: String = "8.9" 
 
-    const val krangl: String = "0.6" // available: "0.11"
+    const val krangl: String = "0.11"
 
     const val config4k: String = "0.4.1" 
 
@@ -51,17 +51,17 @@ object Versions {
 
     const val rxkotlin: String = "2.4.0"
 
-    const val joda_time: String = "2.10.1" // available: "2.10.3"
+    const val joda_time: String = "2.10.3"
 
     const val junit: String = "4.12" 
 
-    const val tornadofx: String = "1.7.17" // available: "1.7.19"
+    const val tornadofx: String = "1.7.19"
 
-    const val controlsfx: String = "9.0.0" // available: "11.0.0"
+    const val controlsfx: String = "11.0.0"
 
     const val jdom: String = "2.0.2" 
 
-    const val exposed: String = "0.11.2" // available: "0.16.3"
+    const val exposed: String = "0.16.3"
 
     const val org_jetbrains_kotlin_jvm_gradle_plugin: String = "1.3.41"
 
@@ -77,9 +77,9 @@ object Versions {
 
     const val jtwig_core: String = "5.87.0.RELEASE" 
 
-    const val kodein_di_generic_jvm: String = "5.3.0" // available: "6.3.3"
+    const val kodein_di_generic_jvm: String = "6.3.3"
 
-    const val mockito_core: String = "2.23.4" // available: "3.0.0"
+    const val mockito_core: String = "3.0.0"
 
     const val postgresql: String = "42.2.6"
 

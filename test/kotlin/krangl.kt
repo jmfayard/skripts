@@ -3,19 +3,21 @@ import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.DOUBLE
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.ParameterizedTypeName
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.joinToCode
 import jmfayard.resourceFile
 import krangl.DataFrame
 import krangl.DataFrameRow
-import krangl.fromCSV
 import krangl.greaterThan
 import krangl.gt
 import krangl.listOf
 import krangl.print
 import krangl.range
+import krangl.readCSV
 import krangl.startsWith
+import okio.source
 
 // todo convert to script
 
@@ -24,7 +26,7 @@ import krangl.startsWith
 fun main(args: Array<String>) {
 
     // but for sake of learning the API we load it from file here
-    val sleepData = DataFrame.fromCSV(resourceFile("msleep.csv"))
+    val sleepData = DataFrame.readCSV(resourceFile("msleep.csv"))
 
     // select columns of interest
     sleepData.select("name", "sleep_total")
@@ -52,8 +54,8 @@ fun main(args: Array<String>) {
     val kSheeps = data.rows.map { row: DataFrameRow ->
         CodeBlock.of("%T(%S, %S, %L)", sheepClass, row["name"], row["genus"], row["awake"])
     }
-
-    val sheepProperty = PropertySpec.builder("sheeps", ParameterizedTypeName.get(List::class.asClassName(), sheepClass))
+    
+    val sheepProperty = PropertySpec.builder("sheeps", List::class.parameterizedBy(Sheep::class))
         .addKdoc("All the sheeps")
         .initializer(kSheeps.joinToCode(prefix = "listOf(\n", suffix = "\n)", separator = ",\n"))
         .build()

@@ -15,9 +15,8 @@ import jmfayard.xmlDocument
 import krangl.DataFrame
 import krangl.asStrings
 import krangl.dataFrameOf
-import krangl.fromCSV
-import krangl.glimpse
 import krangl.print
+import krangl.readCSV
 import krangl.writeCSV
 import org.apache.commons.csv.CSVFormat
 import org.docopt.Docopt
@@ -190,10 +189,9 @@ fun i18nCsv2xml(csvFile: File, destDir: File, langs: List<String>) {
 fun krangleParse(file: File, langs: List<String>): DataFrame {
     val lang = langs.first()
     val columns = arrayOf("name") + langs
-    val df = DataFrame.fromCSV(file, CSVFormat.DEFAULT.withHeader().withDelimiter(CSV_DELIMITOR))
+    val df = DataFrame.readCSV(file, CSVFormat.DEFAULT.withHeader().withDelimiter(CSV_DELIMITOR))
         .select(*columns)
         .filter { it[lang].asStrings().map { it?.startsWith("XXX") == false }.toBooleanArray() }
-    df.glimpse()
     return df
 }
 

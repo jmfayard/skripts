@@ -1,4 +1,4 @@
-import io.kotlintest.matchers.shouldBe
+import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 
 data class Point(val x: Int, val y: Int)

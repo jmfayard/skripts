@@ -5,8 +5,8 @@ import io.kotlintest.specs.StringSpec
 
 data class Pizza(val name: String, val price: Int)
 
-fun Gen.Companion.pizza() = object : Gen<Pizza> {
-    override fun generate() = Pizza(Gen.string().generate(), Gen.int().generate())
+fun Gen.Companion.pizza(): Gen<Pizza> = Gen.bind(Gen.int(), Gen.string()) { price, name ->
+    Pizza(name, price)
 }
 
 class MoshiProperties : StringSpec() { init {

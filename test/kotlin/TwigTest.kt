@@ -1,7 +1,7 @@
 import io.kotlintest.matchers.haveSubstring
-import io.kotlintest.matchers.should
-import io.kotlintest.matchers.shouldBe
 import io.kotlintest.properties.forAll
+import io.kotlintest.should
+import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 import org.jtwig.JtwigModel
 import org.jtwig.JtwigTemplate

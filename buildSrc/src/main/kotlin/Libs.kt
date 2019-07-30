@@ -9,8 +9,6 @@ object Libs {
     const val kscript_support: String = "com.github.holgerbrandl:kscript-support:" +
             Versions.kscript_support
 
-    const val ktlint: String = "com.github.shyiko:ktlint:" + Versions.ktlint
-
     /**
      * http://findbugs.sourceforge.net/ */
     const val jsr305: String = "com.google.code.findbugs:jsr305:" + Versions.jsr305
@@ -30,6 +28,10 @@ object Libs {
     /**
      * https://github.com/docopt/docopt.java */
     const val docopt: String = "com.offbytwo:docopt:" + Versions.docopt
+
+    /**
+     * https://github.com/pinterest/ktlint */
+    const val ktlint: String = "com.pinterest:ktlint:" + Versions.ktlint
 
     /**
      * https://github.com/serj-lotutovici/moshi-lazy-adapters/ */
@@ -55,7 +57,7 @@ object Libs {
     const val okhttp: String = "com.squareup.okhttp3:okhttp:" + Versions.com_squareup_okhttp3
 
     /**
-     * https://github.com/square/okio/ */
+     * 2.3.0 */
     const val okio: String = "com.squareup.okio:okio:" + Versions.okio
 
     /**
@@ -100,7 +102,8 @@ object Libs {
 
     /**
      * http://www.github.com/kotlintest/kotlintest */
-    const val kotlintest: String = "io.kotlintest:kotlintest:" + Versions.kotlintest
+    const val kotlintest_runner_junit5: String = "io.kotlintest:kotlintest-runner-junit5:" +
+            Versions.kotlintest_runner_junit5
 
     /**
      * https://github.com/ReactiveX/RxJava */

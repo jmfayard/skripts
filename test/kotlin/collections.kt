@@ -1,6 +1,6 @@
 package collections
 
-import io.kotlintest.matchers.shouldBe
+import io.kotlintest.shouldBe
 import kotlin.reflect.jvm.internal.impl.protobuf.ByteString
 
 fun main(args: Array<String>) {

@@ -1,8 +1,8 @@
 import io.kotlintest.properties.Gen
 import io.kotlintest.properties.forAll
+import io.kotlintest.shouldBe
 import io.kotlintest.specs.FreeSpec
 import java.math.BigInteger
-import java.util.Random
 
 /*
  http://fsharpforfunandprofit.com/posts/property-based-testing-2/
@@ -107,7 +107,7 @@ class PropertiesTesting : FreeSpec() { init {
 
     "Hard to prove, easy to verify" {
         val gen = Gen.list(Gen.choose(1, 100))
-        fun String.parseCommas(): List<String> = this.split(",")
+        fun String.parseCommas(): List<String> = if (isBlank()) listOf() else this.split(",")
 
         forAll(gen) { list ->
             val string = list.joinToString(separator = ",")
@@ -139,16 +139,8 @@ fun String.isPalindrome(): Boolean {
     return true
 }
 
-fun Gen.Companion.char() = object : Gen<Char> {
-    val random = Random()
-
-    private fun Random.nextPrintableChar(): Char {
-        val low = 33
-        val high = 127
-        return (nextInt(high - low) + low).toChar()
-    }
-
-    override fun generate(): Char = random.nextPrintableChar()
+fun Gen.Companion.char(): Gen<Char> = Gen.choose(33, 127).map {  
+    it.toChar()
 }
 
 val Int.bigint: BigInteger

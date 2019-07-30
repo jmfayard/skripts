@@ -1,8 +1,8 @@
 import com.squareup.moshi.Moshi
 import io.kotlintest.matchers.beOfType
-import io.kotlintest.matchers.should
-import io.kotlintest.matchers.shouldBe
-import io.kotlintest.matchers.shouldThrow
+import io.kotlintest.should
+import io.kotlintest.shouldBe
+import io.kotlintest.shouldThrow
 import io.kotlintest.specs.StringSpec
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
@@ -28,22 +28,16 @@ class KotlinCoroutinesRetrofitTest : StringSpec() { init {
     val args = mapOf("gender" to "MALE", "age" to "42")
 
     "ApiTEST" {
-        runBlocking {
-            IO.httpbinService.raw().await().debug("ApiTEST") shouldBe ApiTest(ok2 = true)
-        }
+        IO.httpbinService.raw().await().debug("ApiTEST") shouldBe ApiTest(ok2 = true)
     }
 
     "ApiTEST2" {
-        runBlocking {
-            IO.httpbinService.raw().await().debug("ApiTEST")
-        }
+        IO.httpbinService.raw().await().debug("ApiTEST")
     }
 
     "Call.await() ta mere" {
-        runBlocking {
             val response = IO.httpbinService.get(args).await().debug("response")
             response.args shouldBe args
-        }
     }
 
     "Call.await() throw an exception" {
@@ -55,10 +49,8 @@ class KotlinCoroutinesRetrofitTest : StringSpec() { init {
     }
 
     "Call.awaitResponse()" {
-        runBlocking {
             val response = IO.httpbinService.status(304).awaitResponse().debug("response")
             response.message() shouldBe "NOT MODIFIED"
-        }
     }
 
     "Call.awaitResult()" {

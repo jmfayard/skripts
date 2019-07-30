@@ -1,5 +1,4 @@
-import io.kotlintest.Duration
-import io.kotlintest.matchers.shouldBe
+import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 import retrofit2.Call
 import retrofit2.Response
@@ -7,6 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.mock.MockRetrofit
 import retrofit2.mock.NetworkBehavior
+import java.time.Duration
 import java.util.concurrent.TimeUnit
 
 class MockRetrofitTest : StringSpec() { init {
@@ -30,10 +30,10 @@ class MockRetrofitTest : StringSpec() { init {
     val httpbin = mockRetrofit
         .create(PingService::class.java)
 
-    "Ping" {
+    "Ping".config(timeout = Duration.ofSeconds(if (WITH_ERRORS) 400 else 900)) {
         val service = httpbin.returningResponse(true)
         service.ping().execute().isSuccessful shouldBe true
-    }.config(timeout = Duration(if (WITH_ERRORS) 400 else 900, TimeUnit.MILLISECONDS))
+    }
 }
 }
 

@@ -1,6 +1,5 @@
 @file:Suppress("UNUSED_VARIABLE")
 
-import org.gradle.kotlin.dsl.accessors.tasks.PrintAccessors
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -36,7 +35,7 @@ dependencies {
     testImplementation(Libs.junit)
     testImplementation(Libs.mockito_kotlin)
     testImplementation(Libs.mockito_core)
-    testImplementation(Libs.kotlintest)
+    testImplementation(Libs.kotlintest_runner_junit5)
     testImplementation(Libs.kotlin_test_junit)
 
     testCompileOnly(Libs.jsr305)
@@ -104,7 +103,9 @@ buildScan {
     publishAlways()
 }
 
-
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {

@@ -1,6 +1,8 @@
-import io.kotlintest.matchers.shouldBe
+
 import io.kotlintest.properties.forAll
+import io.kotlintest.shouldBe
 import io.kotlintest.specs.FreeSpec
+import kotlin.math.abs
 
 fun evilFizzBuzz(number: Int): String = when {
     number > 100 -> "FOOBAR"
@@ -43,32 +45,32 @@ class FizzBuzzTesting : FreeSpec() { init {
 
         "Multiples of 15" {
             forAll<Int> { i ->
-                if (Math.abs(i) >= Integer.MAX_VALUE / 15 - 1) return@forAll true
-                val nb = 15 * Math.abs(i)
+                if (i ==Integer.MIN_VALUE || abs(i) >= Integer.MAX_VALUE / 15 - 1) return@forAll true
+                val nb = 15 * abs(i)
                 fizzbuzz(nb) == "FizzBuzz"
             }
         }
 
         "Multiples of 3" {
             forAll<Int> { i ->
-                if (Math.abs(i) >= Integer.MAX_VALUE / 3 - 1) return@forAll true
-                val nb = 3 * Math.abs(i)
+                if (i ==Integer.MIN_VALUE || abs(i) >= Integer.MAX_VALUE / 3 - 1) return@forAll true
+                val nb = 3 * abs(i)
                 nb % 5 == 0 || fizzbuzz(nb) == "Fizz"
             }
         }
 
         "Multiples of 5" {
             forAll<Int> { i ->
-                if (Math.abs(i) >= Integer.MAX_VALUE / 5 - 1) return@forAll true
+                if (i ==Integer.MIN_VALUE || abs(i) >= Integer.MAX_VALUE / 5 - 1) return@forAll true
 
-                val nb = 5 * Math.abs(i)
+                val nb = 5 * abs(i)
                 nb % 5 == 0 || fizzbuzz(nb) == "Fizz"
             }
         }
 
         "Others" {
             forAll<Int> { i ->
-                val nb = Math.abs(i)
+                val nb = abs(i)
                 nb % 5 == 0 || nb % 3 == 0 || fizzbuzz(nb) == nb.toString()
             }
         }

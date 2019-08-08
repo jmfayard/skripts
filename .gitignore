@@ -8,3 +8,4 @@ config.properties
 README.html
 out/
 Library/autojump/
+/.kotlintest/spec_failures

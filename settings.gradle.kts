@@ -1,9 +1,8 @@
 pluginManagement {
-    //if (System.getenv("USE_LOCALLY_PUBLISHED_PLUGIN") != null) {
-        repositories {
-            maven { url = uri("/Users/jmfayard/akelius/buildSrcVersions/plugin/build/repository") }
-            gradlePluginPortal()
-        }
-    //}
+    repositories {
+        val localGradleRepo = "/Users/jmfayard/akelius/buildSrcVersions/plugin/build/repository"
+        if (File(localGradleRepo).exists()) maven { url = uri(localGradleRepo) }
+        gradlePluginPortal()
+    }
 }
 rootProject.name = "skripts"

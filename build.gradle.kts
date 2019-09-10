@@ -8,7 +8,7 @@ plugins {
     application
     kotlin("jvm") version Versions.org_jetbrains_kotlin_jvm_gradle_plugin
     id("org.jlleitschuh.gradle.ktlint") version Versions.org_jlleitschuh_gradle_ktlint_gradle_plugin
-    id("de.fayard.buildSrcVersions") version "0.4.0"
+    id("de.fayard.buildSrcVersions") version "0.5.0"
 }
 
 application {

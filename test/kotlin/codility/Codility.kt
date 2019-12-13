@@ -7,20 +7,22 @@ import io.kotlintest.tables.row
 
 
 class Codility : FreeSpec({
-    "positive numbers" {
-        positiveNumbers().take(10).toList() shouldBe listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+    "twoOfN" {
+        twoOfN(4) shouldBe 6
+        twoOfN(1) shouldBe 0
     }
     
-    "all on" {
-        State(listOf(1, 2, 3)).allLightenUp() shouldBe true
-        State(listOf(2, 4)).allLightenUp() shouldBe false
-        generateStates(listOf(2, 3, 4, 1, 5)).forEach { println(it) }
+    "grouping" {
+        val groups = listOf(3, 5, 6, 3, 3, 5).groupSimilarValues()
+        groups shouldBe mapOf(3 to 3, 5 to 2, 6 to 1)
     }
-
+    
     "bulbs" {
         forall(
-            row(3, listOf(2, 1, 3, 5, 4)),
-            row(2, listOf(2, 3, 4, 1, 5))
+            row(0, listOf(1, 2, 3, 4)),
+            row(6, listOf(1, 1, 1,1)),
+            row(2, listOf(1, 1, 2, 2)),
+            row(4, listOf(3, 5, 6, 3, 3, 5))
         ) { expected: Int, input: List<Int> ->
             solution(input.toIntArray()) shouldBe expected
         }
